@@ -44,7 +44,8 @@ export const lessonSchema = z.strictObject({
   summary: label,
   order,
   topicIds: z.array(slug).min(1),
-  sessionIds: z.array(slug).min(1),
+  // An empty sessionIds marks a lesson for self-study before its class session exists.
+  sessionIds: z.array(slug),
   relatedLessons: z.array(z.strictObject({ courseId: slug, lessonId: slug })).default([]),
   references: z.array(z.union([pdfReference, transcriptReference])).default([]),
 });
