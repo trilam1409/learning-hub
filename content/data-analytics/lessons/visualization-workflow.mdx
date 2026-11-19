@@ -1,0 +1,63 @@
+---
+id: visualization-workflow
+title: "Quy trình trực quan và biểu đồ đường, vùng"
+summary: "Slide Bài 04 mở đầu bằng quy trình: **làm rõ câu hỏi → hiểu dữ liệu → chọn loại biểu đồ → trực quan và diễn giải**. Không chọn biểu đồ chỉ v"
+order: 16
+topicIds: [visualization-tools]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-04-slide
+    page: 4
+  - sourceId: lesson-04-slide
+    page: 6
+  - sourceId: lesson-04-slide
+    page: 14
+  - sourceId: lesson-04-slide
+    page: 20
+---
+
+> **ĐỌC TRƯỚC:** Nội dung biên soạn từ slide Bài 04. Chưa có transcript VTT xác nhận thầy đã giảng phần này.
+
+## Đọc trước: nội dung chưa học trên lớp
+
+Slide Bài 04 mở đầu bằng quy trình: **làm rõ câu hỏi → hiểu dữ liệu → chọn loại biểu đồ → trực quan và diễn giải**. Không chọn biểu đồ chỉ vì nó đẹp.
+
+## Line plot – quan sát diễn biến
+
+Biểu đồ đường thường thể hiện số lượng biến động theo một trục thời gian. Slide dùng ví dụ *số người từ Haiti nhập cư vào Canada qua từng năm*.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.DataFrame({
+    "year": [2020, 2021, 2022, 2023, 2024],
+    "count": [100, 125, 115, 140, 160],
+})
+data.plot(x="year", y="count", kind="line", marker="o", legend=False)
+plt.ylabel("Số lượng (ví dụ)")
+plt.title("Biến động theo năm")
+plt.show()
+```
+
+Dữ liệu trên **được tự tạo để thực hành**, không phải số liệu di cư trong bài giảng.
+
+## Area plot – xu hướng và phần đóng góp
+
+Area chart tô kín vùng dưới đường. Nếu nhiều nhóm được vẽ kiểu **stacked**, diện tích cộng dồn cho thấy tổng và phần đóng góp của từng nhóm.
+
+```python
+df = pd.DataFrame({
+    "A": [2, 3, 4, 5],
+    "B": [1, 2, 2, 3],
+}, index=[2021, 2022, 2023, 2024])
+df.plot.area(stacked=True)
+plt.show()
+```
+
+**Hãy suy nghĩ:** Nếu bạn muốn so sánh đúng mức biến động của từng nhóm, stacked area có thể khó đọc hơn line plot riêng từng đường. Nếu muốn thấy tổng đóng góp theo thời gian, area phù hợp hơn.
+
+<ChartTypeExplorer />
+
+<Quiz question="Khi cần thể hiện biến động số người qua các năm, loại biểu đồ khởi đầu phù hợp?" options={["Line plot","Pie chart","Word cloud"]} correctIndex={0} explanation="Line plot biểu diễn tốt chuỗi thời gian và xu hướng tăng giảm." />
