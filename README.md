@@ -37,3 +37,14 @@ nội dung do người bảo trì review vì MDX được biên dịch thành m�
 
 Mở PR từ `feature/*` hoặc `content/*` về `develop`.
 PR phát hành đi từ `develop` về `main` sau khi chủ dự án duyệt.
+
+## Nội dung đọc trước
+
+Bài thuộc các buổi đã học có `sessionIds` dẫn đến một hoặc nhiều buổi trong `sessions.yml`.
+Bài **đọc trước** (chưa có VTT) sử dụng `sessionIds: []`, chỉ cần khai báo `topicIds` và dẫn trang slide PDF đã xác minh.
+Trang môn học hiển thị nhãn “Đọc trước” và nhóm riêng trong chế độ xem theo buổi.
+Sau khi có transcript buổi học, cập nhật lại `sessionIds`, bổ sung nguồn VTT/mốc thời gian và rà soát ví dụ.
+
+Hai chế độ **Theo chủ đề** và **Theo buổi học** là tab thực sự; trang bài học có liên kết quay về danh sách ở cả đầu và cuối.
+
+Các file `.ipynb` trong `content/data-analytics/notebooks/` là tài liệu thực hành tải về; chưa tích hợp JupyterLite runtime để thực thi Python ngay trong trang web.
