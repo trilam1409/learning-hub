@@ -1,0 +1,57 @@
+---
+id: pandas-dataframe
+title: DataFrame, nhập và xuất CSV
+summary: Tạo bảng hai chiều, đọc dữ liệu từ CSV và lưu lại sau khi xử lý.
+order: 5
+topicIds:
+  - pandas
+sessionIds:
+  - session-03
+relatedLessons: []
+references:
+  - sourceId: lesson-01-slide
+    page: 15
+  - sourceId: lesson-01-slide
+    page: 18
+  - sourceId: lesson-01-slide
+    page: 19
+  - sourceId: transcript-03
+    startSeconds: 1295
+---
+
+## DataFrame là bảng dữ liệu hai chiều
+
+DataFrame có các dòng, cột và index. Mỗi cột có thể được xem như một Series. Giảng viên giới thiệu việc đọc CSV trong Buổi 03.
+
+```python
+import pandas as pd
+
+cars = pd.DataFrame({
+    "make": ["Toyota", "Honda", "Ford"],
+    "price": [12000, 15000, 9000],
+})
+print(cars["price"])
+print(cars.loc[1, "make"])
+print(cars.iloc[1, 0])
+```
+
+## Đọc dữ liệu
+
+```python
+df = pd.read_csv("cars.csv")
+print(df.head())
+```
+
+`pd.read_csv()` đọc CSV. Slide Bài 01 cũng giới thiệu `read_excel()`, `read_sql()`, `read_json()`. Cần biết dữ liệu có hàng tiêu đề hay không và ký hiệu missing values là gì.
+
+## Xuất dữ liệu
+
+```python
+df.to_csv("cars-cleaned.csv", index=False)
+```
+
+`index=False` giúp không xuất index của Pandas thành cột không cần thiết.
+
+**Bài tập:** Tạo DataFrame ba xe, tăng giá mỗi xe 5%, rồi xuất CSV. Hãy đọc lại file để kiểm tra.
+
+<Quiz question="Cách nào đọc dữ liệu CSV thành DataFrame?" options={["pd.read_csv('cars.csv')","pd.to_csv('cars.csv')","pd.csv('cars.csv')"]} correctIndex={0} explanation="read_csv là phương thức nhập tệp CSV của Pandas." />
