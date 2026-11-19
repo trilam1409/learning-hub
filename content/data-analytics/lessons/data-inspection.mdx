@@ -1,0 +1,50 @@
+---
+id: data-inspection
+title: Kiểm tra dữ liệu với head, info, describe
+summary: Khảo sát cấu trúc, kiểu cột, giá trị thiếu và thống kê trước khi làm sạch.
+order: 6
+topicIds:
+  - pandas
+sessionIds:
+  - session-03
+relatedLessons: []
+references:
+  - sourceId: lesson-01-slide
+    page: 20
+  - sourceId: lesson-01-slide
+    page: 21
+  - sourceId: lesson-01-slide
+    page: 22
+---
+
+## Khám phá trước khi xử lý
+
+Không nên biến đổi dữ liệu chỉ vì nhìn thấy một ô trống. Trước tiên cần hiểu quy mô, ý nghĩa, kiểu dữ liệu và phân phối của từng cột.
+
+```python
+import pandas as pd
+df = pd.DataFrame({
+    "price": [8000, 12000, None, 20000],
+    "horsepower": [90, 120, 105, 160],
+})
+
+print(df.shape)
+print(df.head())
+print(df.dtypes)
+print(df.info())
+print(df.describe())
+print(df.isna().sum())
+```
+
+| Công cụ | Trả lời câu hỏi |
+| --- | --- |
+| `shape` | Có bao nhiêu dòng và cột? |
+| `head()`, `tail()` | Những mẫu đầu/cuối trông như thế nào? |
+| `dtypes` | Mỗi cột đang có kiểu dữ liệu gì? |
+| `info()` | Có bao nhiêu giá trị non-null? |
+| `describe()` | Thống kê số: mean, min, max, quartiles... |
+| `isna().sum()` | Mỗi cột thiếu bao nhiêu giá trị? |
+
+Lưu ý: `describe()` mặc định mô tả các cột phù hợp (thường là cột số). `describe(include="all")` cho phép xem thêm các cột khác.
+
+<Quiz question="Muốn biết số giá trị không thiếu và kiểu dữ liệu của từng cột, nên gọi gì?" options={["df.info()","df.plot()","df.to_csv()"]} correctIndex={0} explanation="info() tóm tắt kiểu dữ liệu và số non-null của mỗi cột." />
