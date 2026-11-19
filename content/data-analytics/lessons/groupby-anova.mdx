@@ -1,0 +1,65 @@
+---
+id: groupby-anova
+title: "Gom nhóm, pivot và kiểm định ANOVA"
+summary: "Bài học đọc trước: gom nhóm, pivot và kiểm định anova, kèm ví dụ và câu hỏi ôn tập."
+order: 24
+topicIds: [exploratory-analysis]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-05-slide
+    page: 28
+  - sourceId: lesson-05-slide
+    page: 29
+  - sourceId: lesson-05-slide
+    page: 30
+  - sourceId: lesson-05-slide
+    page: 31
+  - sourceId: lesson-05-slide
+    page: 33
+  - sourceId: lesson-05-slide
+    page: 34
+  - sourceId: lesson-05-slide
+    page: 35
+---
+
+> **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Từ tương quan số đến so sánh các nhóm
+
+Khi biến giải thích là **phân loại** như `drive-wheels`, `body-style`, `make`, ta có thể so sánh giá trung bình giữa các nhóm thay vì chỉ dùng Pearson.
+
+## GroupBy và Pivot
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "body_style": ["sedan", "sedan", "hatchback", "hatchback"],
+    "price": [15000, 17000, 9000, 11000],
+})
+grouped = df.groupby("body_style")["price"].agg(["count", "mean", "median"])
+print(grouped)
+```
+
+`groupby()` nhóm các quan sát cùng loại. Có thể tạo bảng pivot để so sánh theo hai biến phân loại, ví dụ kiểu xe và dẫn động.
+
+## ANOVA: trung bình giữa nhiều nhóm có khác không?
+
+**One-way ANOVA** dùng để kiểm định giả thuyết rằng trung bình tổng thể của các nhóm bằng nhau. Ví dụ trong slide: doanh thu của ba cửa hàng.
+
+```python
+from scipy import stats
+
+store_a = [75, 89, 70, 90, 99, 67]
+store_b = [54, 78, 87, 98, 76]
+store_c = [98, 89, 91, 86, 57, 39, 89]
+f_stat, p_value = stats.f_oneway(store_a, store_b, store_c)
+print("F:", f_stat, "p:", p_value)
+```
+
+Nếu p < 0.05 (ngưỡng lựa chọn trước), bác bỏ giả thuyết tất cả trung bình bằng nhau. **ANOVA không tự nói cặp nhóm nào khác nhau**; muốn biết cần kiểm định hậu nghiệm thích hợp.
+
+Các giả định thường xét gồm độc lập quan sát, phân phối phần dư gần chuẩn trong nhóm và độ phân tán tương đối tương đồng; nếu không phù hợp cần phương án thay thế.
+
+<Quiz question="ANOVA có ý nghĩa thống kê nói lên điều nào?" options={["Có ít nhất một trung bình nhóm khác","Mọi cặp nhóm đều khác nhau","Tất cả dữ liệu đều chuẩn"]} correctIndex={0} explanation="Kết quả bác bỏ giả thuyết các trung bình nhóm bằng nhau; chưa xác định cặp nào khác." />
