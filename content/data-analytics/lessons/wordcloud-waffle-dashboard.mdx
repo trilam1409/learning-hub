@@ -1,0 +1,56 @@
+---
+id: wordcloud-waffle-dashboard
+title: "Waffle chart, word cloud và dashboard"
+summary: "Waffle chart trình bày tỉ lệ bằng lưới ô vuông, ví dụ lưới 10×10 = 100 ô. Nếu nhóm A chiếm 30%, có thể tô 30 ô. Nó phù hợp với việc kể chuyệ"
+order: 19
+topicIds: [visualization-tools]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-04-slide
+    page: 58
+  - sourceId: lesson-04-slide
+    page: 60
+  - sourceId: lesson-04-slide
+    page: 62
+  - sourceId: lesson-04-slide
+    page: 64
+---
+
+> **ĐỌC TRƯỚC:** Nội dung biên soạn từ slide Bài 04. Chưa có transcript VTT xác nhận thầy đã giảng phần này.
+
+## Waffle chart
+
+Waffle chart trình bày tỉ lệ bằng lưới ô vuông, ví dụ lưới 10×10 = 100 ô. Nếu nhóm A chiếm 30%, có thể tô 30 ô. Nó phù hợp với việc kể chuyện về **phần của tổng thể** hơn là phân tích chính xác nhiều nhóm gần nhau.
+
+## Word cloud
+
+Word cloud hiển thị từ xuất hiện nhiều bằng kích thước chữ lớn hơn. Slide Bài 04 nêu các ứng dụng như khảo sát phản hồi người dùng hoặc tìm chủ đề nổi bật trong văn bản.
+
+Các bước cơ bản:
+
+1. Chuẩn hóa chữ hoa/chữ thường, dấu câu và encoding.
+2. Loại các từ dừng không mang nội dung.
+3. Đếm tần suất từ hoặc cụm từ.
+4. Trực quan các từ phổ biến.
+
+**Hạn chế:** Hình ảnh nổi bật không đồng nghĩa tầm quan trọng thống kê hoặc cảm xúc. Tiếng Việt cần tách từ tốt trước khi phân tích.
+
+## Dashboard
+
+Dashboard tập hợp chỉ số quan trọng và các biểu đồ có liên hệ trên một màn hình. Slide có đề cập Dash/Plotly và Streamlit như những công cụ xây dựng dashboard.
+
+Một dashboard phân tích khóa học có thể có:
+
+| Thành phần | Câu hỏi |
+| --- | --- |
+| KPI tổng số sinh viên | Quy mô lớp là bao nhiêu? |
+| Biểu đồ tỷ lệ hoàn thành | Bao nhiêu người đã học xong? |
+| Line chart theo tuần | Tiến độ đang tăng hay giảm? |
+| Bộ lọc theo lớp | So sánh các nhóm thế nào? |
+
+### Mini-project tự luyện
+
+Lập sơ đồ dashboard đánh giá kết quả học kỳ: chọn **3 KPI**, **2 biểu đồ** và **1 bộ lọc**, rồi giải thích vì sao chúng trả lời câu hỏi quản lý.
+
+<Quiz question="Word cloud thường mã hóa tần suất bằng điều gì?" options={["Kích thước chữ","Chiều dài trục x","Số tầng của biểu đồ"]} correctIndex={0} explanation="Các từ thường được hiển thị lớn hơn khi xuất hiện nhiều hơn." />
