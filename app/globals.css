@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+.lesson-body h2 {
+  margin-block: 2rem 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 650;
+}
+
+.lesson-body p {
+  margin-block: 0.75rem;
+}
+
+.lesson-body blockquote {
+  margin-block: 1.25rem;
+  border-inline-start: 0.25rem solid var(--color-teal-600);
+  padding-inline-start: 1rem;
+  color: var(--color-stone-700);
+}
