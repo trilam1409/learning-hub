@@ -38,7 +38,7 @@ jobs:
 
       - name: Build JupyterLite with all Learning Hub notebooks
         run: |
-          jupyter lite build --contents content/data-analytics/notebooks --output-dir public/jupyterlite
+          jupyter lite build --base-url /jupyterlite/ --contents content/data-analytics/notebooks --output-dir public/jupyterlite
           test -f public/jupyterlite/lab/index.html
           test -f public/jupyterlite/jupyter-lite.json
           test -f public/jupyterlite/files/session-02-python-basics.ipynb
