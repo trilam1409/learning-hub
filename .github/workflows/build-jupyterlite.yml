@@ -1,0 +1,57 @@
+name: Build JupyterLite notebook runtime
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "content/data-analytics/notebooks/**"
+      - "jupyterlite/**"
+      - ".github/workflows/build-jupyterlite.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-jupyterlite
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: jupyterlite/requirements.txt
+
+      - name: Install JupyterLite and Pyodide kernel
+        run: python -m pip install -r jupyterlite/requirements.txt
+
+      - name: Build JupyterLite with all Learning Hub notebooks
+        run: |
+          jupyter lite build --contents content/data-analytics/notebooks --output-dir public/jupyterlite
+          test -f public/jupyterlite/lab/index.html
+          test -f public/jupyterlite/jupyter-lite.json
+          test -f public/jupyterlite/files/session-02-python-basics.ipynb
+          test -f public/jupyterlite/files/preview-lesson-07-evaluation.ipynb
+
+      - name: Commit generated static assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f public/jupyterlite
+          if git diff --cached --quiet; then
+            echo "JupyterLite assets already up to date."
+          else
+            git commit -m "build(jupyterlite): publish preloaded notebooks [skip ci]"
+            git push origin HEAD:main
+          fi
