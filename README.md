@@ -47,4 +47,13 @@ Sau khi có transcript buổi học, cập nhật lại `sessionIds`, bổ sung 
 
 Hai chế độ **Theo chủ đề** và **Theo buổi học** là tab thực sự; trang bài học có liên kết quay về danh sách ở cả đầu và cuối.
 
-Các file `.ipynb` trong `content/data-analytics/notebooks/` là tài liệu thực hành tải về; chưa tích hợp JupyterLite runtime để thực thi Python ngay trong trang web.
+Các file `.ipynb` trong `content/data-analytics/notebooks/` được tích hợp với trang `/courses/data-analytics/notebooks/<filename>.ipynb`. Runtime JupyterLite/Pyodide được dựng bằng GitHub Actions tại `public/jupyterlite/`; khi chưa xuất bản assets, giao diện hiển thị trạng thái chờ và vẫn cho tải notebook.
+
+## Chạy Python Notebook bằng JupyterLite
+
+- Notebook được khai báo trong `lib/notebooks.ts` và liên kết từ bài học tương ứng.
+- GitHub Actions workflow `.github/workflows/build-jupyterlite.yml` tự dựng JupyterLite khi notebook hoặc cấu hình runtime thay đổi trên `main`.
+- Workflow commit các static assets vào `public/jupyterlite/`, sau đó Vercel có thể deploy site chứa JupyterLite tại cùng domain với Learning Hub.
+- Nếu không thấy Notebook chạy trên trang, vào GitHub Actions → **Build JupyterLite notebook runtime** → **Run workflow**; kiểm tra bước Install/Build/Commit, quyền `contents: write` và branch protection.
+- Python thực thi trong trình duyệt bằng Pyodide (WebAssembly), không yêu cầu API server; thư viện lớn có thể tải hơi lâu và không phải mọi package Python đều được hỗ trợ.
+- Trạng thái sửa code, dữ liệu trong JupyterLite thường lưu tại trình duyệt và có thể khác giữa các thiết bị. Tải lại `.ipynb` nếu cần lưu trữ lâu dài.
