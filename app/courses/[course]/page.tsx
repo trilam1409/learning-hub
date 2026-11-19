@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CourseCatalog } from "@/components/learning/course-catalog";
 import { readCatalog } from "@/lib/content/catalog";
+import { notebookUrl, notebooksForCourse } from "@/lib/notebooks";
 
 export const dynamicParams = false;
 
@@ -24,6 +25,24 @@ export default async function CoursePage({ params }: { params: Promise<{ course:
           <Link className="text-teal-800 underline" href={course.chatgptProjectUrl}>Mở ChatGPT Project</Link>
         )}
       </div>
+      {notebooksForCourse(course.id).length > 0 && (
+        <section className="rounded-xl border border-teal-200 bg-teal-50 p-5">
+          <h2 className="text-xl font-semibold text-teal-950">Python Lab · Chạy Notebook trực tiếp</h2>
+          <p className="mt-1 text-sm text-stone-700">
+            Mở một notebook để thực hành bằng JupyterLite trên trình duyệt. Không cần cài PyCharm hoặc Jupyter trên máy.
+          </p>
+          <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+            {notebooksForCourse(course.id).map((notebook) => (
+              <li key={notebook.file}>
+                <Link className="block rounded-lg border border-teal-200 bg-white px-4 py-3 text-sm font-medium text-teal-900 hover:bg-teal-100"
+                  href={notebookUrl(course.id, notebook.file)}>
+                  {notebook.title} {notebook.preview ? "· Đọc trước" : ""}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <CourseCatalog courseId={course.id} topics={course.topics} sessions={course.sessions} lessons={course.lessons} />
     </div>
   );
