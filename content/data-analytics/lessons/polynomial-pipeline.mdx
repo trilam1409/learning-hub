@@ -1,0 +1,73 @@
+---
+id: polynomial-pipeline
+title: "Hồi quy đa thức và Pipeline"
+summary: "Đọc trước Bài 06: hồi quy đa thức và pipeline, kèm mã Python và bài tập."
+order: 27
+topicIds: [model-development]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-06-slide
+    page: 24
+  - sourceId: lesson-06-slide
+    page: 25
+  - sourceId: lesson-06-slide
+    page: 26
+  - sourceId: lesson-06-slide
+    page: 27
+  - sourceId: lesson-06-slide
+    page: 29
+  - sourceId: lesson-06-slide
+    page: 30
+  - sourceId: lesson-06-slide
+    page: 31
+  - sourceId: lesson-06-slide
+    page: 32
+---
+
+> **ĐỌC TRƯỚC:** Nội dung Bài 06 lấy từ slide, chưa có transcript VTT tương ứng; ví dụ thêm vào để hỗ trợ luyện tập.
+
+## Khi đường thẳng chưa phù hợp
+
+Polynomial regression cho phép mô hình biểu diễn những mối quan hệ cong. Ví dụ bậc hai:
+
+<MathFormula latex={String.raw`\hat{y} = b_0 + b_1x + b_2x^2`} />
+
+Với nhiều biến, có thể thêm tích `x1*x2`, bình phương các biến... Nhưng khi bậc tăng, số đặc trưng có thể tăng rất nhanh và dễ overfitting.
+
+## PolynomialFeatures
+
+```python
+import numpy as np
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+X = np.array([[1], [2], [3], [4]], dtype=float)
+y = np.array([2, 5, 10, 17], dtype=float)
+poly = PolynomialFeatures(degree=2, include_bias=False)
+X_poly = poly.fit_transform(X)
+model = LinearRegression().fit(X_poly, y)
+print(model.predict(poly.transform([[5]])))
+```
+
+## Pipeline giải quyết điều gì?
+
+Slide Bài 06 mô tả chuỗi **chuẩn hóa → tạo biến đa thức → hồi quy**.
+
+```python
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+
+pipeline = Pipeline([
+    ("scale", StandardScaler()),
+    ("poly", PolynomialFeatures(degree=2, include_bias=False)),
+    ("regression", LinearRegression()),
+])
+pipeline.fit(X, y)
+print(pipeline.predict([[5]]))
+```
+
+Pipeline giúp đóng gói trình tự biến đổi, giảm lỗi khi áp dụng lên dữ liệu mới. Khi chia train/test hoặc cross-validation, bước `fit` của scaler cần diễn ra **chỉ trong dữ liệu train** để tránh data leakage.
+
+<Quiz question="Lợi ích chính của sklearn Pipeline là gì?" options={["Gộp biến đổi và estimator thành quy trình nhất quán","Tự loại bỏ toàn bộ lỗi dữ liệu","Luôn đảm bảo mô hình chính xác 100%"]} correctIndex={0} explanation="Pipeline nối các bước xử lý và mô hình, có thể fit và predict theo cùng một quy trình." />
