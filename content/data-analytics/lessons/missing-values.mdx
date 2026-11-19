@@ -1,0 +1,58 @@
+---
+id: missing-values
+title: Phát hiện và xử lý dữ liệu khuyết
+summary: Nhận diện NaN, thay thế ký hiệu thiếu, cân nhắc dropna và fillna.
+order: 7
+topicIds:
+  - preprocessing
+sessionIds:
+  - session-04
+relatedLessons: []
+references:
+  - sourceId: lesson-02-slide
+    page: 4
+  - sourceId: lesson-02-slide
+    page: 6
+  - sourceId: lesson-02-slide
+    page: 8
+  - sourceId: transcript-04
+    startSeconds: 1521
+---
+
+## Dữ liệu khuyết là gì?
+
+Slide Bài 02 liệt kê nhiều cách dữ liệu thô thể hiện giá trị thiếu: `?`, `NA`, `NaN`, `Null`, ô trống, đôi khi cả số 0 tùy ngữ cảnh. **Không được tự động coi mọi số 0 là thiếu**.
+
+## Thay ký hiệu thiếu
+
+```python
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    "price": ["10000", "?", "12000"],
+    "horsepower": [100, None, 120],
+})
+df = df.replace("?", np.nan)
+df["price"] = pd.to_numeric(df["price"], errors="coerce")
+print(df.isna().sum())
+```
+
+## Hai lựa chọn phổ biến
+
+- **Xóa** dòng hoặc cột: `dropna()`, phù hợp khi không thể sử dụng quan sát thiếu và số mẫu bị mất chấp nhận được.
+- **Điền** giá trị: `fillna()`, có thể dùng trung bình, trung vị hoặc giá trị theo nhóm khi có lý do hợp lý.
+
+```python
+median_hp = df["horsepower"].median()
+df["horsepower"] = df["horsepower"].fillna(median_hp)
+df = df.dropna(subset=["price"])
+```
+
+Giảng viên có trao đổi về điền khuyết và loại bỏ giá trị thiếu trong Buổi 04. Không có một phương pháp đúng cho mọi cột; hãy giải thích vì sao chọn phương pháp đó.
+
+## Tự thực hành
+
+Tạo cột `price` gồm `[10000, "?", 15000]`. Chuyển thành số và xử lý bằng hai cách để so sánh số dòng còn lại.
+
+<Quiz question="Ký hiệu '?' trong CSV nên được xử lý thế nào trước khi tính trung bình?" options={["Cộng trực tiếp vào phép tính","Xác định nó biểu diễn thiếu, chuyển sang NaN và xử lý","Đổi tất cả thành 0"]} correctIndex={1} explanation="Cần chuẩn hóa ký hiệu thiếu trước khi tính toán và lựa chọn chính sách xử lý." />
