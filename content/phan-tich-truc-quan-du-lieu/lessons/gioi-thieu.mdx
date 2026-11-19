@@ -1,14 +1,31 @@
 ---
 id: gioi-thieu
-title: Bài học mẫu
-summary: Kiểm tra nội dung MDX và hai cách duyệt bài.
+title: Khám phá giá trị trung bình
+summary: Thay đổi dữ liệu để quan sát đường trung bình và kiểm tra cách tính.
 order: 1
 topicIds: [demo]
 sessionIds: [buoi-mau]
 ---
 
-## Nội dung mẫu
+## Trung bình cộng
 
-Bài này minh họa cách một tệp **MDX** xuất hiện trong cả chủ đề và buổi học.
+Cộng các giá trị trong bộ dữ liệu rồi chia cho số lượng giá trị. Với ba giá trị 2, 4 và 6, kết quả là 4.
 
-> Phần ghi chú và ví dụ trong bài được biên tập cùng nội dung MDX.
+<MathFormula latex={String.raw`\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i`} />
+
+## Thử trên biểu đồ
+
+Kéo thanh trượt để thay đổi giá trị thứ ba. Quan sát đường nét đứt khi số này tăng thêm 3 đơn vị.
+
+<MeanChart />
+
+> Với ba giá trị, nếu chỉ một giá trị tăng 3 đơn vị thì trung bình tăng 1 đơn vị.
+
+## Tự kiểm tra
+
+<Quiz
+  question="Trung bình cộng của 2, 4 và 9 là bao nhiêu?"
+  options={["4", "5", "6"]}
+  correctIndex={1}
+  explanation="Tổng là 15. Chia cho 3 giá trị được 5."
+/>

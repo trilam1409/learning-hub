@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { LessonSources } from "@/components/learning/lesson-sources";
 import { readCatalog } from "@/lib/content/catalog";
 
 type LessonParams = { course: string; lesson: string };
@@ -26,6 +27,7 @@ export default async function LessonPage({ params }: { params: Promise<LessonPar
       <h1 className="text-4xl font-bold tracking-tight">{lesson.title}</h1>
       <p className="text-lg text-stone-700">{lesson.summary}</p>
       <div className="lesson-body leading-relaxed"><Lesson /></div>
+      <LessonSources sources={course.sources} references={lesson.references} />
     </article>
   );
 }

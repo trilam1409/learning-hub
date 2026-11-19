@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,15 +18,19 @@
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "16.4.6",
+    "katex": "^0.18.2",
     "next": "16.4.6",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-is": "^19.2.3",
+    "recharts": "^3.5.0",
     "remark-frontmatter": "^5.0.0",
     "yaml": "^2.8.4",
     "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
+    "@types/katex": "^0.16.7",
     "@types/mdx": "^2.0.13",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
