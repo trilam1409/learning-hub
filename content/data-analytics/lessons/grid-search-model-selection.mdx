@@ -1,0 +1,70 @@
+---
+id: grid-search-model-selection
+title: "Grid Search và lựa chọn mô hình"
+summary: "Đọc trước Bài 07: grid search và lựa chọn mô hình, có code và quiz."
+order: 32
+topicIds: [model-evaluation]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-07-slide
+    page: 2
+  - sourceId: lesson-07-slide
+    page: 8
+  - sourceId: lesson-07-slide
+    page: 28
+  - sourceId: lesson-07-slide
+    page: 32
+---
+
+> **ĐỌC TRƯỚC:** Nội dung dựa trên slide Bài 07 và phần diễn giải bổ sung để chuẩn bị học. Chưa có VTT của buổi học tương ứng.
+
+## Đặt vấn đề
+
+Ridge có tham số `alpha`, hồi quy đa thức có `degree`. Làm sao chọn tổ hợp tham số hợp lý mà không chỉ nhìn điểm train?
+
+**Grid Search** thử một lưới các giá trị tham số và đánh giá bằng cross-validation. Slide Bài 07 liệt kê Grid Search trong nội dung và đề cập lựa chọn alpha bằng CV; phần này là hướng dẫn học trước bổ sung, không khẳng định đã có tiết thực hành đầy đủ.
+
+## Ví dụ GridSearchCV
+
+```python
+import numpy as np
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.linear_model import Ridge
+
+X = np.arange(1, 21, dtype=float).reshape(-1, 1)
+y = 2 * X.ravel() ** 2 + 3 * X.ravel() + 4
+
+pipe = Pipeline([
+    ("poly", PolynomialFeatures(include_bias=False)),
+    ("scale", StandardScaler()),
+    ("ridge", Ridge())
+])
+grid = GridSearchCV(
+    pipe,
+    param_grid={
+        "poly__degree": [1, 2, 3],
+        "ridge__alpha": [0.01, 0.1, 1, 10],
+    },
+    scoring="neg_mean_squared_error",
+    cv=5
+)
+grid.fit(X, y)
+print(grid.best_params_)
+print(-grid.best_score_)
+```
+
+## Những nguyên tắc cần nhớ
+
+1. Chỉ dùng training set để tìm tham số tối ưu; giữ lại test set độc lập cho đánh giá cuối.
+2. Đưa preprocessing vào **Pipeline** để không fit trước trên dữ liệu validation.
+3. Grid Search chỉ so sánh **những tham số bạn đã đưa vào lưới**, không đảm bảo tối ưu toàn cục.
+4. Nếu lưới rất lớn, có thể xem xét RandomizedSearchCV.
+
+### Bài tập
+
+Thử thay lưới `ridge__alpha` thành `np.logspace(-3, 3, 7)`; quan sát tham số được chọn và điểm CV.
+
+<Quiz question="GridSearchCV lựa chọn tham số dựa vào điều gì?" options={["Điểm kiểm chứng chéo theo thang đo đã đặt","Số lượng comment trong Python","Tên file CSV"]} correctIndex={0} explanation="GridSearchCV thử các tham số và so sánh điểm qua các fold trên tập huấn luyện." />
