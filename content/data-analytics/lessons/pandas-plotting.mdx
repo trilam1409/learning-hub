@@ -1,0 +1,62 @@
+---
+id: pandas-plotting
+title: Vẽ biểu đồ từ Series và DataFrame
+summary: Thực hành Series.plot, DataFrame.plot và chọn kind phù hợp.
+order: 15
+topicIds:
+  - visualization
+sessionIds:
+  - session-05
+relatedLessons: []
+references:
+  - sourceId: lesson-03-slide
+    page: 34
+  - sourceId: lesson-03-slide
+    page: 35
+  - sourceId: lesson-03-slide
+    page: 37
+  - sourceId: transcript-05
+    startSeconds: 2352
+---
+
+## Vẽ trực tiếp bằng Pandas
+
+Pandas hỗ trợ phương thức `plot()` cho Series và DataFrame. Bên dưới nó thường sử dụng backend Matplotlib, nên có thể phối hợp với `pyplot`.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "year": [2021, 2022, 2023, 2024],
+    "cars": [120, 180, 160, 220],
+})
+df.plot(x="year", y="cars", kind="line", marker="o")
+plt.title("Số xe theo năm")
+plt.show()
+```
+
+## Chọn kind
+
+| kind | Ý nghĩa |
+| --- | --- |
+| `line` | Đường, mặc định |
+| `bar`, `barh` | Cột đứng, cột ngang |
+| `hist` | Phân bố tần suất |
+| `box` | Biểu đồ hộp |
+| `area` | Biểu đồ vùng |
+| `scatter` | Đám mây điểm; sử dụng trên DataFrame |
+
+Slide Bài 03 giới thiệu danh sách loại biểu đồ này, còn Bài 04 đi sâu vào các công cụ trực quan. **Không nên đánh dấu toàn bộ phần Bài 04 là đã học xong chỉ vì nhìn thấy tên các loại biểu đồ trong Bài 03.**
+
+## Hai cột số và biểu đồ
+
+```python
+df = pd.DataFrame({"x": [1, 2, 3], "y": [2, 4, 7]})
+df.plot(x="x", y="y", kind="scatter")
+plt.show()
+```
+
+## Tự kiểm tra
+
+<Quiz question="Để biểu diễn phân phối giá trị số theo khoảng, dùng kind nào?" options={["hist","pie","line"]} correctIndex={0} explanation="Histogram gom giá trị số vào các khoảng và biểu diễn tần suất." />
