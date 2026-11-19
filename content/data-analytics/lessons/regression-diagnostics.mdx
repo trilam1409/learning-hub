@@ -1,0 +1,63 @@
+---
+id: regression-diagnostics
+title: "Đánh giá trực quan: regression, residual và distribution plot"
+summary: "Đọc trước Bài 06: đánh giá trực quan: regression, residual và distribution plot, kèm mã Python và bài tập."
+order: 26
+topicIds: [model-development]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-06-slide
+    page: 15
+  - sourceId: lesson-06-slide
+    page: 16
+  - sourceId: lesson-06-slide
+    page: 17
+  - sourceId: lesson-06-slide
+    page: 18
+  - sourceId: lesson-06-slide
+    page: 19
+  - sourceId: lesson-06-slide
+    page: 21
+  - sourceId: lesson-06-slide
+    page: 23
+---
+
+> **ĐỌC TRƯỚC:** Nội dung Bài 06 lấy từ slide, chưa có transcript VTT tương ứng; ví dụ thêm vào để hỗ trợ luyện tập.
+
+## Không chỉ nhìn đường hồi quy
+
+Slide Bài 06 giới thiệu ba hình thức quan sát mô hình:
+
+1. **Regression plot:** dữ liệu thực và đường fitted trend.
+2. **Residual plot:** phần dư giữa quan sát và dự đoán.
+3. **Distribution plot:** so sánh phân phối giá trị thật và dự đoán.
+
+## Residual là gì?
+
+<MathFormula latex={String.raw`e_i = y_i - \hat{y}_i`} />
+
+Một mô hình phù hợp thường có phần dư dao động khá ngẫu nhiên quanh 0. Nếu phần dư tạo thành hình cong, mô hình tuyến tính có thể bỏ sót cấu trúc phi tuyến; nếu độ phân tán tăng theo giá trị dự đoán, có thể có **heteroscedasticity**.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2.1, 3.8, 6.1, 7.9, 10.2])
+coef = np.polyfit(x, y, 1)
+predicted = np.polyval(coef, x)
+residuals = y - predicted
+
+plt.scatter(predicted, residuals)
+plt.axhline(0, color="red", linestyle="--")
+plt.xlabel("Giá trị dự đoán")
+plt.ylabel("Residual = y - y_hat")
+plt.show()
+```
+
+## Cách diễn giải
+
+Residual plot **không xác nhận mô hình chắc chắn tốt**; nó giúp phát hiện dấu hiệu mô hình sai dạng hoặc sai giả định. Cần kết hợp với đánh giá trên dữ liệu chưa dùng huấn luyện.
+
+<Quiz question="Phần dư tạo thành một đường cong rõ rệt có thể gợi ý điều gì?" options={["Quan hệ phi tuyến chưa được mô hình hóa","Dữ liệu chắc chắn hoàn hảo","Mô hình đã đạt độ chính xác tuyệt đối"]} correctIndex={0} explanation="Mẫu hình có cấu trúc ở phần dư cho thấy mô hình có thể bỏ sót thông tin." />
