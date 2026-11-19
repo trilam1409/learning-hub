@@ -1,0 +1,53 @@
+---
+id: python-data-types
+title: Kiểu dữ liệu Python: list, tuple, dict, set
+summary: Nhận biết cấu trúc dữ liệu phù hợp để biểu diễn một bản ghi và một tập dữ liệu.
+order: 2
+topicIds:
+  - python
+sessionIds:
+  - session-02
+relatedLessons: []
+references:
+  - sourceId: python-slide
+    page: 2
+  - sourceId: python-slide
+    page: 5
+  - sourceId: python-slide
+    page: 7
+  - sourceId: python-slide
+    page: 8
+  - sourceId: transcript-02
+    startSeconds: 2502
+---
+
+## Các kiểu cơ bản
+
+`int` và `float` biểu diễn số; `str` biểu diễn chuỗi; `bool` mang giá trị True/False; `None` biểu diễn chưa có giá trị. Một biến có thể tham chiếu đến các kiểu đối tượng khác nhau.
+
+## Cấu trúc dữ liệu quan trọng
+
+| Kiểu | Ví dụ | Điểm cần nhớ |
+| --- | --- | --- |
+| `list` | `[2, 4, 6]` | Có thứ tự, sửa được |
+| `tuple` | `(2, 4, 6)` | Có thứ tự, không sửa trực tiếp phần tử |
+| `dict` | `{"price": 5000}` | Ánh xạ khóa → giá trị |
+| `set` | `{2, 4, 6}` | Các phần tử duy nhất |
+
+## Ví dụ thực hành
+
+```python
+car = {"make": "Toyota", "price": 12000}
+prices = [12000, 15000, 12000]
+brands = {"Toyota", "Honda", "Toyota"}
+
+prices.append(17000)
+car["price"] = 12500
+print(prices, car, brands)
+```
+
+**Vì sao dùng dict?** Khi lưu thuộc tính một xe, khóa `price` có ý nghĩa rõ ràng hơn vị trí `item[2]`. Với nhiều bản ghi có cấu trúc giống nhau, có thể chuyển sang DataFrame ở buổi tiếp theo.
+
+**Ghi chú theo transcript:** Giảng viên trao đổi về kiểu list, dictionary và vị trí index khi thao tác dữ liệu; nên luyện cả truy cập theo vị trí và theo khóa.
+
+<Quiz question="Cấu trúc nào phù hợp để tra giá theo khóa price?" options={["tuple","dict","set"]} correctIndex={1} explanation="dict lưu các cặp key-value, giúp truy cập car['price']." />
