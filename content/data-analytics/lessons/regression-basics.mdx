@@ -1,0 +1,67 @@
+---
+id: regression-basics
+title: "Hồi quy tuyến tính đơn và đa biến"
+summary: "Đọc trước Bài 06: hồi quy tuyến tính đơn và đa biến, kèm mã Python và bài tập."
+order: 25
+topicIds: [model-development]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-06-slide
+    page: 4
+  - sourceId: lesson-06-slide
+    page: 9
+  - sourceId: lesson-06-slide
+    page: 10
+  - sourceId: lesson-06-slide
+    page: 12
+  - sourceId: lesson-06-slide
+    page: 13
+  - sourceId: lesson-06-slide
+    page: 14
+---
+
+> **ĐỌC TRƯỚC:** Nội dung Bài 06 lấy từ slide, chưa có transcript VTT tương ứng; ví dụ thêm vào để hỗ trợ luyện tập.
+
+## Từ EDA sang mô hình dự đoán
+
+Trong slide Bài 06, bài toán chuyển từ *“thuộc tính nào liên quan đến giá xe?”* sang *“dự đoán giá hợp lý của một chiếc xe như thế nào?”*.
+
+Hồi quy là phương pháp dự đoán một biến mục tiêu dạng số (`y`) từ một hoặc nhiều đặc trưng (`X`).
+
+## Hồi quy tuyến tính đơn
+
+<MathFormula latex={String.raw`\hat{y} = b_0 + b_1 x`} />
+
+- `b0`: intercept, giao điểm với trục y khi x = 0.
+- `b1`: slope, thay đổi dự đoán của y khi x tăng một đơn vị.
+- `ŷ`: giá trị dự đoán, khác với giá trị thực y.
+
+Slide dùng `highway-mpg` dự đoán `price` và có ví dụ hệ số dốc âm: MPG tăng thì giá dự đoán giảm trong dữ liệu ví dụ. Đó là quan hệ **mô hình học được**, không phải quy luật cố định cho mọi xe.
+
+## Xây dựng bằng Scikit-learn
+
+```python
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+df = pd.DataFrame({
+    "highway_mpg": [22, 26, 30, 34, 38],
+    "price": [22000, 20000, 17000, 14000, 11000],
+})
+X = df[["highway_mpg"]]
+y = df["price"]
+model = LinearRegression().fit(X, y)
+print(model.intercept_, model.coef_)
+print(model.predict(pd.DataFrame({"highway_mpg": [32]})))
+```
+
+Dùng **DataFrame 2 chiều** cho `X`, dù chỉ có một đặc trưng.
+
+## Hồi quy tuyến tính đa biến
+
+<MathFormula latex={String.raw`\hat{y} = b_0 + b_1 x_1 + b_2 x_2 + \cdots + b_n x_n`} />
+
+Có thể dùng đồng thời `horsepower`, `engine-size`, `highway-mpg`. Tuy nhiên, thêm càng nhiều cột không mặc nhiên cải thiện khả năng dự đoán trên dữ liệu mới.
+
+<Quiz question="Trong mô hình hồi quy dự đoán giá xe, biến price thường đóng vai trò gì?" options={["Target y","Tên index","Tham số regularization"]} correctIndex={0} explanation="price là biến phụ thuộc cần dự đoán." />
