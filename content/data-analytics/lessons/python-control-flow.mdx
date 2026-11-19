@@ -1,0 +1,56 @@
+---
+id: python-control-flow
+title: Toán tử, điều kiện, vòng lặp và hàm
+summary: Viết các thao tác Python cơ bản để lọc, biến đổi và tính toán dữ liệu.
+order: 3
+topicIds:
+  - python
+sessionIds:
+  - session-02
+relatedLessons: []
+references:
+  - sourceId: python-slide
+    page: 15
+  - sourceId: python-slide
+    page: 17
+  - sourceId: python-slide
+    page: 20
+  - sourceId: python-slide
+    page: 25
+---
+
+## Điều kiện và toán tử
+
+Python có toán tử số học `+`, `-`, `*`, `/`; so sánh `>=`, `==`, `!=`; logic `and`, `or`, `not`. Sử dụng dấu ngoặc để thể hiện rõ ý định khi kết hợp điều kiện.
+
+```python
+price = 12000
+horsepower = 130
+if price < 15000 and horsepower >= 120:
+    print("Xe phù hợp tiêu chí")
+else:
+    print("Cần kiểm tra thêm")
+```
+
+## Vòng lặp và list comprehension
+
+```python
+prices = [8000, 12000, 22000, 15000]
+cheap = [price for price in prices if price < 15000]
+print(cheap)  # [8000, 12000]
+```
+
+Một `for` xử lý từng phần tử; `while` lặp khi điều kiện còn đúng; `break` dừng vòng lặp và `continue` bỏ qua lượt hiện tại.
+
+## Hàm tái sử dụng
+
+```python
+def average(values):
+    return sum(values) / len(values)
+
+print(average([4, 6, 8]))  # 6.0
+```
+
+Slide thực hành Python còn giới thiệu `lambda`, đối số mặc định, `*args`, `**kwargs`. Bạn nên thực hành trên các ví dụ nhỏ trước khi đưa vào Pandas.
+
+<Quiz question="Cách nào tạo danh sách các giá nhỏ hơn 10000?" options={["[x for x in prices if x < 10000]","prices < 10000","for prices if x"]} correctIndex={0} explanation="List comprehension kết hợp biểu thức x với điều kiện if." />
