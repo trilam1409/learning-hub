@@ -1,0 +1,62 @@
+---
+id: z-score-standardization
+title: Chuẩn hóa Z-score
+summary: Tính độ lệch tương đối so với trung bình bằng độ lệch chuẩn.
+order: 10
+topicIds:
+  - preprocessing
+sessionIds:
+  - session-04
+relatedLessons: []
+references:
+  - sourceId: lesson-02-slide
+    page: 15
+  - sourceId: lesson-02-slide
+    page: 17
+  - sourceId: lesson-02-slide
+    page: 18
+  - sourceId: transcript-04
+    startSeconds: 3890
+---
+
+## Z-score là gì?
+
+Z-score biểu diễn một giá trị nằm cách trung bình bao nhiêu độ lệch chuẩn. Trong slide Bài 02, công thức là:
+
+<MathFormula latex={String.raw`z = \frac{x - \mu}{\sigma}`} />
+
+- `x` là giá trị đang xét.
+- `μ` là trung bình của cột.
+- `σ` là độ lệch chuẩn.
+
+Z-score **không giới hạn trong [0, 1]**, khác Min-Max. Giá trị âm nằm dưới trung bình, số 0 đúng tại trung bình, giá trị dương nằm trên trung bình.
+
+## Thử nghiệm tương tác
+
+<NormalizationExplorer mode="zscore" />
+
+## Code với Pandas
+
+```python
+import pandas as pd
+
+s = pd.Series([2, 4, 6, 8, 10], dtype="float64")
+z = (s - s.mean()) / s.std(ddof=0)
+print(z.round(3))
+```
+
+Hãy để ý `ddof=0` ở đây: dùng độ lệch chuẩn theo tổng thể để minh họa công thức. `Series.std()` mặc định dùng `ddof=1`, nên kết quả có thể khác. Hai lựa chọn đều có ý nghĩa thống kê riêng.
+
+## Code với Scikit-learn
+
+```python
+from sklearn.preprocessing import StandardScaler
+from pandas import DataFrame
+
+df = DataFrame({"length": [2, 4, 6, 8, 10]})
+df["length_zscore"] = StandardScaler().fit_transform(df[["length"]])
+```
+
+**Ghi chú từ bài giảng:** Buổi 04 có phần giảng viên giải thích phép trừ giá trị trung bình khi chuẩn hóa; slide Bài 02 còn trình bày cách dùng `StandardScaler`.
+
+<Quiz question="Sau Z-score, một giá trị thấp hơn trung bình thường có dấu nào?" options={["Dương","Âm","Luôn bằng 0"]} correctIndex={1} explanation="Khi x < trung bình, tử số âm và độ lệch chuẩn dương nên z âm." />
