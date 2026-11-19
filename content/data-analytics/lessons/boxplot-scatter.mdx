@@ -1,0 +1,58 @@
+---
+id: boxplot-scatter
+title: "Box plot và scatter plot: phân phối, ngoại lệ, quan hệ"
+summary: "Box plot biểu diễn trung vị, tứ phân vị thứ nhất Q1, thứ ba Q3 và khoảng tứ phân vị **IQR = Q3 − Q1**. Theo quy tắc Tukey phổ biến, các điểm"
+order: 18
+topicIds: [visualization-tools]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-04-slide
+    page: 45
+  - sourceId: lesson-04-slide
+    page: 48
+  - sourceId: lesson-04-slide
+    page: 51
+  - sourceId: lesson-04-slide
+    page: 55
+---
+
+> **ĐỌC TRƯỚC:** Nội dung biên soạn từ slide Bài 04. Chưa có transcript VTT xác nhận thầy đã giảng phần này.
+
+## Box plot: nhìn nhanh sự phân tán
+
+Box plot biểu diễn trung vị, tứ phân vị thứ nhất Q1, thứ ba Q3 và khoảng tứ phân vị **IQR = Q3 − Q1**. Theo quy tắc Tukey phổ biến, các điểm vượt quá **Q1 − 1.5×IQR** hoặc **Q3 + 1.5×IQR** có thể là outliers.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+s = pd.Series([8, 9, 10, 10, 11, 12, 12, 13, 32])
+s.plot.box()
+plt.ylabel("Giá trị")
+plt.show()
+```
+
+Đừng tự động xóa điểm bất thường: giá trị có thể là lỗi nhập liệu, hoặc là một quan sát hợp lệ đáng quan tâm.
+
+## Scatter plot: nhìn mối liên hệ của hai biến
+
+Mỗi điểm là một cặp (x, y). Trong bài giảng, biểu đồ được minh họa qua mối liên hệ giữa năm và số lượng nhập cư.
+
+```python
+df = pd.DataFrame({
+    "engine_size": [100, 120, 150, 170, 200],
+    "price": [9000, 11000, 14000, 16000, 20000],
+})
+df.plot.scatter(x="engine_size", y="price")
+plt.show()
+```
+
+Khi các điểm có xu hướng đi lên, có thể xuất hiện **tương quan dương**. Tuy nhiên, tương quan không tự chứng minh rằng X gây ra Y.
+
+## So sánh
+
+- Box plot: một biến số, đặc điểm phân phối và ngoại lệ.
+- Scatter plot: hai biến số, xu hướng và độ phân tán giữa các quan sát.
+
+<Quiz question="Muốn xem giá trị cực đoan trong phân phối giá xe, loại biểu đồ nào thường phù hợp?" options={["Box plot","Pie chart","Area chart"]} correctIndex={0} explanation="Box plot thể hiện quartiles, whiskers và các điểm có thể là ngoại lệ." />
