@@ -1,0 +1,59 @@
+---
+id: mse-r2-model-metrics
+title: "Đo sai số mô hình bằng MSE và R²"
+summary: "Đọc trước Bài 06: đo sai số mô hình bằng mse và r², kèm mã Python và bài tập."
+order: 28
+topicIds: [model-development]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-06-slide
+    page: 34
+  - sourceId: lesson-06-slide
+    page: 35
+  - sourceId: lesson-06-slide
+    page: 36
+  - sourceId: lesson-06-slide
+    page: 37
+  - sourceId: lesson-06-slide
+    page: 38
+  - sourceId: lesson-06-slide
+    page: 39
+  - sourceId: lesson-06-slide
+    page: 40
+---
+
+> **ĐỌC TRƯỚC:** Nội dung Bài 06 lấy từ slide, chưa có transcript VTT tương ứng; ví dụ thêm vào để hỗ trợ luyện tập.
+
+## Đánh giá mô hình bằng con số
+
+Slide Bài 06 giới thiệu **MSE** và **R²** để nhận xét mức độ phù hợp của mô hình hồi quy.
+
+### MSE – Mean Squared Error
+
+<MathFormula latex={String.raw`\operatorname{MSE}=\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2`} />
+
+- MSE không âm, bằng 0 nếu dự đoán trùng hoàn toàn dữ liệu thật.
+- Vì bình phương sai số, giá trị ngoại lệ lớn bị phạt mạnh.
+- Đơn vị MSE là **bình phương đơn vị của y**, không phải đơn vị ban đầu.
+
+### R² – hệ số xác định
+
+<MathFormula latex={String.raw`R^2=1-\frac{\sum_i (y_i-\hat{y}_i)^2}{\sum_i(y_i-\bar y)^2}`} />
+
+Với bài toán hồi quy thông thường, R² = 1 là dự đoán hoàn hảo; R² = 0 tương đương baseline luôn dự đoán mean của tập đánh giá. **R² có thể âm** trên tập test hoặc mô hình không tốt, trái với quan niệm R² luôn trong [0,1].
+
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+
+actual = [10, 20, 30, 40]
+predicted = [12, 19, 33, 38]
+print("MSE:", mean_squared_error(actual, predicted))
+print("R2:", r2_score(actual, predicted))
+```
+
+## Câu hỏi suy luận
+
+Hai mô hình có MSE khác nhau nhưng dùng **hai bộ dữ liệu/đơn vị đo khác nhau** có so sánh trực tiếp được không? Không, cần cùng dữ liệu mục tiêu và thang đo để so sánh có ý nghĩa.
+
+<Quiz question="R² trên tập test có thể nhận giá trị nào?" options={["Chỉ từ 0 đến 1","Có thể âm","Luôn bằng 1 nếu training thành công"]} correctIndex={1} explanation="Nếu dự đoán kém hơn baseline trung bình, R² có thể nhỏ hơn 0." />
