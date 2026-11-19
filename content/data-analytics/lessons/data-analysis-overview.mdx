@@ -1,0 +1,43 @@
+---
+id: data-analysis-overview
+title: Phân tích dữ liệu và câu hỏi kinh doanh
+summary: Từ bài toán định giá ô tô cũ đến các bước tìm hiểu bộ dữ liệu.
+order: 1
+topicIds:
+  - introduction
+sessionIds:
+  - session-01
+relatedLessons: []
+references:
+  - sourceId: lesson-01-slide
+    page: 3
+  - sourceId: lesson-01-slide
+    page: 7
+  - sourceId: transcript-01
+    startSeconds: 2820
+---
+
+## Bắt đầu từ câu hỏi cần giải quyết
+
+Slide Bài 01 dùng câu hỏi **“Giá một chiếc ô tô đã qua sử dụng bao nhiêu là hợp lý?”** để giới thiệu phân tích dữ liệu. Giá quá cao khó bán, giá quá thấp gây thiệt hại. Cần khảo sát dữ liệu thay vì chỉ đoán.
+
+## Hiểu bộ dữ liệu
+
+Trước khi tính toán, hãy trả lời:
+
+1. Mỗi **dòng** thể hiện điều gì? Với bộ Automobile, đó có thể là thông tin một chiếc xe.
+2. Mỗi **cột** mô tả gì? Ví dụ `make` là hãng xe, `horsepower` là công suất, `price` là giá.
+3. Kiểu và phạm vi giá trị có hợp lý không? Một giá được lưu dưới dạng chuỗi có thể cần chuyển kiểu.
+4. Thuộc tính nào liên quan đến câu hỏi cần phân tích?
+
+Thầy giới thiệu bộ dữ liệu Automobile từ **UCI** và gợi ý tìm nguồn dữ liệu phù hợp với vấn đề. Điều này khác với việc chọn ngẫu nhiên bất kỳ dataset nào rồi cố vẽ biểu đồ.
+
+## Chu trình tư duy
+
+**Đặt câu hỏi → thu thập → hiểu dữ liệu → làm sạch → khám phá → trực quan → kết luận.** Các bước có thể quay lại khi phát hiện vấn đề mới.
+
+## Ví dụ tự luyện
+
+Giả sử một bảng có 100 xe, hãy chọn ba cột giúp giải thích giá và ba câu hỏi bạn sẽ kiểm tra. Ví dụ: “Xe có công suất cao hơn có xu hướng giá cao hơn không?”. Đây là giả thuyết để khảo sát, chưa phải kết luận nhân quả.
+
+<Quiz question="Khi nhận bộ dữ liệu mới, bước nào phù hợp nhất?" options={["Vẽ ngay nhiều biểu đồ","Đọc ý nghĩa dòng, cột và kiểm tra kiểu dữ liệu","Xóa tất cả cột dạng chữ"]} correctIndex={1} explanation="Slide Bài 01 đặt việc hiểu ý nghĩa và chất lượng bộ dữ liệu trước các bước phân tích." />
