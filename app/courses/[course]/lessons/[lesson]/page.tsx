@@ -7,9 +7,10 @@ type LessonParams = { course: string; lesson: string };
 
 export const dynamicParams = false;
 
-export function generateStaticParams({ params }: { params: { course: string } }) {
-  const course = readCatalog().find(({ id }) => id === params.course);
-  return course?.lessons.map(({ id }) => ({ lesson: id })) ?? [];
+export function generateStaticParams(): LessonParams[] {
+  return readCatalog().flatMap(({ id: course, lessons }) =>
+    lessons.map(({ id: lesson }) => ({ course, lesson })),
+  );
 }
 
 export default async function LessonPage({ params }: { params: Promise<LessonParams> }) {
