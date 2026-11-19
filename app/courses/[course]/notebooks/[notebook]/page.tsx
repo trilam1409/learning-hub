@@ -65,7 +65,7 @@ export default async function NotebookPage({ params }: { params: Promise<Params>
           JupyterLite đang chờ xuất bản bộ tài nguyên tĩnh. Bạn vẫn có thể tải .ipynb để luyện tập.
           Việc chạy trực tiếp trên trang sẽ bật sau khi GitHub Actions hoàn tất build và Vercel triển khai lại.
         </div>
-      )
+      )}
       <p className="text-sm text-stone-600">
         Nếu trình duyệt không cho chạy kernel hoặc không hỗ trợ WebAssembly, hãy mở notebook trong
         JupyterLab trên máy hoặc dùng tệp .ipynb đã tải về. Chỉ nên chạy những đoạn code bạn hiểu và tin cậy.
