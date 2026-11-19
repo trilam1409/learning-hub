@@ -13,3 +13,16 @@
 - id: visualization
   title: Trực quan dữ liệu với Matplotlib
   order: 5
+
+- id: visualization-tools
+  title: Công cụ và các dạng biểu đồ (đọc trước – Bài 04)
+  order: 6
+- id: exploratory-analysis
+  title: Phân tích thăm dò dữ liệu (đọc trước – Bài 05)
+  order: 7
+- id: model-development
+  title: Phát triển mô hình dự đoán (đọc trước – Bài 06)
+  order: 8
+- id: model-evaluation
+  title: Đánh giá và cải thiện mô hình (đọc trước – Bài 07)
+  order: 9
