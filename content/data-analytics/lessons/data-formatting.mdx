@@ -1,0 +1,55 @@
+---
+id: data-formatting
+title: Định dạng, kiểu dữ liệu và đơn vị
+summary: Chuẩn hóa tên gọi, chuyển đúng dtype và thống nhất đơn vị đo.
+order: 8
+topicIds:
+  - preprocessing
+sessionIds:
+  - session-04
+relatedLessons: []
+references:
+  - sourceId: lesson-02-slide
+    page: 11
+  - sourceId: lesson-02-slide
+    page: 12
+  - sourceId: lesson-02-slide
+    page: 13
+---
+
+## Cùng một ý nghĩa, nhiều cách viết
+
+Dữ liệu thu thập từ nhiều nguồn thường không nhất quán: `Ho Chi Minh`, `Tp. HCM`, `Hồ Chí Minh` có thể nói về cùng một thành phố.
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({"city": ["Tp. HCM", "Ho Chi Minh", "Hồ Chí Minh"]})
+df["city"] = df["city"].replace({
+    "Tp. HCM": "Hồ Chí Minh",
+    "Ho Chi Minh": "Hồ Chí Minh",
+})
+print(df["city"].value_counts())
+```
+
+## Chuyển kiểu đúng
+
+```python
+df = pd.DataFrame({"price": ["1000", "2300", "3100"]})
+df["price"] = pd.to_numeric(df["price"])
+```
+
+Nếu giữ `price` là chuỗi, một số phép toán và sắp xếp sẽ không theo ý nghĩa số học.
+
+## Đổi đơn vị MPG sang L/100km
+
+Slide sử dụng công thức `L/100km ≈ 235.2 / MPG`. Đây là **phép nghịch đảo**: MPG lớn tương ứng mức tiêu hao L/100km nhỏ.
+
+```python
+df = pd.DataFrame({"city_mpg": [20, 30, 40]})
+df["city_l_per_100km"] = 235.2 / df["city_mpg"]
+```
+
+Chỉ áp dụng công thức khi cột thực sự đo **miles per US gallon**; đơn vị không tương ứng sẽ làm kết quả sai.
+
+<Quiz question="Khi đổi từ MPG sang L/100km, MPG tăng thì L/100km có xu hướng gì?" options={["Tăng","Giảm","Không đổi"]} correctIndex={1} explanation="Theo công thức 235.2/MPG, mẫu số tăng làm giá trị giảm." />
