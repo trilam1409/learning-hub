@@ -1,0 +1,15 @@
+- id: introduction
+  title: Giới thiệu phân tích dữ liệu
+  order: 1
+- id: python
+  title: Python cho phân tích dữ liệu
+  order: 2
+- id: pandas
+  title: Pandas và DataFrame
+  order: 3
+- id: preprocessing
+  title: Tiền xử lý và chuẩn hóa dữ liệu
+  order: 4
+- id: visualization
+  title: Trực quan dữ liệu với Matplotlib
+  order: 5
