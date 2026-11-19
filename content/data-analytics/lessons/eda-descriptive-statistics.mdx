@@ -1,0 +1,60 @@
+---
+id: eda-descriptive-statistics
+title: "EDA và thống kê mô tả"
+summary: "Bài học đọc trước: eda và thống kê mô tả, kèm ví dụ và câu hỏi ôn tập."
+order: 20
+topicIds: [exploratory-analysis]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-05-slide
+    page: 3
+  - sourceId: lesson-05-slide
+    page: 4
+  - sourceId: lesson-05-slide
+    page: 5
+  - sourceId: lesson-05-slide
+    page: 6
+  - sourceId: lesson-05-slide
+    page: 8
+---
+
+> **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## EDA (Exploratory Data Analysis) là gì?
+
+Theo slide Bài 05, EDA là quá trình **hiểu dữ liệu mới**, tóm tắt các đặc điểm chính và tìm mối quan hệ tiềm năng trước khi lựa chọn thuộc tính quan trọng.
+
+Câu hỏi xuyên suốt: **“Đặc điểm nào tác động nhiều nhất đến giá xe?”** Chưa nên xây dựng mô hình ngay khi chưa biết chất lượng và phân phối dữ liệu.
+
+## Mean, median, mode
+
+- **Mean:** trung bình cộng, nhạy với ngoại lệ.
+- **Median:** trung vị khi dữ liệu đã sắp thứ tự, tương đối bền vững trước một vài giá trị rất lớn.
+- **Mode:** giá trị xuất hiện nhiều nhất, có thể có nhiều mode.
+
+<MeanChart />
+
+## Ví dụ tự luyện
+
+```python
+import pandas as pd
+
+prices = pd.Series([9, 10, 10, 11, 100])
+print("Mean:", prices.mean())
+print("Median:", prices.median())
+print("Mode:", prices.mode().tolist())
+```
+
+Kết quả mean = 28; median = 10; mode = 10. Giá trị 100 kéo mean lên rất cao nên nhận định trung tâm của dữ liệu chỉ từ mean có thể gây hiểu nhầm.
+
+## Checklist EDA ban đầu
+
+1. Xác định kích thước dữ liệu và mục đích.
+2. Đọc ý nghĩa và kiểu từng cột.
+3. Kiểm tra giá trị thiếu và bất hợp lý.
+4. Xem thống kê mô tả và phân phối.
+5. Khám phá tương quan và nhóm.
+6. Ghi lại giả thuyết, hạn chế, bước phân tích tiếp theo.
+
+<Quiz question="Với một giá trị ngoại lệ rất lớn, thước đo trung tâm nào thường ít bị kéo lệch hơn?" options={["Mean","Median","Tổng giá trị"]} correctIndex={1} explanation="Trung vị phụ thuộc vào thứ tự, nên bền vững hơn trước một vài ngoại lệ cực đoan." />
