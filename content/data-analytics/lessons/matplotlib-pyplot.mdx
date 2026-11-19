@@ -1,0 +1,63 @@
+---
+id: matplotlib-pyplot
+title: Matplotlib: Figure, Axes và pyplot
+summary: Hiểu kiến trúc Matplotlib và vẽ biểu đồ đường đầu tiên.
+order: 14
+topicIds:
+  - visualization
+sessionIds:
+  - session-05
+relatedLessons: []
+references:
+  - sourceId: lesson-03-slide
+    page: 19
+  - sourceId: lesson-03-slide
+    page: 25
+  - sourceId: lesson-03-slide
+    page: 29
+  - sourceId: lesson-03-slide
+    page: 30
+  - sourceId: transcript-05
+    startSeconds: 2033
+---
+
+## Ba lớp của Matplotlib
+
+Slide Bài 03 trình bày:
+
+1. **Backend:** xử lý render và sự kiện.
+2. **Artist:** các thành phần đồ họa như Figure, Axes, đường, nhãn.
+3. **Scripting:** giao diện `matplotlib.pyplot`, tiện dùng khi viết các đoạn code vẽ.
+
+Giảng viên trong Buổi 05 nhấn mạnh phần **Scripting layer** để thực hành, thay vì yêu cầu sinh viên lập trình chi tiết lớp bên dưới.
+
+## Ví dụ đầu tiên
+
+```python
+import matplotlib.pyplot as plt
+
+years = [2021, 2022, 2023, 2024]
+sales = [100, 150, 140, 210]
+
+plt.plot(years, sales, marker="o")
+plt.title("Doanh số theo năm")
+plt.xlabel("Năm")
+plt.ylabel("Đơn vị bán")
+plt.grid(alpha=0.3)
+plt.show()
+```
+
+**Figure** là khung hình tổng thể; **Axes** là vùng vẽ đồ thị có trục. Hàm `plt.plot` tạo đường nối các cặp (x, y).
+
+## Sử dụng theo hướng đối tượng
+
+```python
+fig, ax = plt.subplots()
+ax.plot(years, sales)
+ax.set(title="Doanh số", xlabel="Năm", ylabel="Đơn vị bán")
+plt.show()
+```
+
+Có nhiều phương pháp vẽ hợp lệ; với ví dụ ngắn, `pyplot` đơn giản và đúng trọng tâm bài giảng.
+
+<Quiz question="Thư viện con nào tạo giao diện vẽ đơn giản trong scripting layer?" options={["matplotlib.pyplot","pandas.read_csv","numpy.linalg"]} correctIndex={0} explanation="pyplot là giao diện scripting phổ biến của Matplotlib." />
