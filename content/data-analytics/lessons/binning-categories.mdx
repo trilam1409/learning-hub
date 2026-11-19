@@ -1,0 +1,46 @@
+---
+id: binning-categories
+title: Chia khoảng dữ liệu số bằng pd.cut
+summary: Chuyển giá trị số liên tục thành các nhóm có nhãn.
+order: 11
+topicIds:
+  - preprocessing
+sessionIds:
+  - session-04
+relatedLessons: []
+references:
+  - sourceId: lesson-02-slide
+    page: 20
+  - sourceId: transcript-04
+    startSeconds: 4809
+---
+
+## Khi nào nên chia khoảng?
+
+Đôi khi cần diễn giải dữ liệu liên tục bằng nhóm dễ hiểu, chẳng hạn điểm thấp/vừa/cao hay phân khúc giá. Slide Bài 02 giới thiệu cách tìm cận và chia thành bins.
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({"price": [8000, 12000, 18000, 25000]})
+df["price_band"] = pd.cut(
+    df["price"],
+    bins=[0, 10000, 20000, 30000],
+    labels=["Thấp", "Trung bình", "Cao"],
+    include_lowest=True
+)
+print(df)
+```
+
+## Điểm cần hiểu
+
+- `bins` là ranh giới của các khoảng.
+- Số nhãn bằng **số khoảng**, tức số mốc trừ một.
+- `right=True` mặc định tạo khoảng đóng bên phải.
+- Giá trị nằm ngoài các mốc được gán thiếu nếu không mở rộng phạm vi.
+
+## Bài tập
+
+Tạo ba nhóm điểm: dưới 5, từ 5 đến dưới 8, từ 8 trở lên. Hãy kiểm tra kỹ hai trường hợp đúng bằng 5 và 8 bằng `right=False`.
+
+<Quiz question="Có 4 mốc bins liên tiếp thì tạo được bao nhiêu khoảng?" options={["3","4","5"]} correctIndex={0} explanation="4 biên liền nhau tạo 3 khoảng." />
