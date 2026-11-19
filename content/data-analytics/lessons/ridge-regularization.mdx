@@ -1,0 +1,54 @@
+---
+id: ridge-regularization
+title: "Ridge Regression và hệ số alpha"
+summary: "Đọc trước Bài 07: ridge regression và hệ số alpha, có code và quiz."
+order: 31
+topicIds: [model-evaluation]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-07-slide
+    page: 23
+  - sourceId: lesson-07-slide
+    page: 25
+  - sourceId: lesson-07-slide
+    page: 26
+  - sourceId: lesson-07-slide
+    page: 28
+  - sourceId: lesson-07-slide
+    page: 29
+---
+
+> **ĐỌC TRƯỚC:** Nội dung dựa trên slide Bài 07 và phần diễn giải bổ sung để chuẩn bị học. Chưa có VTT của buổi học tương ứng.
+
+## Ridge giải quyết vấn đề gì?
+
+Ridge Regression mở rộng hồi quy tuyến tính bằng **L2 regularization**, thêm hình phạt đối với bình phương độ lớn các hệ số (không phạt intercept trong triển khai sklearn mặc định).
+
+<MathFormula latex={String.raw`\min_{b_0,\mathbf{b}}\ \sum_i (y_i - \hat{y}_i)^2 + \alpha \sum_j b_j^2`} />
+
+- `alpha = 0`: gần với hồi quy bình phương tối thiểu thông thường.
+- `alpha` lớn: phạt hệ số mạnh hơn, có thể giảm overfitting nhưng quá lớn dẫn đến underfitting.
+- Không có alpha tối ưu chung; cần chọn qua kiểm chứng trên dữ liệu.
+
+Slide Bài 07 minh họa các alpha từ 0 đến 10 và gợi ý mở rộng dải tìm kiếm bằng `np.logspace`.
+
+## Thực hành
+
+```python
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import Ridge
+from sklearn.pipeline import make_pipeline
+
+X = np.array([[2, 10], [3, 13], [4, 17], [5, 20], [6, 22]], dtype=float)
+y = np.array([12, 15, 18, 20, 24], dtype=float)
+
+for alpha in [0.01, 0.1, 1, 10]:
+    model = make_pipeline(StandardScaler(), Ridge(alpha=alpha)).fit(X, y)
+    print(alpha, model.predict([[4.5, 18]])[0])
+```
+
+**Vì sao chuẩn hóa?** L2 penalty phụ thuộc độ lớn hệ số, nên nếu các đặc trưng khác thang đo, mức phạt có thể bị lệch không mong muốn.
+
+<Quiz question="Nếu tăng alpha của Ridge quá lớn, nguy cơ nào tăng?" options={["Underfitting","Dữ liệu tự động được bổ sung","Số hàng luôn tăng gấp đôi"]} correctIndex={0} explanation="Ridge phạt hệ số mạnh hơn, quá mức có thể làm mô hình quá đơn giản." />
