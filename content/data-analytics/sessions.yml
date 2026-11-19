@@ -1,0 +1,15 @@
+- id: session-01
+  title: Buổi 01 – Giới thiệu phân tích dữ liệu
+  number: 1
+- id: session-02
+  title: Buổi 02 – Python cơ bản
+  number: 2
+- id: session-03
+  title: Buổi 03 – Pandas và dữ liệu có cấu trúc
+  number: 3
+- id: session-04
+  title: Buổi 04 – Tiền xử lý dữ liệu
+  number: 4
+- id: session-05
+  title: Buổi 05 – Trực quan dữ liệu
+  number: 5
