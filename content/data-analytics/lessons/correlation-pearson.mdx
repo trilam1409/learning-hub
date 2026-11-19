@@ -1,0 +1,76 @@
+---
+id: correlation-pearson
+title: "Tương quan Pearson và heatmap"
+summary: "Bài học đọc trước: tương quan pearson và heatmap, kèm ví dụ và câu hỏi ôn tập."
+order: 23
+topicIds: [exploratory-analysis]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-05-slide
+    page: 21
+  - sourceId: lesson-05-slide
+    page: 22
+  - sourceId: lesson-05-slide
+    page: 24
+  - sourceId: lesson-05-slide
+    page: 25
+  - sourceId: lesson-05-slide
+    page: 26
+  - sourceId: lesson-05-slide
+    page: 27
+---
+
+> **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Hỏi điều gì trước khi tính tương quan?
+
+Slide Bài 05 đặt câu hỏi: **engine-size, highway-mpg, peak-rpm có liên hệ với giá xe hay không?**
+
+Với hai biến số, hệ số tương quan Pearson đo mức **liên hệ tuyến tính**, nằm trong khoảng -1 đến +1:
+
+| Hệ số r | Diễn giải |
+| --- | --- |
+| Gần +1 | Quan hệ tuyến tính dương mạnh |
+| Gần -1 | Quan hệ tuyến tính âm mạnh |
+| Gần 0 | Ít hoặc không có quan hệ *tuyến tính* |
+
+**Đặc biệt:** Tương quan **không chứng minh nhân quả**. Hệ số r gần 0 cũng không loại trừ mối quan hệ phi tuyến.
+
+## Tính và vẽ
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.DataFrame({
+    "engine_size": [100, 120, 140, 160, 200],
+    "price": [9000, 11000, 13000, 15000, 22000],
+    "highway_mpg": [40, 35, 30, 28, 22],
+})
+print(df.corr(numeric_only=True))
+df.plot.scatter(x="engine_size", y="price")
+plt.show()
+```
+
+## P-value trong kiểm định Pearson
+
+P-value là xác suất (theo giả thuyết không và mô hình kiểm định) quan sát kết quả ít nhất cực đoan như đã thấy; **không phải xác suất giả thuyết đúng**.
+
+```python
+from scipy.stats import pearsonr
+result = pearsonr(df["engine_size"], df["price"])
+print(result.statistic, result.pvalue)
+```
+
+## Correlation heatmap
+
+Heatmap biểu diễn ma trận tương quan bằng màu. Với nhiều biến số, nó giúp thấy nhanh cặp nào cần tìm hiểu thêm.
+
+```python
+import seaborn as sns
+sns.heatmap(df.corr(numeric_only=True), annot=True, vmin=-1, vmax=1, cmap="coolwarm")
+plt.show()
+```
+
+<Quiz question="Nếu r = 0, ta kết luận điều nào an toàn nhất?" options={["Không có liên hệ tuyến tính rõ rệt","Hai biến hoàn toàn độc lập","X không gây ra Y"]} correctIndex={0} explanation="Pearson đo quan hệ tuyến tính, không phải mọi dạng quan hệ hay nguyên nhân." />
