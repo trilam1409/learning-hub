@@ -1,0 +1,64 @@
+---
+id: dispersion-and-boxplot
+title: "Độ phân tán, quartile, IQR và box plot"
+summary: "Bài học đọc trước: độ phân tán, quartile, iqr và box plot, kèm ví dụ và câu hỏi ôn tập."
+order: 21
+topicIds: [exploratory-analysis]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-05-slide
+    page: 10
+  - sourceId: lesson-05-slide
+    page: 11
+  - sourceId: lesson-05-slide
+    page: 12
+  - sourceId: lesson-05-slide
+    page: 13
+  - sourceId: lesson-05-slide
+    page: 14
+  - sourceId: lesson-05-slide
+    page: 15
+  - sourceId: lesson-05-slide
+    page: 16
+---
+
+> **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Trung bình giống nhau, dữ liệu vẫn có thể khác nhau
+
+Hai nhóm có mean giống nhau nhưng mức biến động khác nhau. Slide Bài 05 giới thiệu các thước đo phân tán:
+
+- **Range = Max − Min**, nhạy với ngoại lệ.
+- **Quartile:** Q1, Q2 (median), Q3.
+- **IQR = Q3 − Q1**, đo vùng giữa của phân phối.
+- **Variance:** bình phương độ lệch trung bình.
+- **Standard deviation:** căn bậc hai phương sai.
+- **Coefficient of Variation:** độ lệch chuẩn / mean, thường biểu diễn theo % khi mean khác 0 và có ý nghĩa.
+
+```python
+import pandas as pd
+
+s = pd.Series([2, 3, 4, 5, 6, 7, 30])
+q1 = s.quantile(0.25)
+q3 = s.quantile(0.75)
+iqr = q3 - q1
+print({"range": s.max() - s.min(), "iqr": iqr, "std": s.std()})
+print("Ngưỡng ngoại lệ:", q1 - 1.5 * iqr, q3 + 1.5 * iqr)
+```
+
+**Lưu ý quan trọng:** Quy tắc 1.5×IQR đánh dấu các quan sát *có thể* là ngoại lệ, không khẳng định đó là lỗi.
+
+### Thử box plot
+
+```python
+import matplotlib.pyplot as plt
+s.plot.box()
+plt.show()
+```
+
+## Bài tập
+
+So sánh hai nhóm A = [4, 5, 6] và B = [0, 5, 10]. Trung bình giống hay khác? Nhóm nào có độ lệch chuẩn lớn hơn?
+
+<Quiz question="IQR được tính như thế nào?" options={["Q3 − Q1","Max − Min","Mean ÷ Median"]} correctIndex={0} explanation="Khoảng tứ phân vị mô tả độ rộng vùng 50% giá trị trung tâm." />
