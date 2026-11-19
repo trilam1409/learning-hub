@@ -1,0 +1,47 @@
+---
+id: pandas-series
+title: Pandas Series và phép toán theo index
+summary: Hiểu Series một chiều và phép cộng dựa trên nhãn index.
+order: 4
+topicIds:
+  - pandas
+sessionIds:
+  - session-03
+relatedLessons: []
+references:
+  - sourceId: python-slide
+    page: 28
+  - sourceId: python-slide
+    page: 30
+  - sourceId: transcript-03
+    startSeconds: 1531
+---
+
+## Series là gì?
+
+Pandas **Series** là cấu trúc một chiều với giá trị và **index**. Trong transcript Buổi 03, giảng viên đi từ Series để giải thích cách xây dựng một cấu trúc dạng bảng sau đó.
+
+```python
+import pandas as pd
+
+prices = pd.Series([8000, 12000, 15000], index=["A", "B", "C"])
+print(prices["B"])  # 12000
+print(prices * 1.1)
+```
+
+## Điểm rất quan trọng: khớp theo index
+
+```python
+a = pd.Series([10, 20], index=["x", "y"])
+b = pd.Series([1, 2], index=["y", "z"])
+print(a + b)
+```
+
+Pandas căn theo **nhãn**, không đơn giản ghép vị trí thứ nhất với thứ nhất. `y` có kết quả 21; `x` và `z` thiếu phần tử đối ứng nên kết quả là `NaN`.
+
+Phân biệt:
+
+- `0 in series`: hỏi 0 có phải **nhãn index** hay không.
+- `0 in series.values`: hỏi giá trị 0 có xuất hiện trong **dữ liệu** hay không.
+
+<Quiz question="Hai Series có cùng số phần tử nhưng index khác nhau, phép cộng căn theo gì?" options={["Vị trí trong bộ nhớ","Tên index","Kiểu hiển thị màn hình"]} correctIndex={1} explanation="Pandas gắn kết phép toán của Series với nhãn index." />
