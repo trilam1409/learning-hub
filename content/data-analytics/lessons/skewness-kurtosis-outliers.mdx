@@ -1,0 +1,53 @@
+---
+id: skewness-kurtosis-outliers
+title: "Hình dạng phân phối: skewness, kurtosis, ngoại lệ"
+summary: "Bài học đọc trước: hình dạng phân phối: skewness, kurtosis, ngoại lệ, kèm ví dụ và câu hỏi ôn tập."
+order: 22
+topicIds: [exploratory-analysis]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-05-slide
+    page: 17
+  - sourceId: lesson-05-slide
+    page: 18
+  - sourceId: lesson-05-slide
+    page: 19
+  - sourceId: lesson-05-slide
+    page: 20
+---
+
+> **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Hình dạng của dữ liệu
+
+Ngoài trung bình và độ phân tán, slide còn giới thiệu **skewness** và **kurtosis**.
+
+### Skewness – độ lệch
+
+- Gần 0: phân phối tương đối đối xứng (không bắt buộc chuẩn).
+- Dương: thường đuôi phân phối kéo dài về bên phải.
+- Âm: thường đuôi phân phối kéo dài về bên trái.
+
+Sự so sánh `mean > median > mode` là **mô tả trực giác** cho nhiều phân phối lệch phải một đỉnh; không phải quy luật áp dụng cho mọi tập dữ liệu.
+
+### Kurtosis
+
+Kurtosis liên quan đến độ nặng của đuôi và sự xuất hiện những giá trị cực đoan; không nên đồng nhất hoàn toàn với “độ nhọn của đỉnh”. Pandas `Series.kurt()` trả về **excess kurtosis** (chuẩn có giá trị lý thuyết gần 0).
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.Series([8, 8, 9, 10, 10, 11, 12, 13, 50], dtype=float)
+print("Skewness:", data.skew())
+print("Excess kurtosis:", data.kurt())
+data.plot.hist(bins=6)
+plt.show()
+```
+
+## Cách đọc kết quả
+
+Đừng đánh giá chỉ qua một con số skew hoặc kurtosis. Kết hợp **histogram**, **box plot**, quy mô mẫu và ý nghĩa nghiệp vụ để quyết định có xử lý ngoại lệ hay không.
+
+<Quiz question="Skewness dương thường gợi ý điều gì?" options={["Đuôi phải dài hơn","Không có ngoại lệ","Dữ liệu chắc chắn phân phối chuẩn"]} correctIndex={0} explanation="Độ lệch dương thường biểu diễn phần đuôi kéo về phía giá trị lớn." />
