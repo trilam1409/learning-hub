@@ -28,3 +28,13 @@
 - id: transcript-05
   title: Buoi05.vtt
   kind: vtt
+
+- id: lesson-05-slide
+  title: Bai05_PT_Tham_do.pdf
+  kind: pdf
+- id: lesson-06-slide
+  title: Bai06_Mo_hinh.pdf
+  kind: pdf
+- id: lesson-07-slide
+  title: Bai07_Danh_gia_MH.pdf
+  kind: pdf
