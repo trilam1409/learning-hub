@@ -58,7 +58,7 @@ f_stat, p_value = stats.f_oneway(store_a, store_b, store_c)
 print("F:", f_stat, "p:", p_value)
 ```
 
-Nếu p < 0.05 (ngưỡng lựa chọn trước), bác bỏ giả thuyết tất cả trung bình bằng nhau. **ANOVA không tự nói cặp nhóm nào khác nhau**; muốn biết cần kiểm định hậu nghiệm thích hợp.
+Nếu `p < 0.05` (ngưỡng lựa chọn trước), bác bỏ giả thuyết tất cả trung bình bằng nhau. **ANOVA không tự nói cặp nhóm nào khác nhau**; muốn biết cần kiểm định hậu nghiệm thích hợp.
 
 Các giả định thường xét gồm độc lập quan sát, phân phối phần dư gần chuẩn trong nhóm và độ phân tán tương đối tương đồng; nếu không phù hợp cần phương án thay thế.
 
