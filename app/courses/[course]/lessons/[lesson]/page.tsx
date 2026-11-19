@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LessonSources } from "@/components/learning/lesson-sources";
 import { readCatalog } from "@/lib/content/catalog";
+import { notebooksForLesson, notebookUrl } from "@/lib/notebooks";
 
 type LessonParams = { course: string; lesson: string };
 
@@ -29,6 +30,24 @@ export default async function LessonPage({ params }: { params: Promise<LessonPar
       <p className="text-lg text-stone-700">{lesson.summary}</p>
       {lesson.sessionIds.length === 0 && <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900">Tài liệu đọc trước – chưa có transcript bài giảng trên lớp.</p>}
       <div className="lesson-body leading-relaxed"><Lesson /></div>
+      {notebooksForLesson(course.id, lesson.id).length > 0 && (
+        <section className="rounded-xl border border-teal-200 bg-teal-50 p-5">
+          <h2 className="text-lg font-semibold text-teal-950">Thực hành Python ngay trên website</h2>
+          <p className="mt-1 text-sm text-stone-700">
+            Notebook này chạy bằng Pyodide trong trình duyệt và chứa bài tập liên quan đến kiến thức đang đọc.
+          </p>
+          <ul className="mt-3 space-y-2">
+            {notebooksForLesson(course.id, lesson.id).map((notebook) => (
+              <li key={notebook.file}>
+                <Link href={notebookUrl(course.id, notebook.file)}
+                  className="inline-flex rounded-lg bg-teal-800 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900">
+                  Mở JupyterLite · {notebook.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <LessonSources sources={course.sources} references={lesson.references} />
       <div className="border-t border-stone-200 pt-6">
         <Link className="inline-flex rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-teal-800 hover:bg-teal-50" href={`/courses/${course.id}`}>← Quay lại {course.title}</Link>
