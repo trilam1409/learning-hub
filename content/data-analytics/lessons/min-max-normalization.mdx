@@ -1,0 +1,104 @@
+---
+id: min-max-normalization
+title: Chuẩn hóa dữ liệu bằng Min-Max
+summary: Hiểu cách đưa dữ liệu số về khoảng 0 đến 1 và thực hành với Pandas, Scikit-learn.
+order: 1
+topicIds:
+  - preprocessing
+sessionIds:
+  - session-04
+relatedLessons: []
+references:
+  - sourceId: lesson-02-slide
+    page: 15
+  - sourceId: lesson-02-slide
+    page: 16
+  - sourceId: transcript-04
+    startSeconds: 3321.1
+    endSeconds: 3331.8
+  - sourceId: transcript-04
+    startSeconds: 3828.2
+    endSeconds: 3841.1
+---
+
+# Chuẩn hóa Min-Max
+
+**Đã học trong Buổi 04.** Bài này được biên tập từ slide *Bài 02 – Sắp xếp dữ liệu* và transcript của buổi học. Các ví dụ số bên dưới được biên soạn để luyện tập, không phải dữ liệu gốc do thầy cung cấp.
+
+## Tại sao cần chuẩn hóa dữ liệu?
+
+Các cột trong một bảng có thể có thang đo rất khác nhau: chiều dài xe tính bằng đơn vị nhỏ, giá xe lại có thể lên đến hàng chục nghìn. Khi phân tích hoặc áp dụng một số thuật toán máy học, thang đo chênh lệch có thể khiến một thuộc tính chi phối kết quả.
+
+**Min-Max scaling** đưa một cột dữ liệu về khoảng từ 0 đến 1 (khi dùng thiết lập mặc định và áp dụng lên dữ liệu nằm trong phạm vi đã dùng để tính min/max).
+
+## Công thức
+
+`x_new = (x - x_min) / (x_max - x_min)`
+
+Trong đó:
+
+- `x`: giá trị gốc cần chuyển đổi.
+- `x_min`: giá trị nhỏ nhất của cột.
+- `x_max`: giá trị lớn nhất của cột.
+- `x_new`: giá trị sau khi chuẩn hóa.
+
+Ví dụ có dãy `[20, 40, 60, 80, 100]`. Với `x = 60`, ta tính:
+
+`(60 - 20) / (100 - 20) = 0.5`
+
+| Giá trị gốc | Sau Min-Max |
+| ---: | ---: |
+| 20 | 0 |
+| 40 | 0.25 |
+| 60 | 0.5 |
+| 80 | 0.75 |
+| 100 | 1 |
+
+Nếu tất cả giá trị trong cột đều bằng nhau, mẫu số bằng 0; cần xử lý trường hợp này thay vì chia trực tiếp.
+
+## Thực hành với Pandas
+
+```python
+import pandas as pd
+
+values = pd.Series([20, 40, 60, 80, 100], name="value")
+min_value = values.min()
+max_value = values.max()
+
+scaled = (values - min_value) / (max_value - min_value)
+print(scaled)
+```
+
+Pandas thực hiện phép toán cho toàn bộ Series, không cần tự viết vòng lặp qua từng phần tử.
+
+## Thực hành với Scikit-learn
+
+```python
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+df = pd.DataFrame({"value": [20, 40, 60, 80, 100]})
+scaler = MinMaxScaler()
+df["value_scaled"] = scaler.fit_transform(df[["value"]])
+print(df)
+```
+
+Trong quy trình machine learning, hãy **fit scaler chỉ trên tập training**, sau đó dùng `transform` với tập validation hoặc test để tránh rò rỉ dữ liệu.
+
+## Ghi chú từ buổi giảng
+
+- Khoảng **55:21–55:32** trong `Buoi04.vtt`: giảng viên diễn giải cách lấy giá trị cũ trừ min, rồi chia cho max trừ min.
+- Khoảng **01:03:48–01:04:01**: giảng viên lưu ý cần lựa chọn kỹ thuật chuẩn hóa theo mục đích phân tích, không tùy tiện thay đổi phương pháp giữa các cột.
+
+## Bài tập
+
+1. Dùng Pandas để chuẩn hóa dãy `[3, 6, 9, 12, 15]` và kiểm tra giá trị 9 sau chuẩn hóa.
+2. Thay đổi một giá trị trong dãy thành 100. Các kết quả chuẩn hóa thay đổi như thế nào?
+3. So sánh ý nghĩa của Min-Max với Z-score và giải thích khi nào nên cân nhắc mỗi phương pháp.
+
+**Gợi ý câu 1:** Giá trị 9 sau Min-Max là `(9 - 3) / (15 - 3) = 0.5`.
+
+## Nguồn
+
+- *Bài 02 – Sắp xếp dữ liệu*, trang PDF 15–16 (các phương pháp chuẩn hóa).
+- *Buoi04.vtt*, mốc 55:21 và 01:03:48.
