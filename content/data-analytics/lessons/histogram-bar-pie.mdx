@@ -1,0 +1,67 @@
+---
+id: histogram-bar-pie
+title: "Histogram, bar chart và pie chart: chọn đúng tình huống"
+summary: "| Loại | Dữ liệu phù hợp | Câu hỏi |"
+order: 17
+topicIds: [visualization-tools]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-04-slide
+    page: 23
+  - sourceId: lesson-04-slide
+    page: 28
+  - sourceId: lesson-04-slide
+    page: 38
+  - sourceId: lesson-04-slide
+    page: 43
+---
+
+> **ĐỌC TRƯỚC:** Nội dung biên soạn từ slide Bài 04. Chưa có transcript VTT xác nhận thầy đã giảng phần này.
+
+## Ba biểu đồ dễ bị dùng nhầm
+
+| Loại | Dữ liệu phù hợp | Câu hỏi |
+| --- | --- | --- |
+| **Histogram** | Một biến **định lượng** | Các quan sát tập trung khoảng nào? |
+| **Bar chart** | Các **nhóm phân loại** | Nhóm nào cao/thấp? |
+| **Pie chart** | Phần của một **tổng thể** | Từng phần chiếm bao nhiêu phần trăm? |
+
+Trong slide Bài 04, histogram diễn tả phân phối số quốc gia nhập cư; bar chart so sánh số lượng theo nhóm; pie chart minh họa tỉ lệ nhập cư theo lục địa.
+
+## Histogram và bins
+
+```python
+import matplotlib.pyplot as plt
+prices = [8, 10, 10, 11, 15, 16, 17, 22, 25, 26, 29]
+plt.hist(prices, bins=5, edgecolor="white")
+plt.xlabel("Giá (đơn vị giả định)")
+plt.ylabel("Tần suất")
+plt.show()
+```
+
+**Bins** quyết định cách chia khoảng: chọn số bins quá ít làm mất chi tiết; quá nhiều có thể tạo hình ảnh nhiễu.
+
+## Bar chart
+
+```python
+labels = ["A", "B", "C"]
+counts = [10, 16, 8]
+plt.bar(labels, counts)
+plt.ylabel("Số lượng")
+plt.show()
+```
+
+Bar chart thể hiện từng danh mục tách biệt, khác histogram có các khoảng liên tục.
+
+## Pie chart
+
+```python
+parts = [40, 35, 25]
+plt.pie(parts, labels=["A", "B", "C"], autopct="%1.1f%%")
+plt.show()
+```
+
+Chỉ nên dùng pie khi số nhóm ít, cùng một tổng thể và thông tin tỉ lệ rõ ràng. Với nhiều nhóm nhỏ, bar chart thường dễ so sánh hơn.
+
+<Quiz question="Muốn biết phân phối chiều cao của 300 người, nên bắt đầu bằng gì?" options={["Histogram","Pie chart","Word cloud"]} correctIndex={0} explanation="Chiều cao là biến số liên tục, histogram cho thấy tần suất theo các khoảng." />
