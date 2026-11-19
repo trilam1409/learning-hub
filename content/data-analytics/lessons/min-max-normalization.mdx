@@ -2,7 +2,7 @@
 id: min-max-normalization
 title: Chuẩn hóa dữ liệu bằng Min-Max
 summary: Hiểu cách đưa dữ liệu số về khoảng 0 đến 1 và thực hành với Pandas, Scikit-learn.
-order: 1
+order: 9
 topicIds:
   - preprocessing
 sessionIds:
@@ -13,6 +13,8 @@ references:
     page: 15
   - sourceId: lesson-02-slide
     page: 16
+  - sourceId: lesson-02-slide
+    page: 17
   - sourceId: transcript-04
     startSeconds: 3321.1
     endSeconds: 3331.8
@@ -55,6 +57,10 @@ Ví dụ có dãy `[20, 40, 60, 80, 100]`. Với `x = 60`, ta tính:
 | 100 | 1 |
 
 Nếu tất cả giá trị trong cột đều bằng nhau, mẫu số bằng 0; cần xử lý trường hợp này thay vì chia trực tiếp.
+
+## Thử trực tiếp trên biểu đồ
+
+<NormalizationExplorer mode="minmax" />
 
 ## Thực hành với Pandas
 
@@ -100,5 +106,5 @@ Trong quy trình machine learning, hãy **fit scaler chỉ trên tập training*
 
 ## Nguồn
 
-- *Bài 02 – Sắp xếp dữ liệu*, trang PDF 15–16 (các phương pháp chuẩn hóa).
+- *Bài 02 – Sắp xếp dữ liệu*, trang PDF 15–17 (lý do chuẩn hóa, công thức và MinMaxScaler).
 - *Buoi04.vtt*, mốc 55:21 và 01:03:48.
