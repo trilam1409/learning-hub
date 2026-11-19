@@ -1,0 +1,74 @@
+---
+id: underfit-overfit
+title: "Underfitting, overfitting và chọn độ phức tạp"
+summary: "Đọc trước Bài 07: underfitting, overfitting và chọn độ phức tạp, có code và quiz."
+order: 30
+topicIds: [model-evaluation]
+sessionIds: []
+relatedLessons: []
+references:
+  - sourceId: lesson-07-slide
+    page: 10
+  - sourceId: lesson-07-slide
+    page: 11
+  - sourceId: lesson-07-slide
+    page: 12
+  - sourceId: lesson-07-slide
+    page: 14
+  - sourceId: lesson-07-slide
+    page: 15
+  - sourceId: lesson-07-slide
+    page: 16
+  - sourceId: lesson-07-slide
+    page: 18
+  - sourceId: lesson-07-slide
+    page: 19
+---
+
+> **ĐỌC TRƯỚC:** Nội dung dựa trên slide Bài 07 và phần diễn giải bổ sung để chuẩn bị học. Chưa có VTT của buổi học tương ứng.
+
+## Ba trạng thái cần phân biệt
+
+**Underfitting:** mô hình quá đơn giản, không nắm được quy luật quan trọng; thường sai trên cả train và test.
+
+**Good fitting:** mô hình học được quy luật có ích và giữ hiệu suất tương đối ổn định trên dữ liệu mới.
+
+**Overfitting:** mô hình ghi nhớ cả nhiễu hoặc những đặc điểm quá riêng của train, dẫn đến train tốt nhưng test kém.
+
+Slide Bài 07 dùng các đa thức bậc 1, 2, ... để trực quan quá trình mô hình trở nên phức tạp.
+
+## Dấu hiệu thực hành
+
+| Quan sát | Khả năng |
+| --- | --- |
+| Train lỗi cao, test lỗi cao | Underfit |
+| Train lỗi thấp, test lỗi cao | Overfit |
+| Cả train và test lỗi thấp, ổn định | Có tiềm năng tổng quát hóa tốt |
+
+## Thử kiểm tra đa thức
+
+```python
+import numpy as np
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import cross_val_score
+
+x = np.linspace(0, 6, 40)
+y = np.sin(x) + np.random.default_rng(42).normal(0, 0.12, len(x))
+X = x.reshape(-1, 1)
+
+for degree in [1, 2, 4, 8, 15]:
+    model = make_pipeline(PolynomialFeatures(degree), LinearRegression())
+    scores = cross_val_score(model, X, y, cv=5, scoring="neg_mean_squared_error")
+    print(degree, -scores.mean())
+```
+
+**Lưu ý:** Kết quả phụ thuộc dữ liệu và cách chia folds; không nên khẳng định bậc cao luôn tệ, hoặc luôn tốt.
+
+## Phương án khắc phục
+
+- Underfit: thêm đặc trưng phù hợp, thay đổi độ phức tạp, chọn mô hình khác.
+- Overfit: đơn giản hóa mô hình, regularization, thêm dữ liệu có chất lượng, dùng cross-validation.
+
+<Quiz question="Train tốt nhưng test kém thường là dấu hiệu của gì?" options={["Overfitting","Underfitting chắc chắn","Thiếu nhãn index"]} correctIndex={0} explanation="Mô hình có thể học quá sát dữ liệu huấn luyện và không tổng quát hóa tốt." />
