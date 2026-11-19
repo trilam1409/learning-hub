@@ -4,7 +4,8 @@ import { MeanChart } from "@/components/learning/mean-chart";
 import { Quiz } from "@/components/learning/quiz";
 import { NormalizationExplorer } from "@/components/learning/normalization-explorer";
 import { ChartTypeExplorer } from "@/components/learning/chart-type-explorer";
+import { SeriesAlignmentExplorer } from "@/components/learning/series-alignment-explorer";
 
 export function useMDXComponents(): MDXComponents {
-  return { MathFormula, MeanChart, Quiz, NormalizationExplorer, ChartTypeExplorer };
+  return { MathFormula, MeanChart, Quiz, NormalizationExplorer, ChartTypeExplorer, SeriesAlignmentExplorer };
 }
