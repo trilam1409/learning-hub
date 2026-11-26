@@ -5,6 +5,8 @@
     "strict": true,
     "noEmit": true,
     "incremental": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "module": "esnext",

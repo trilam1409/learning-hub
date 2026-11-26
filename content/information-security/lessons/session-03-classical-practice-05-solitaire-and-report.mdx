@@ -1,0 +1,77 @@
+---
+id: "session-03-classical-practice-05-solitaire-and-report"
+title: "Solitaire và hoàn thiện báo cáo"
+summary: "Buổi 3 · Chủ đề phần mở rộng và tổng kết bốn hệ mã cổ điển"
+order: 13
+topicIds: ["classical-cryptography", "practice-reports"]
+sessionIds: ["session-03"]
+relatedLessons: [{"courseId": "information-security", "lessonId": "session-03-classical-practice-01-cryptool-and-caesar"}]
+references: [{"sourceId": "p03", "page": 1}, {"sourceId": "t03", "startSeconds": 243.26, "endSeconds": 320.62}]
+---
+
+## Mục tiêu học
+
+- Giải thích cách tạo dòng khóa Solitaire và cách cộng, trừ để mã hóa, giải mã.
+- Trả lời năm câu báo cáo bằng dữ liệu quan sát được.
+
+## Kiến thức qua tình huống
+
+Solitaire dùng bộ bài để tạo một dãy số thay đổi theo vị trí. Bên gửi và bên nhận cần cùng cách đánh số, cùng thứ tự bộ bài lúc bắt đầu và cùng quy trình tạo dãy. Chỉ cần lệch một lượt, phần bản rõ phục hồi sau đó có thể sai.
+
+## Công thức và cách áp dụng
+
+**Kiến thức bổ sung.** Với A = 1, …, Z = 26, đặt p là giá trị chữ gốc, c là giá trị chữ mã, k là giá trị dòng khóa. Mã hóa c = 1 + ((p + k − 1) mod 26), giải mã p = 1 + ((c − k − 1) mod 26). Công thức luôn trả về số từ 1 đến 26.
+
+## Bài tập chính thức
+
+Tìm hiểu cơ chế mã hóa và giải mã Solitaire, rồi minh họa cả hai chiều với **họ tên sinh viên** làm bản rõ. Hoàn thiện năm câu báo cáo ở cuối PDF và lưu theo tên đã nêu trong [bài CrypTool và Caesar](/courses/information-security/lessons/session-03-classical-practice-01-cryptool-and-caesar).
+
+## Công cụ và dữ liệu đầu vào
+
+Bộ 54 lá gồm hai joker dễ phân biệt, hoặc bảng mô phỏng bằng số. Để tái lập mẫu, đánh số A đến K theo thứ tự ♣, ♦, ♥, ♠ thành 1–52; joker A là lá 53, joker B là lá 54. Giá trị khi đếm của cả hai joker là 53. Trạng thái đầu của mẫu là 1 đến 54 theo thứ tự từ trên xuống. Chuẩn hóa họ tên sang A–Z in hoa, bỏ dấu và khoảng trắng. Đây là giả định của ví dụ học tập.
+
+## Các bước thực hiện
+
+1. Dời joker A xuống một chỗ, joker B xuống hai chỗ, làm từng bước. Nếu joker đang ở đáy, một bước dời đưa nó xuống ngay dưới lá trên cùng.
+2. Cắt ba đoạn quanh hai joker: đổi chỗ đoạn nằm trên joker đầu và đoạn dưới joker cuối, giữ đoạn giữa gồm cả hai joker.
+3. Lấy giá trị lá đáy, chuyển đúng số lá từ đầu bộ xuống ngay trên lá đáy, giữ thứ tự đoạn chuyển. Khi lá đáy là joker, thao tác đếm 53 trả bộ bài về cùng vị trí.
+4. Đếm số lá từ đầu theo giá trị lá trên cùng, rồi xem lá kế tiếp. Nếu lá kết quả là joker, bỏ đầu ra lượt đó, giữ trạng thái bài và tiếp tục một lượt mới. Với lá thường, chuyển giá trị 27–52 về 1–26 bằng cách trừ 26. Lặp đến khi đủ số đầu ra.
+5. Cộng từng số của dòng khóa với chữ bản rõ theo công thức. Ở phía giải mã, bắt đầu từ cùng trạng thái để tái tạo dòng khóa, rồi trừ theo công thức.
+
+## Ví dụ có lời giải và kết quả mong đợi
+
+**Ví dụ tự soạn.** Tên mẫu **Nguyễn Văn An** chuẩn hóa thành **NGUYENVANAN**. Từ trạng thái đã nêu, dãy tính được là **4, 23, 10, 24, 8, 25, 18, 6, 4, 7, 20**. Hai bước đầu là N = 14 cộng 4 thành R = 18, G = 7 cộng 23 thành D = 4 sau khi vòng qua 26. Bản mã dự kiến là **RDEWMMNGRHH**. Tái tạo cùng dòng khóa và trừ cho kết quả NGUYENVANAN.
+
+## Cách tự kiểm tra
+
+Đối chiếu các lá đầu sau mỗi bước, cả vị trí joker và lá được đọc. Nếu gặp joker ở bước đọc, số lượt cập nhật bộ bài có thể lớn hơn số chữ đầu ra. Lưu dãy khóa và kiểm tra cả hai chiều trên họ tên của chính mình. Mẫu trên được tính bằng mô phỏng, ngoài CrypTool.
+
+## Bài tập chính thức — năm câu báo cáo
+
+| Câu | Trọng tâm trả lời và bằng chứng cần có |
+| --- | --- |
+| 1. Vì sao Caesar dễ bị phá? | Có 25 khóa dịch khác 0 với A–Z. Dùng ảnh hoặc bảng ứng viên của bài Caesar và chỉ cách nhận ra ứng viên hợp lý. |
+| 2. IC giúp gì cho Vigenère? | Chia theo độ dài đề xuất, so IC nhóm với IC toàn văn, rồi giải thử. Dùng bảng IC và khoảng cách Kasiski của văn bản mình làm. |
+| 3. Playfair xử lý chữ đôi ra sao? | Chèn đệm khi hai chữ giống lọt vào cùng cặp đang xét. Minh họa bằng ma trận, vết chia cặp và một mẫu có chèn đệm. |
+| 4. Vì sao Transposition giữ chữ nhưng đổi vị trí? | Chỉ thay thứ tự đọc cột. So tần suất chữ và giải ngược theo bảng. Khi dùng đệm, tính đến phần chữ được thêm. |
+| 5. So sánh độ an toàn của bốn hệ mã | Caesar có rất ít khóa. Vigenère khóa lặp có dấu hiệu chu kỳ. Playfair dùng cặp, vẫn còn cấu trúc thống kê. Hoán vị cột giữ tần suất chữ, độ khó phụ thuộc khóa và độ dài. So theo tiêu chí và giả định cụ thể. |
+
+## Tóm tắt
+
+Solitaire tạo dãy số từ trạng thái bộ bài và cập nhật trạng thái giữa các lượt. Bài báo cáo cần bằng chứng thực hiện, kết quả và nhận xét theo từng yêu cầu. Bốn hệ mã so sánh trong câu 5 là Caesar, Vigenère, Playfair và chuyển vị cột.
+
+## Điểm dễ nhầm
+
+Bộ bài cuối của quá trình mã hóa và bộ bài cần để bắt đầu giải là hai trạng thái khác nhau. Khi giải, tái lập đúng trạng thái khởi đầu của bên mã hóa.
+
+## Trắc nghiệm
+
+<Quiz question={"Câu 1. Bên giải bắt đầu với trạng thái bộ bài nào?"} options={["A. Trạng thái ngẫu nhiên khác", "B. Trạng thái đầu giống bên mã hóa", "C. Chỉ hai joker", "D. Trạng thái cuối bên mã hóa"]} correctIndex={1} explanation={"Đáp án B. Khởi đầu giống nhau tái tạo cùng dòng khóa. Nhiễu dễ nhầm D. Trạng thái cuối sẽ phát chuỗi tiếp từ vị trí khác."} />
+
+<Quiz question={"Câu 2. Nếu đọc ra joker, nên làm gì?"} options={["A. Dùng joker cho cả bảng", "B. Bỏ đầu ra, giữ trạng thái và sang lượt mới", "C. Gán thành A", "D. Quay về đầu"]} correctIndex={1} explanation={"Đáp án B. Joker không thành chữ khóa, trạng thái vẫn tiến. Nhiễu dễ nhầm C. Gán A làm thay đổi thuật toán."} />
+
+<Quiz question={"Câu 3. Bốn hệ mã chính của báo cáo có tính chất nào sau đây?"} options={["A. Caesar đổi độ dài khóa theo ký tự", "B. Playfair mã từng chữ riêng", "C. Hoán vị cột giữ tần suất chữ nếu không đệm", "D. Vigenère chuẩn dùng một phép đổi cố định mọi vị trí"]} correctIndex={2} explanation={"Đáp án C. Hoán vị đổi vị trí nhưng giữ tập chữ. Nhiễu dễ nhầm A. Caesar dùng một độ dịch cố định."} />
+
+## Nguồn
+
+[P03](/courses/information-security/documents/sources) tr. 1 và 4. PDF giao phần tìm hiểu Solitaire; quy tắc, ví dụ và phép tính là phần bổ sung để tự kiểm tra. T03 00:04:03.260–00:05:20.620 giới thiệu TH2A; không có thêm chỉ dẫn cụ thể cho thuật toán của bài này.

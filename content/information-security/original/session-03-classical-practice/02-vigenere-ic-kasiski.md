@@ -1,0 +1,107 @@
+# Vigenère, chỉ số trùng khớp và Kasiski
+
+Buổi 3 · Chủ đề khóa lặp và ước lượng độ dài khóa trên văn bản mẫu
+
+## Mục tiêu học
+
+- Mã hóa và giải mã một văn bản bằng khóa lặp.
+- Kết hợp IC và Kasiski để đề xuất độ dài khóa, rồi kiểm tra lại bằng bản giải.
+
+## Kiến thức qua tình huống
+
+Khi áp cùng một dịch chuyển cho mọi vị trí, chữ giống nhau luôn cho bản mã giống nhau. Với Vigenère, dịch chuyển thay đổi theo từng chữ của khóa. Nếu tách đúng các vị trí dùng chung một chữ khóa, mỗi nhóm trở thành bài toán kiểu Caesar.
+
+| Dấu hiệu theo đề | IC tham khảo |
+| --- | --- |
+| Tiếng Anh tự nhiên, hoặc bản mã Caesar từ tiếng Anh | Khoảng 0,066 |
+| Vigenère khóa dài | Khoảng 0,04 |
+| Chuỗi 26 chữ ngẫu nhiên phân bố đều | Khoảng 0,0385 |
+
+## Công thức và cách áp dụng
+
+A = 0, …, Z = 25. Với chỉ số i bắt đầu từ 0 và khóa dài m chữ, dùng k_(i mod m) tại vị trí i. Tính c_i = (p_i + k_(i mod m)) mod 26 và p_i = (c_i − k_(i mod m)) mod 26.
+
+**Kiến thức bổ sung.** Với văn bản N ≥ 2 ký tự, IC = Σ f_a(f_a − 1) / [N(N − 1)], trong đó f_a là số lần chữ a xuất hiện. Đây là xác suất hai vị trí khác nhau rút ngẫu nhiên có cùng chữ. Với AABC, tử số là 2 và mẫu là 12 nên IC = 1/6. Thử một độ dài m bằng cách tách thành m chuỗi và lấy trung bình IC của các nhóm đủ dài để tính. Đối với Kasiski, lấy khoảng cách giữa các lần lặp của cụm chữ trong bản mã rồi xét các ước chung. Một cụm lặp có thể xuất hiện tình cờ, nên kết hợp thống kê và việc giải mã thử.
+
+## Bài tập chính thức
+
+Chuẩn bị bản rõ dài 3–4 dòng. Dùng **LEMON**, mã hóa rồi giải mã, mở Vigenère Analysis và ghi IC cùng độ dài khóa dự đoán. Tạo bản mã mới với khóa khác trong các lựa chọn **APPLE**, **SECRET**. Trao đổi bản mã và dùng **Kasiski + IC** để thử xác định khóa. Báo cáo cách IC hỗ trợ phân tích.
+
+## Công cụ và dữ liệu đầu vào
+
+CrypTool 1 và bảng tính hoặc giấy để chia nhóm ký tự. Nhập đoạn 3–4 dòng tự chọn. Mẫu dưới là **Ví dụ tự soạn**, gồm bốn dòng.
+
+~~~text
+LEARN TO READ THE PATTERNS IN THIS MESSAGE
+COMPARE THE LETTERS IN EACH GROUP
+WRITE DOWN THE TESTS AND CHECK YOUR RESULTS
+REPEAT THE EXPERIMENT WITH A LONGER MESSAGE
+~~~
+
+## Các bước thực hiện
+
+1. Chuẩn hóa A–Z, bỏ khoảng trắng và xuống dòng, cho khóa chạy liên tục từ đầu tới cuối. Sau đó mở mục Encrypt → Vigenère theo đề, nhập LEMON và giải lại bằng cùng khóa.
+2. Mở Analysis → Vigenère Analysis. Ghi giá trị IC được công cụ hiển thị, dạng IC toàn văn hoặc IC của các nhóm theo độ dài khóa, cùng ứng viên khóa. Ghi cả trường hợp công cụ đưa nhiều ứng viên.
+3. Tìm các cụm lặp, ghi vị trí, khoảng cách và các ước khả dĩ. So IC trung bình ở các độ dài đó trước khi chọn ứng viên. Kiểm tra ứng viên bằng khối văn bản dài hơn khi kết quả yếu.
+4. Mã hóa văn bản tự chọn với APPLE rồi thử thêm SECRET. Giữ khóa riêng, trao đổi một bản mã với bạn học và đối chiếu khóa hoặc bản rõ sau khi phân tích. Ghi căn cứ của từng lần thử vào báo cáo.
+
+## Ví dụ có lời giải và kết quả mong đợi
+
+Với bốn dòng mẫu, chuẩn hóa được **136 chữ**. Năm chữ đầu LEARN cộng độ dịch của LEMON cho WIMFA. Kết quả tính cho toàn đoạn là
+
+~~~text
+WIMFAESDSNOXTSCLXFSEYWUBGSMEARDWMURNSYDNCIFVRWIFHRCWUBRLGTUEZYBKETXQRBHRFVREIEHFLRPQUPGWMBFVDSFFPFGEPTQOGELQSKAIDWZPRFKVELMZBYKQFZPWEOTP
+~~~
+
+Tính theo vị trí từ 1, WUB lặp tại 22 và 52, FVR lặp tại 43 và 73. Cả hai khoảng cách bằng 30. Độ dài 5 chia hết 30 và IC nhóm trung bình ở m = 5 khoảng **0,0703**, so với IC toàn văn **0,0414**. Độ dài 10 cũng chia hết 30 và cũng cho IC nhóm trung bình khoảng 0,0703 ở mẫu này. Thử ứng viên 5 và kiểm tra khả năng giải bằng LEMON. Đây là kết quả tính theo quy ước, có thể khác cách báo số của từng công cụ.
+
+## Cách tự kiểm tra
+
+So đầu ra WIMFA trước. Nếu lệch sau khoảng trắng hoặc xuống dòng, kiểm tra cách công cụ tiến vị trí khóa. Giải mã và so đủ 136 chữ. Với phần phân tích, lưu cả khoảng cách Kasiski và ít nhất hai IC ứng viên để giải thích lựa chọn.
+
+## Tóm tắt
+
+Kasiski gợi ý độ dài qua khoảng cách lặp. IC kiểm tra xem các nhóm theo độ dài đề xuất có giống chuỗi dùng cùng một dịch chuyển hay không. Giải mã thử giúp xác nhận.
+
+## Điểm dễ nhầm
+
+IC cao có thể xảy ra ở bội của độ dài khóa. Một văn bản ngắn hoặc ít đoạn lặp có thể không cho bằng chứng đủ mạnh.
+
+## Trắc nghiệm
+
+### Câu 1
+
+Tách bản mã theo chu kỳ khóa để làm gì?
+
+- A. Xóa các chữ giống
+- B. Gom vị trí dùng cùng một chữ khóa
+- C. Đếm khoảng trắng
+- D. Tăng độ dài tệp
+
+**Đáp án B.** Khi chu kỳ đúng, mỗi nhóm tương ứng một dịch. **Nhiễu dễ nhầm A.** Xóa chữ phá thông tin cần tính IC.
+
+### Câu 2
+
+Kasiski xem đại lượng nào?
+
+- A. Kiểu phông
+- B. Kích thước PDF
+- C. Số chữ cái của bảng
+- D. Khoảng cách giữa các cụm lặp
+
+**Đáp án D.** Khoảng cách có thể chứa bội của chu kỳ khóa. **Nhiễu dễ nhầm C.** Bảng chữ cái không cho độ dài khóa.
+
+### Câu 3
+
+IC cao ở cả 5 và 10 thì làm gì?
+
+- A. Chắc chắn chọn 10
+- B. Kiểm cả hai ứng viên bằng bản giải
+- C. Chắc chắn chọn 5
+- D. Lấy IC làm khóa
+
+**Đáp án B.** Bội của chu kỳ cũng có thể cho IC cao. **Nhiễu dễ nhầm A.** Đỉnh 10 không tự chứng minh khóa dài 10.
+
+## Nguồn
+
+[P03](../SOURCES.md) tr. 2–3 và câu báo cáo 2, 5 ở tr. 4. Công thức IC và cách đếm cụm được diễn giải bổ sung. T03 00:04:03.260–00:05:20.620 giới thiệu TH2A; không có thêm chỉ dẫn cụ thể cho thuật toán của bài này.

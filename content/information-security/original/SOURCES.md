@@ -1,0 +1,20 @@
+# Danh mục nguồn
+
+Tệp PDF được mở từ ZIP nguồn do người học cung cấp. Tên hiển thị theo Unicode NFC. Tr. là số thứ tự trang PDF từ 1, kể cả bìa. Mốc VTT dùng giờ:phút:giây.mili-giây. Phạm vi toàn tệp tính từ cue đầu đến điểm kết muộn nhất. Các mốc đối chiếu nội dung cụ thể nằm trong bài học và [bảng bao phủ](SOURCE_COVERAGE.md).
+
+| Mã | Tên tệp | Buổi | Số trang hoặc cue | Trạng thái |
+| --- | --- | --- | --- | --- |
+| P01 | Bài 1 - Tổng quan (Buổi 1).pdf | 1 | 89 trang | Mở đủ trang, trích lớp chữ |
+| T01 | Buoi1.vtt | 1 | 1.281 cue · 00:00:05.246–01:34:05.106 | Đọc được VTT, đối chiếu các đoạn dẫn |
+| P02 | Bài 2A - Các giải thuật mã hoá (Buổi 2).pdf | 2 | 75 trang | Mở đủ trang PDF lý thuyết, trích lớp chữ |
+| T02 | Buoi2.vtt | 2 | 1.469 cue · 00:00:16.851–01:51:18.711 | Đọc được VTT, đối chiếu các đoạn dẫn |
+| P03 | Bài 2A - Mã hoá cổ điển (Buổi 3).pdf | 3 | 4 trang | Đọc đủ phần chữ của đề TH2A |
+| T03 | Buoi3.vtt | 3 | 185 cue · 00:00:05.620–00:12:18.860 | Bản ngắn, nói cả bài kiểm tra bảo mật cơ bản và TH2A |
+| P04 | Bài 2B - Chứng thực dữ liệu(Buổi 4).pdf | 4 | 56 trang | Mở đủ trang, trích lớp chữ |
+| T04 | Buoi4.vtt | 4 | 1.300 cue · 00:00:03.674–01:28:12.864 | Khớp chủ đề Buổi 4, đối chiếu các đoạn dẫn |
+| P05 | Bài 2B - Mã hoá hiện đại, chứng thực, chữ ký số (Buổi 5).pdf | 5 | 4 trang | Đọc đủ phần chữ của đề TH2B |
+| T05 | Buoi5(1).vtt | 5 | 145 cue · 00:00:03.452–00:11:36.187 | Bản đính kèm mới, khớp hướng dẫn TH2B; đọc toàn bộ nội dung có trong tệp |
+| T05a | Buoi5vtt.vtt | Theo tên: 5 | 1.300 cue · 00:00:03.674–01:28:12.864 | Bản trong ZIP trùng từng byte với T04 |
+| T05b | Buoi5.vtt | Theo tên: 5 | 1.300 cue · 00:00:03.674–01:28:12.864 | Bản đính kèm trước cũng trùng T04 |
+
+SHA-256 chung của T04, T05a và T05b là d5c0e9e3d6c14ec6082c3dc8af20ac4fddfca5532063aefee068160b53a08603. Chỉ T05 là nguồn lời giảng dùng cho Buổi 5. Thời lượng VTT ngắn phản ánh phần được ghi, không xác nhận cả buổi đã được thu âm.

@@ -1,0 +1,101 @@
+# Va chạm, độ dài digest và báo cáo
+
+Buổi 5 · TH2B bước 7 và tổng kết
+
+## Mục tiêu học
+
+Nhận diện va chạm trong mô hình đồ chơi, ghi số liệu quan sát và trả lời đủ bảy câu báo cáo.
+
+## Kiến thức qua tình huống
+
+Hàm băm n bit có 2^n đầu ra. Hai bản rõ khác nhau cùng digest tạo một va chạm. Khi chỉ xét đầu ra ngắn, xác suất một số cặp trùng digest tăng khi có nhiều đầu vào. Điều này làm rõ mục đích so độ dài trong đề.
+
+## Công thức và cách áp dụng
+
+**Kiến thức bổ sung.** Với đầu ra đều và độc lập, xác suất trùng đối với hai đầu ra ngẫu nhiên là 1/2^n. Khi dùng nhiều mẫu và xét mọi cặp, mốc lý thuyết có bậc khoảng 2^(n/2) mẫu. Đây là xu hướng mô hình, không suy ra được thời gian hay số lần thử của công cụ trên máy cụ thể.
+
+## Bài tập chính thức
+
+Bước 7 yêu cầu **th2B_b7A.txt** (văn bản thật) và **th2B_b7B.txt** (văn bản giả mạo), dùng mục **Attack on the hash value of the Digital Signature**. Đề nêu **16, 20, 28, 32, 48, 64, 128** với cả **Printable character** và **Unprintable character**. Báo cáo thống kê, độ dài tệp và quan sát nội dung. T05 tại 00:07:28.967–00:07:29.607 xác nhận đơn vị bit. Đối chiếu thêm nhãn ở giao diện.
+
+## Công cụ và dữ liệu đầu vào
+
+Để tự kiểm hiện tượng, dùng bảng tính hoặc giấy với AB và BA. Đối với cấu hình chính thức, dùng bảng báo cáo ghi quan sát của bài trên lớp.
+
+## Các bước thực hiện
+
+1. Đặt H_toy(M) bằng tổng byte ASCII mod 16. Tính từng mẫu và ghi hai cột bản rõ/digest.
+2. Chuẩn bị 14 dòng báo cáo, mỗi dòng một độ dài và một loại ký tự. Điền tên phiên bản, giá trị, đơn vị, trạng thái, số liệu thực tế, độ dài và ghi chú nội dung cho hai tệp.
+3. So xu hướng theo hai loại ký tự. Đánh dấu nếu thiếu số liệu. Phần tự học minh họa va chạm bằng hàm đồ chơi; yêu cầu dùng công cụ được giữ ở mục đề bài.
+
+| Giá trị trong đề | Loại ký tự | Cột cần ghi |
+| --- | --- | --- |
+| 16, 20, 28, 32, 48, 64, 128 | Printable character | Đơn vị, trạng thái, thống kê, byte A/B và khác biệt nội dung |
+| 16, 20, 28, 32, 48, 64, 128 | Unprintable character | Đơn vị, trạng thái, thống kê, byte A/B và khác biệt nội dung |
+
+## Cách tự kiểm tra
+
+Kiểm đủ 14 cấu hình. Với mô hình mẫu, xác nhận hai chuỗi khác ở mức byte, digest giống và nằm trong 0–15.
+
+## Ví dụ có lời giải và kết quả mong đợi
+
+**Ví dụ tự soạn.** AB và BA có hai byte 65 và 66 ở thứ tự khác. Cả hai cho (65 + 66) mod 16 = 3. Mô hình đã tạo va chạm trên đầu ra 4 bit. Kết quả size, thời gian và thống kê CrypTool cần lấy từ quan sát thật.
+
+## Bài tập chính thức · Bảy câu báo cáo
+
+| Câu | Cách giải thích |
+| --- | --- |
+| 1. Khác nhau giữa đối xứng và bất đối xứng? | Đối xứng dùng bí mật chung. Bất đối xứng dùng cặp public/private với vai trò theo tác vụ. |
+| 2. Hash dùng làm gì, vì sao khó đảo? | Tạo digest để kiểm toàn vẹn có tham chiếu. Nhiều đầu vào có thể chung một digest, còn tìm được một tiền ảnh đối với hàm mật mã phải khó. |
+| 3. Vì sao sửa một ký tự làm digest đổi mạnh? | Các vòng khuếch tán thay đổi đầu vào qua nhiều bit, gọi là avalanche. |
+| 4. Vì sao chữ ký số cần private key? | Người ký kiểm soát khả năng tạo chữ ký; người nhận chỉ cần public key để kiểm. |
+| 5. RSA có dùng để mã hóa file lớn không? | Mỗi lượt RSA có giới hạn kích thước và padding. Hệ lai dùng mã đối xứng cho tệp, bảo vệ khóa phiên bằng cơ chế khóa công khai. |
+| 6. Chữ ký khác mã hóa thế nào? | Chữ ký hỗ trợ nguồn gốc và toàn vẹn. Mã hóa phục vụ bí mật. |
+| 7. ECB yếu ở điểm nào? | Các khối rõ lặp cho khối mã lặp dưới cùng khóa. |
+
+## Tóm tắt
+
+Phân biệt mô hình, kết quả dự kiến và thống kê đã đo. Report nên cho biết đúng nhóm ký tự, thiết lập và đơn vị.
+
+## Điểm dễ nhầm
+
+Tiền ảnh bắt đầu từ digest cố định. Va chạm cho phép hai đầu vào khác nhau bất kỳ.
+
+## Trắc nghiệm
+
+### Câu 1
+
+AB và BA khác nhau nhưng cùng digest. Đây là gì?
+
+- A. Phân quyền
+- B. Va chạm
+- C. Mã hóa công khai
+- D. Giải mã
+
+**Đáp án B.** Hai đầu vào khác nhau có cùng đầu ra. **Nhiễu dễ nhầm D.** Phép tính không khôi phục đầu vào.
+
+### Câu 2
+
+Digest n bit biểu diễn mấy đầu ra?
+
+- A. 2^n
+- B. n
+- C. 2n
+- D. n²
+
+**Đáp án A.** Mỗi bit có hai khả năng độc lập trong phép đếm. **Nhiễu dễ nhầm C.** 2n tăng tuyến tính.
+
+### Câu 3
+
+Cần mấy dòng thử cho 7 độ dài và 2 nhóm ký tự?
+
+- A. 7
+- B. 128
+- C. 14
+- D. 9
+
+**Đáp án C.** 7 nhân 2 = 14 tổ hợp. **Nhiễu dễ nhầm A.** 7 mới đếm một chiều.
+
+## Nguồn
+
+[P05](../SOURCES.md) tr. 3–4. [P04](../SOURCES.md) tr. 33–37. T05 00:05:16.367–00:08:00.167 và 00:09:43.567–00:10:18.387. T05 xác nhận đơn vị bit, gợi ý ghi kích thước và thời gian. Nếu công cụ báo dự kiến quá lâu thì chụp thông báo, ghi đây là ước lượng. Mốc dự phòng ở phần nhắc lại bị nhận dạng không nhất quán. Kết quả là phép tính hoặc dự kiến, chưa chạy CrypTool.

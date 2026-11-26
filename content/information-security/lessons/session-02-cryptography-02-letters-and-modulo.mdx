@@ -1,0 +1,69 @@
+---
+id: "session-02-cryptography-02-letters-and-modulo"
+title: "Thay chữ, đổi vị trí và tính modulo"
+summary: "Buổi 2 · Thay thế, hoán vị, Caesar, Vigenère, Affine"
+order: 6
+topicIds: ["classical-cryptography"]
+sessionIds: ["session-02"]
+relatedLessons: [{"courseId": "information-security", "lessonId": "session-02-cryptography-03-playfair-and-hill"}]
+references: [{"sourceId": "p02", "page": 22}, {"sourceId": "t02", "startSeconds": 6534.161, "endSeconds": 6578.881}, {"sourceId": "t02", "startSeconds": 6538.707, "endSeconds": 6541.321}]
+---
+
+## Mục tiêu học
+
+Nhận ra khi nào thay chữ và khi nào đổi vị trí. Tính được vài ký tự và biết cách giải ngược.
+
+## Kiến thức qua tình huống
+
+Trong mã thay thế đơn giản, khóa là hoán vị bảng chữ cái: một chữ luôn được thay bằng cùng một chữ. Có 26! hoán vị, nhưng vẫn có thể giữ dấu vết tần suất. Hoán vị bậc d giữ các chữ của một khối d vị trí và chỉ sắp lại. Caesar dùng một độ dịch cho mọi chữ. Vigenère thay độ dịch theo chuỗi khóa lặp. Affine nhân với a và cộng b. Khi làm Vigenère cần quy định trước cách xử lý khoảng trắng; ở đây giữ khoảng trắng nếu cần trình bày nhưng chỉ tiến khóa qua chữ.
+
+## Công thức và cách áp dụng
+
+Đặt A = 0, …, Z = 25. Caesar có c = (p + k) mod 26. Vigenère có c_i = (p_i + k_(i mod m)) mod 26, i tính từ 0 và m là độ dài khóa. Hai phép giải dùng trừ. Affine có c = (ap + b) mod 26 và p = a^(-1)(c − b) mod 26. Nghịch đảo a^(-1) thỏa a·a^(-1) ≡ 1 mod 26 và tồn tại khi gcd(a, 26) = 1.
+
+## Bài tập chính thức
+
+- Bản trên slide tr. 73 yêu cầu mã hóa **TRUONG DAI HOC QUOC GIA** bằng Vigenère, khóa là họ tên sinh viên, trình bày quá trình. Cùng bài 1A với [Playfair](/courses/information-security/lessons/session-02-cryptography-03-playfair-and-hill).
+- **Khác biệt nguồn.** Bản giảng T02 01:49:02.281–01:49:08.068 nêu bản rõ **Trường Đại học Công nghệ Thông tin**. Giữ hai phiên bản tách biệt. T02 gợi ý lập hàng chữ bằng bảng tính và đối chiếu bằng công cụ sau khi trình bày cách tính.
+
+## Ví dụ có lời giải và kết quả mong đợi
+
+**Ví dụ từ giảng viên** (slide tr. 28–29). CRYPTOGRAPHY với Caesar khóa 5 cho **HWDUYTLWFUMD**. Vigenère mã VIGENERE với CHIFFRE cho **XPOJSVVG**. Ở mẫu thứ hai, V = 21 cộng C = 2 cho X = 23; chữ thứ tám dùng lại C.
+
+**Ví dụ tự soạn.** Với Affine (a, b) = (5, 3), B = 1 đổi thành I = 8. Vì 5·21 ≡ 1 mod 26, giải I bằng 21(8 − 3) mod 26 = 1. Nếu đọc các vị trí ngang (4, 1, 3, 2, 5), ABCDE cho DACBE.
+
+## Bài tập chính thức · Trộn tọa độ hàng–cột
+
+P02 tr. 74 yêu cầu mô tả phép mã hóa trong hình, cho một ví dụ nữa và lập bảng so sánh các mã cổ điển và hiện đại theo tên, đặc điểm, ví dụ, mức an toàn. Tên tệp trên slide là **Bài tập 1B - Họ tên_mssv.doc**. Bảng tra của hình dùng nhãn hàng 1, 4, 2, 3, 5 và nhãn cột 2, 4, 5, 1, 3 theo thứ tự hiển thị.
+
+| Hàng / Cột | 2 | 4 | 5 | 1 | 3 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | K | E | Y | W | O |
+| 4 | R | D | A | B | C |
+| 2 | F | G | H | I | L |
+| 3 | M | N | P | Q | S |
+| 5 | T | U | V | X | Z |
+
+**Ví dụ từ giảng viên** (hình tr. 74). Dãy trong hình ghép thành **COMBINING SUBSTITUTION AND TRANSPOSITI**, dừng ở nhóm OSITI. Dùng đúng 35 chữ được in để tái lập bản mã. Với mỗi chữ lấy hai chỉ số hàng và cột; nối tất cả chỉ số hàng trước, rồi tới tất cả chỉ số cột. Chia dãy kết quả thành từng cặp hàng–cột và tra ngược bảng. Hai nhóm hàng đầu là 41342 và 32323, cho các cặp 41, 34, 23, 23, 23, tức **BNLLL** ở đầu bản mã. Nhóm năm chữ trong hình dùng để trình bày, không phải ranh giới áp dụng phép trộn. Kết quả toàn chuỗi để đối chiếu là **BNLLL UPHVI NNUCS OHLMW BDNOI GINUR HCZQI**.
+
+**Ví dụ tự soạn.** Với bản rõ chỉ gồm **COMBI**, hàng là 41342, cột là 33211. Nối và tách được 41, 34, 23, 32, 11, cho **BNLMW**. Khi giải, chuyển bản mã ngược thành năm cặp, nối thành dãy 10 chữ số, tách hai nửa để phục hồi hàng và cột ban đầu.
+
+## Tóm tắt
+
+Modulo đưa kết quả trở lại vòng 26 chữ. Affine cần hệ số nhân đảo được. Hoán vị chỉ tác động lên vị trí.
+
+## Điểm dễ nhầm
+
+Vigenère với khóa một chữ trở thành Caesar. Có nhiều khóa hoán vị bảng chữ cái không loại bỏ dấu vết phân bố chữ.
+
+## Trắc nghiệm
+
+<Quiz question={"Câu 1. Vigenère với khóa một chữ tương ứng cách nào?"} options={["A. Playfair", "B. Hill", "C. Caesar", "D. RSA"]} correctIndex={2} explanation={"Đáp án C. Một chữ khóa lặp một độ dịch duy nhất. Nhiễu dễ nhầm B. Hill cần khóa ma trận."} />
+
+<Quiz question={"Câu 2. Affine a = 5, b = 3, A = 0 mã B thành gì?"} options={["A. B", "B. H", "C. I", "D. F"]} correctIndex={2} explanation={"Đáp án C. 5·1 + 3 = 8, tức I. Nhiễu dễ nhầm B. H ở vị trí 7."} />
+
+<Quiz question={"Câu 3. Điều kiện để Affine giải ngược được là gì?"} options={["A. gcd(a, 26) = 1", "B. a = 0", "C. b chẵn", "D. b khác 0"]} correctIndex={0} explanation={"Đáp án A. a phải có nghịch đảo modulo 26. Nhiễu dễ nhầm C. Chẵn lẻ của b không quyết định nghịch đảo."} />
+
+## Nguồn
+
+[P02](/courses/information-security/documents/sources) tr. 22–30, 39–40, 73–74. Hình tr. 74 đã đối chiếu trực tiếp. T02 01:48:54.161–01:49:38.881. Tên Vigenère nhận dạng chưa rõ tại 01:48:58.707–01:49:01.321 nhưng khóa lặp và lời mô tả khớp bài tập.

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { courseDocuments } from "@/lib/content/documents";
 import { CourseCatalog } from "@/components/learning/course-catalog";
 import { readCatalog } from "@/lib/content/catalog";
 import { notebookUrl, notebooksForCourse } from "@/lib/notebooks";
@@ -42,6 +43,14 @@ export default async function CoursePage({ params }: { params: Promise<{ course:
             ))}
           </ul>
         </section>
+      )}
+      {courseDocuments[course.id] && (
+        <nav aria-label="Tài liệu môn học" className="flex flex-wrap gap-3">
+          {courseDocuments[course.id].map(({ id, title }) => (
+            <Link key={id} href={`/courses/${course.id}/documents/${id}`}
+              className="rounded-lg border border-teal-200 bg-white px-4 py-2 text-sm font-medium text-teal-800 hover:bg-teal-50">{title}</Link>
+          ))}
+        </nav>
       )}
       <CourseCatalog courseId={course.id} topics={course.topics} sessions={course.sessions} lessons={course.lessons} />
     </div>

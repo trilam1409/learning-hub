@@ -1,0 +1,72 @@
+# Mã hóa theo cặp với Playfair và theo nhóm với Hill
+
+Buổi 2 · Ma trận ký tự và phép nhân ma trận
+
+## Mục tiêu học
+
+Thực hiện một lượt tra Playfair và một phép tính Hill. Kiểm tra điều kiện đảo của khóa Hill.
+
+## Kiến thức qua tình huống
+
+Playfair biến đổi cặp chữ theo tọa độ trong bảng. Hill biến đổi một nhóm chữ bằng phép nhân ma trận. Với Playfair 5×5, đặt chữ không trùng của khóa trước rồi điền phần còn lại A–Z, gộp I/J. Cùng hàng thì dịch phải; cùng cột thì dịch xuống; khác cả hàng lẫn cột thì giữ hàng và trao đổi cột. Giải ngược theo chiều trái/lên hoặc đổi lại cột. Xem [thực hành Playfair](../session-03-classical-practice/03-playfair.md) để thấy cách xử lý chữ đôi và đệm.
+
+## Công thức và cách áp dụng
+
+C = HP mod 26 và P = H^(-1)C mod 26 với Hill. H là ma trận vuông khóa, P và C là vector cột. H đảo được khi gcd(det H, 26) = 1. Theo slide tr. 35, A = 1 đến Z = 26, dư 0 đọc là Z.
+
+## Bài tập chính thức
+
+Slide tr. 73 dùng **NHAP MON BAO DAM VA AN NINH THONG TIN** và khóa là họ tên sinh viên; lập ma trận, trình bày mã hóa và giải mã. Tên tệp hai bài ở tr. 73 là **Bài tập 1A - Họ tên_mssv.doc**. T02 ở đoạn nêu trên dùng **Trường Đại học Công nghệ Thông tin** làm bản rõ. Slide tr. 72 còn nêu bài viết ứng dụng cho hai trong Vigenère, Hill, Affine, Playfair, Solitaire. Trạng thái giao bài này cần xem yêu cầu lớp.
+
+## Ví dụ có lời giải và kết quả mong đợi
+
+**Ví dụ tự soạn.** H có hai hàng (3, 3), (2, 5). AB là (1, 2). Nhân được (9, 12), tức IL. Định thức bằng 9 có nghịch đảo 3, nên H^(-1) có hai hàng (15, 17), (20, 9) modulo 26. Nhân với (9, 12) cho (339, 288), lấy dư (1, 2), trở lại AB.
+
+**Ví dụ từ giảng viên** (P02 tr. 33–38). Với khóa Playfair và bản rõ THANH PHO HO CHI MINH, hình tr. 34 tách cặp đầu thành TH và cặp cuối là HX có đệm. Với Hill, ảnh sinh khóa dùng hai hàng (17, 6), (23, 25). Vector của TH là (20, 8); tích theo modulo 26 là (24, 10), tức XJ. Hình tiếp theo nhân XJ với ma trận nghịch đảo để thu lại TH.
+
+## Tóm tắt
+
+Playfair tra tọa độ, Hill dùng đại số modulo và ma trận đảo được.
+
+## Điểm dễ nhầm
+
+Định thức khác 0 chưa đủ để đảo được modulo 26. Cần thống nhất quy ước số của mỗi chữ trước khi so đáp án.
+
+## Trắc nghiệm
+
+### Câu 1
+
+Khóa Hill có dạng nào?
+
+- A. Hai số nguyên tố
+- B. Một ký tự đệm
+- C. Ma trận vuông bất kỳ
+- D. Ma trận vuông khả nghịch modulo 26
+
+**Đáp án D.** Phép giải cần ma trận đảo modulo. **Nhiễu dễ nhầm C.** Ma trận vuông tùy ý có thể không đảo được.
+
+### Câu 2
+
+Hai chữ Playfair khác hàng và cột xử lý thế nào?
+
+- A. Dịch cả hai xuống
+- B. Giữ cột và đổi hàng
+- C. Giữ hàng và đổi cột
+- D. Dịch cả hai sang phải
+
+**Đáp án C.** Mỗi chữ lấy góc còn lại trên cùng hàng. **Nhiễu dễ nhầm B.** Đổi hàng sẽ lấy góc theo thứ tự khác.
+
+### Câu 3
+
+Với Hill gán A = 1, số dư 0 đọc là gì?
+
+- A. A
+- B. Z
+- C. B
+- D. J
+
+**Đáp án B.** Z = 26 có số dư 0. **Nhiễu dễ nhầm A.** A = 0 là quy ước khác.
+
+## Nguồn
+
+[P02](../SOURCES.md) tr. 31–38, 71–74. T02 01:49:40.201–01:49:45.281 nêu dữ liệu khác slide. T02 01:50:13.741–01:50:35.731 nhắc họ tên làm khóa, lập ma trận, mã hóa, giải mã và có thể dùng bảng tính. Tên tệp ở đoạn cuối chưa rõ. Đã đối chiếu hình ví dụ tr. 33–34, 36–38. Xem [bài tập bảng tọa độ tr. 74](02-letters-and-modulo.md).

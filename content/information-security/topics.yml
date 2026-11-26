@@ -1,0 +1,15 @@
+- id: overview
+  title: "Tổng quan và phòng thủ"
+  order: 1
+- id: classical-cryptography
+  title: "Modulo và mật mã cổ điển"
+  order: 2
+- id: modern-cryptography
+  title: "Mật mã hiện đại và RSA"
+  order: 3
+- id: authentication
+  title: "MAC, băm và chữ ký số"
+  order: 4
+- id: practice-reports
+  title: "Thực hành và báo cáo"
+  order: 5

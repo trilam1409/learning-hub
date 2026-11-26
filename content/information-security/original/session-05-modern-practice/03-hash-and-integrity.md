@@ -1,0 +1,89 @@
+# Băm văn bản và kiểm tra tính toàn vẹn
+
+Buổi 5 · TH2B bước 3 và 6
+
+## Mục tiêu học
+
+Đo độ dài digest, quan sát avalanche và kiểm lại giá trị tham chiếu ở phía nhận.
+
+## Kiến thức qua tình huống
+
+MD5 có 128 bit, SHA-1 có 160 bit và SHA-256 có 256 bit, tương ứng 32, 40 và 64 chữ số hex. Sửa một ký tự có thể làm nhiều bit digest đổi. Phép kiểm tin cậy cần giá trị tham chiếu được bảo vệ hoặc đến từ nguồn đã xác minh.
+
+## Công thức và cách áp dụng
+
+h = H(M), M là các byte thông điệp. Bên nhận so H(M_nhận) với h_tham_chiếu. Nếu không khớp, kiểm byte đầu vào và tham số trước khi kết luận nguyên nhân. Đếm bit khác giữa hai digest bằng XOR rồi đếm số bit 1.
+
+## Bài tập chính thức
+
+Bước 3 tạo **th2B_b3.txt**, tính **MD5, SHA-1, SHA-256**, sửa một ký tự và tính lại. Bước 6 gửi **th2B_b6.txt** và digest; người nhận tính lại và so.
+
+## Công cụ và dữ liệu đầu vào
+
+CrypTool 1 và hai tệp chính thức. Có thể dùng mẫu abc/abd bên dưới. Thống nhất UTF-8 không BOM và quy tắc cuối dòng.
+
+## Các bước thực hiện
+
+1. Trong Analysis → Hashes theo đề, tính ba digest, ghi số bit và hex.
+2. Đổi một ký tự, tính lại ba digest, so với kết quả ban đầu. Phân biệt thay đổi ở byte với thay đổi ở kết quả hiển thị.
+3. Lấy tệp b6 và digest tham chiếu gửi sang bên nhận. Tính lại và thử thêm một bản đã sửa. Ghi cả hai lượt.
+
+## Cách tự kiểm tra
+
+So đủ toàn bộ digest. Lặp bằng cùng thuật toán với đúng byte, kiểm cả dấu xuống dòng hoặc BOM.
+
+## Ví dụ có lời giải và kết quả mong đợi
+
+**Ví dụ tự soạn.** Hai văn bản abc và abd, chỉ 3 byte ASCII, không thêm xuống dòng. SHA-256 lần lượt là
+
+- abc → ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+- abd → a52d159f262b2c6ddb724a61840befc36eb30c88877a4030b65cbe86298449c9
+
+Nếu gửi abc cùng digest đầu và bên nhận nhận đúng abc, kết quả khớp. Nếu bản nhận là abd và digest vẫn như cũ, kết quả lệch.
+
+## Tóm tắt
+
+Một thay đổi nhỏ ở đầu vào thường làm nhiều bit digest thay đổi. Cùng byte đầu vào với cùng thuật toán phải cho cùng digest.
+
+## Điểm dễ nhầm
+
+Digest công khai gửi cùng dữ liệu có thể bị thay đồng thời với dữ liệu. Trường hợp đó cần cơ chế xác thực như MAC hoặc chữ ký.
+
+## Trắc nghiệm
+
+### Câu 1
+
+MD5 dài bao nhiêu bit?
+
+- A. 512
+- B. 160
+- C. 256
+- D. 128
+
+**Đáp án D.** MD5 có digest 128 bit. **Nhiễu dễ nhầm B.** SHA-1 mới là 160 bit.
+
+### Câu 2
+
+Digest trùng tham chiếu đáng tin giúp kiểm gì?
+
+- A. Bảo mật nội dung
+- B. Danh tính độc lập của người gửi
+- C. Độ ổn định máy tính
+- D. Toàn vẹn so với tham chiếu
+
+**Đáp án D.** Digest dùng đối chiếu cùng bộ byte. **Nhiễu dễ nhầm B.** Hash công khai một mình không xác minh người gửi.
+
+### Câu 3
+
+Thêm dòng mới vào cuối tệp có thể làm gì?
+
+- A. Đổi chiều dài chuẩn digest
+- B. Sinh khóa công khai
+- C. Thêm byte làm digest đổi
+- D. Chỉ đổi phông chữ
+
+**Đáp án C.** Ký tự xuống dòng là dữ liệu đầu vào. **Nhiễu dễ nhầm D.** Cùng thuật toán vẫn giữ độ dài đầu ra.
+
+## Nguồn
+
+[P05](../SOURCES.md) tr. 2–3, câu 2–3 tr. 4. [P04](../SOURCES.md) tr. 33–49. T05 00:03:20.907–00:03:54.857 và 00:04:46.607–00:05:11.017 nhắc đặt tên theo bước, phía nhận tự tính digest để so. Kết quả là phép tính hoặc dự kiến, chưa chạy CrypTool.

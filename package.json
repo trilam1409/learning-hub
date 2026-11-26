@@ -25,6 +25,7 @@
     "react-is": "^19.2.3",
     "recharts": "^3.5.0",
     "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
     "yaml": "^2.8.4",
     "zod": "^4.6.5"
   },

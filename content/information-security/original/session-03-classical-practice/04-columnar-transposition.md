@@ -1,0 +1,94 @@
+# Hoán vị cột và cách phục hồi thứ tự chữ
+
+Buổi 3 · Chủ đề chuyển vị cột và hàng cuối chưa đầy
+
+## Mục tiêu học
+
+- Mã hóa theo thứ tự cột của khóa số và giải ngược.
+- Nhận ra điểm khác biệt giữa đổi vị trí chữ và thay chữ.
+
+## Kiến thức qua tình huống
+
+Khi điền văn bản theo hàng rồi đọc theo một thứ tự cột khác, chữ nào có trong bản rõ vẫn có trong bản mã nếu không thêm ký tự đệm. Điều thay đổi là thứ tự. Do đó chỉ kiểm tra số lần xuất hiện của mỗi chữ chưa đủ để khôi phục câu gốc.
+
+## Công thức và cách áp dụng
+
+**Kiến thức bổ sung.** Với N chữ và k cột, viết N = qk + r với 0 ≤ r < k. Nếu điền hàng từ trái sang phải và không đệm, r cột vật lý bên trái có q + 1 chữ; các cột còn lại có q chữ. Khi giải, đọc độ dài theo thứ tự cột bản gốc, rồi chia bản mã theo thứ tự nhãn tăng dần, dùng độ dài đúng cho từng nhãn.
+
+## Bài tập chính thức
+
+Chọn Encrypt → Transposition → Columnar rồi dùng khóa **4312567**, giải mã lại, thử **Analysis → Transposition Analysis**, và tạo thêm **2 ví dụ**. Báo cáo vì sao chữ giữ nguyên mà vị trí thay đổi.
+
+## Công cụ và dữ liệu đầu vào
+
+CrypTool 1 và bảng cột. Đề cho khóa chính thức nhưng để người học chọn văn bản. Mẫu dưới tái sử dụng ATTACKATDAWN làm **Ví dụ tự soạn** cho bước này. Giả định mỗi chữ số là nhãn của cột vật lý, nhập theo hàng, đọc cột từ trên xuống theo nhãn tăng dần và không đệm.
+
+## Các bước thực hiện
+
+1. Viết khóa 4312567 ở đầu bảng. Điền bản rõ theo từng hàng. Mã hóa trong CrypTool theo chế độ Columnar, ghi trật tự điền, cách đọc và thiết lập đệm.
+2. Đọc cột nhãn 1 rồi 2, tiếp tục đến 7. Để giải, tính độ dài từng cột vật lý rồi chia bản mã theo thứ tự nhãn và đặt các khối về cột tương ứng.
+3. Dùng Transposition Analysis với bản mã tự tạo. Ghi ứng viên và tiêu chí đối chiếu với bản rõ đã giữ. Phân tích trên mẫu ngắn có thể cho nhiều ứng viên; đối chiếu bằng bản rõ hoặc thử văn bản dài hơn.
+4. Thử thêm hai ví dụ, giữ ghi chép về bảng cột và cách giải ngược.
+
+## Ví dụ có lời giải và kết quả mong đợi
+
+~~~text
+Nhãn  4 3 1 2 5 6 7
+      A T T A C K A
+      T D A W N
+~~~
+
+Đọc theo nhãn tăng dần cho **TA | AW | TD | AT | CN | K | A**, tức **TAAWTDATCNKA**. N = 12, k = 7, q = 1, r = 5 nên cột vật lý 1–5 có hai chữ. Bản giải là ATTACKATDAWN.
+
+**Ví dụ tự soạn.** Hai mẫu bổ sung là MEETATNOON với khóa 312 → EAOETOMTNN và STUDYATNIGHT với khóa 2413 → UTHSYIDNTTAG. Cả hai dùng quy ước không đệm ở trên. Khi CrypTool dùng quy ước khác, tính lại theo thiết lập ghi trên bài báo cáo.
+
+## Cách tự kiểm tra
+
+Đếm tổng số chữ và tần suất từng chữ của hai phía. Giải ngược để kiểm tra thứ tự. Hai bản mã cùng tần suất vẫn có thể giải ra hai chuỗi khác nhau.
+
+## Tóm tắt
+
+Khóa cho thứ tự đọc cột. Hàng cuối thiếu ô quyết định cột nào dài hơn. Khi giải, đặt từng khối vào đúng cột rồi đọc lại theo hàng.
+
+## Điểm dễ nhầm
+
+Cột bên trái trong bảng và cột có nhãn nhỏ là hai khái niệm khác nhau. Tính độ dài theo vị trí vật lý trước khi sắp theo nhãn.
+
+## Trắc nghiệm
+
+### Câu 1
+
+Hoán vị cột không đệm giữ gì?
+
+- A. Tần suất từng chữ
+- B. Vị trí từng chữ
+- C. Thứ tự đọc
+- D. Từng từ nguyên dạng
+
+**Đáp án A.** Chỉ các vị trí thay đổi. **Nhiễu dễ nhầm B.** Chữ có thể chuyển sang vị trí mới.
+
+### Câu 2
+
+Điền 12 chữ vào 7 cột. Có mấy cột dài 2?
+
+- A. 2
+- B. 7
+- C. 12
+- D. 5
+
+**Đáp án D.** 12 = 1×7 + 5 tạo thêm chữ cho năm cột. **Nhiễu dễ nhầm B.** 7 là tổng số cột.
+
+### Câu 3
+
+Khi giải, tính độ dài cột theo thứ tự nào?
+
+- A. Thứ tự nhãn tăng dần
+- B. Độ dài từ
+- C. Chữ phổ biến nhất
+- D. Thứ tự vật lý
+
+**Đáp án D.** Hàng cuối điền từ trái sang phải. **Nhiễu dễ nhầm A.** Thứ tự nhãn dùng để lấy các khối bản mã sau khi biết độ dài.
+
+## Nguồn
+
+[P03](../SOURCES.md) tr. 3–4 và câu báo cáo 4, 5 ở tr. 4. T03 00:04:03.260–00:05:20.620 giới thiệu TH2A; không có thêm chỉ dẫn cụ thể cho thuật toán của bài này.

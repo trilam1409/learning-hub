@@ -21,6 +21,9 @@ export default async function LessonPage({ params }: { params: Promise<LessonPar
   const lesson = course?.lessons.find(({ id }) => id === lessonId);
   if (!course || !lesson) notFound();
 
+  const lessonIndex = course.lessons.findIndex(({ id }) => id === lesson.id);
+  const previous = course.lessons[lessonIndex - 1];
+  const next = course.lessons[lessonIndex + 1];
   const { default: Lesson } = await import(`@/content/${courseId}/lessons/${lessonId}.mdx`);
 
   return (
@@ -48,6 +51,10 @@ export default async function LessonPage({ params }: { params: Promise<LessonPar
           </ul>
         </section>
       )}
+      <nav aria-label="Chuyển bài học" className="grid gap-3 border-t border-stone-200 pt-5 sm:grid-cols-2">
+        {previous && <Link className="rounded-lg border border-stone-200 p-3 text-teal-800 hover:bg-teal-50" href={`/courses/${course.id}/lessons/${previous.id}`}>← Bài trước: {previous.title}</Link>}
+        {next && <Link className="rounded-lg border border-stone-200 p-3 text-teal-800 hover:bg-teal-50" href={`/courses/${course.id}/lessons/${next.id}`}>Bài tiếp: {next.title} →</Link>}
+      </nav>
       <LessonSources sources={course.sources} references={lesson.references} />
       <div className="border-t border-stone-200 pt-6">
         <Link className="inline-flex rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-teal-800 hover:bg-teal-50" href={`/courses/${course.id}`}>← Quay lại {course.title}</Link>
