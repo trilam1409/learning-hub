@@ -1,7 +1,7 @@
 ---
 id: polynomial-pipeline
 title: "Hồi quy đa thức và Pipeline"
-summary: "Đọc trước Bài 06: hồi quy đa thức và pipeline, kèm mã Python và bài tập."
+summary: "Tạo đặc trưng đa thức và kết hợp các bước tiền xử lý trong một pipeline."
 order: 27
 topicIds: [model-development]
 sessionIds: []
@@ -26,6 +26,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung Bài 06 lấy từ slide, chưa có transcript VTT tương ứng; ví dụ thêm vào để hỗ trợ luyện tập.
+
+## Mục tiêu học
+
+- Dùng PolynomialFeatures trong pipeline để thử một quan hệ cong.
 
 ## Khi đường thẳng chưa phù hợp
 
@@ -69,5 +73,15 @@ print(pipeline.predict([[5]]))
 ```
 
 Pipeline giúp đóng gói trình tự biến đổi, giảm lỗi khi áp dụng lên dữ liệu mới. Khi chia train/test hoặc cross-validation, bước `fit` của scaler cần diễn ra **chỉ trong dữ liệu train** để tránh data leakage.
+
+## Tóm tắt
+
+Đặc trưng đa thức cho phép mô hình tuyến tính theo hệ số biểu diễn một đường cong theo đầu vào.
+
+## Điểm dễ nhầm
+
+Lỗi train thấp hơn sau khi tăng bậc chưa chứng minh khả năng dự đoán tốt hơn.
+
+## Trắc nghiệm
 
 <Quiz question="Lợi ích chính của sklearn Pipeline là gì?" options={["Gộp biến đổi và estimator thành quy trình nhất quán","Tự loại bỏ toàn bộ lỗi dữ liệu","Luôn đảm bảo mô hình chính xác 100%"]} correctIndex={0} explanation="Pipeline nối các bước xử lý và mô hình, có thể fit và predict theo cùng một quy trình." />

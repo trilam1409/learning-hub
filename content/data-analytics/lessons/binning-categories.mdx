@@ -15,6 +15,10 @@ references:
     startSeconds: 4809
 ---
 
+## Mục tiêu học
+
+- Gán nhãn cho các mức giá bằng pd.cut và đọc giá trị nằm tại ranh giới.
+
 ## Khi nào nên chia khoảng?
 
 Đôi khi cần diễn giải dữ liệu liên tục bằng nhóm dễ hiểu, chẳng hạn điểm thấp/vừa/cao hay phân khúc giá. Slide Bài 02 giới thiệu cách tìm cận và chia thành bins.
@@ -42,5 +46,15 @@ print(df)
 ## Bài tập
 
 Tạo ba nhóm điểm: dưới 5, từ 5 đến dưới 8, từ 8 trở lên. Hãy kiểm tra kỹ hai trường hợp đúng bằng 5 và 8 bằng `right=False`.
+
+## Tóm tắt
+
+Chia khoảng biến giá trị liên tục thành nhóm để đếm hoặc so sánh.
+
+## Điểm dễ nhầm
+
+Kiểm tra điều kiện đóng mở của khoảng; giá trị nằm ngoài các mốc sẽ không được gán nhãn.
+
+## Trắc nghiệm
 
 <Quiz question="Có 4 mốc bins liên tiếp thì tạo được bao nhiêu khoảng?" options={["3","4","5"]} correctIndex={0} explanation="4 biên liền nhau tạo 3 khoảng." />

@@ -23,9 +23,12 @@ references:
     endSeconds: 3841.1
 ---
 
-# Chuẩn hóa Min-Max
-
 **Đã học trong Buổi 04.** Bài này được biên tập từ slide *Bài 02 – Sắp xếp dữ liệu* và transcript của buổi học. Các ví dụ số bên dưới được biên soạn để luyện tập, không phải dữ liệu gốc do thầy cung cấp.
+
+## Mục tiêu học
+
+- Tính Min-Max từ giá trị nhỏ nhất và lớn nhất của bộ dữ liệu.
+- Giải thích vì sao cần fit bộ chuẩn hóa trên tập train.
 
 ## Tại sao cần chuẩn hóa dữ liệu?
 
@@ -110,4 +113,16 @@ Trong quy trình machine learning, hãy **fit scaler chỉ trên tập training*
 - *Buoi04.vtt*, mốc 55:21 và 01:03:48.
 
 
+## Tóm tắt
+
+Min-Max đo vị trí tương đối của một giá trị trong khoảng dùng để fit.
+
+## Điểm dễ nhầm
+
+Một giá trị mới nằm ngoài khoảng đã fit có thể cho kết quả dưới 0 hoặc trên 1.
+
+## Trắc nghiệm
+
 <Quiz question="Với dãy [20, 40, 60, 80, 100], kết quả Min-Max của 60 bằng bao nhiêu?" options={["0.25", "0.5", "0.75"]} correctIndex={1} explanation="(60 - 20) / (100 - 20) = 40 / 80 = 0.5." />
+
+<Quiz question="Bộ chuẩn hóa được fit với min = 20 và max = 100. Khi transform giá trị mới 120, kết quả là bao nhiêu?" options={["1.25", "1 vì kết quả luôn bị chặn", "0.8"]} correctIndex={0} explanation="Giữ min và max đã fit. (120 − 20) / (100 − 20) = 1.25. Chặn kết quả là tùy chọn riêng." />

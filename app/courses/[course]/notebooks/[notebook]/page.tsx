@@ -20,10 +20,11 @@ export default async function NotebookPage({ params }: { params: Promise<Params>
   if (!notebook || !course) notFound();
 
   const labPath = `/jupyterlite/lab/index.html?path=${encodeURIComponent(notebook.file)}`;
+  const notebookPath = `/jupyterlite/notebooks/index.html?path=${encodeURIComponent(notebook.file)}`;
   const isRuntimePublished = existsSync(path.join(process.cwd(), "public", "jupyterlite", "lab", "index.html"));
 
   return (
-    <main className="space-y-5">
+    <div className="space-y-5">
       <nav aria-label="Điều hướng notebook" className="flex flex-wrap items-center gap-3 text-sm">
         <Link className="text-teal-800 underline" href={`/courses/${courseId}`}>← {course.title}</Link>
         <span aria-hidden="true">/</span>
@@ -42,24 +43,33 @@ export default async function NotebookPage({ params }: { params: Promise<Params>
       <div className="flex flex-wrap gap-3 text-sm">
         {isRuntimePublished && (
           <a className="rounded-lg bg-teal-800 px-4 py-2 font-medium text-white hover:bg-teal-900"
-            href={labPath} target="_blank" rel="noopener noreferrer">
-            Mở toàn màn hình ↗
+            href={notebookPath} target="_blank" rel="noopener noreferrer">
+            Mở notebook ở tab mới ↗
           </a>
         )}
         <a className="rounded-lg border border-stone-300 px-4 py-2 text-teal-800 hover:bg-stone-50"
-          href={`https://github.com/trilam1409/learning-hub/raw/refs/heads/main/content/data-analytics/notebooks/${notebook.file}`}>
-          Tải file .ipynb
+          href={isRuntimePublished
+            ? `/jupyterlite/files/${encodeURIComponent(notebook.file)}`
+            : `https://github.com/trilam1409/learning-hub/raw/refs/heads/main/content/data-analytics/notebooks/${notebook.file}`}
+          download={notebook.file}>
+          Tải notebook mẫu (.ipynb)
         </a>
       </div>
 
       {isRuntimePublished ? (
-        <iframe
-          title={`JupyterLite – ${notebook.title}`}
-          src={labPath}
-          loading="lazy"
-          className="h-[75vh] min-h-[520px] w-full rounded-xl border border-stone-200 bg-white"
-          allow="clipboard-read; clipboard-write"
-        />
+        <>
+          <div className="space-y-2 rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm text-stone-800">
+            <p>Chọn một ô code và dùng nút Run hoặc Shift + Enter để chạy. Trên màn hình hẹp, dùng nút mở tab mới để có thêm chỗ viết code.</p>
+            <p>Trong Lab, bấm biểu tượng thư mục để ẩn thanh bên. Để sao lưu bài đang làm, lưu notebook rồi dùng File → Download trong JupyterLab.</p>
+          </div>
+          <iframe
+            title={`JupyterLite – ${notebook.title}`}
+            src={labPath}
+            loading="lazy"
+            className="hidden h-[75vh] min-h-[520px] w-full rounded-xl border border-stone-200 bg-white lg:block"
+            allow="clipboard-read; clipboard-write"
+          />
+        </>
       ) : (
         <div role="status" className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-950">
           JupyterLite đang chờ xuất bản bộ tài nguyên tĩnh. Bạn vẫn có thể tải .ipynb để luyện tập.
@@ -70,6 +80,6 @@ export default async function NotebookPage({ params }: { params: Promise<Params>
         Nếu trình duyệt không cho chạy kernel hoặc không hỗ trợ WebAssembly, hãy mở notebook trong
         JupyterLab trên máy hoặc dùng tệp .ipynb đã tải về. Chỉ nên chạy những đoạn code bạn hiểu và tin cậy.
       </p>
-    </main>
+    </div>
   );
 }

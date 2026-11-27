@@ -19,6 +19,10 @@ references:
     startSeconds: 2352
 ---
 
+## Mục tiêu học
+
+- Chọn Series.plot hoặc DataFrame.plot và đặt loại biểu đồ theo dữ liệu.
+
 ## Vẽ trực tiếp bằng Pandas
 
 Pandas hỗ trợ phương thức `plot()` cho Series và DataFrame. Bên dưới nó thường sử dụng backend Matplotlib, nên có thể phối hợp với `pyplot`.
@@ -58,5 +62,15 @@ plt.show()
 ```
 
 ## Tự kiểm tra
+
+## Tóm tắt
+
+Pandas plotting tạo biểu đồ trực tiếp từ một cột hoặc cả bảng.
+
+## Điểm dễ nhầm
+
+Trục ngang thường dùng index nếu chưa chỉ rõ x; xem lại nhãn trục trước khi diễn giải.
+
+## Trắc nghiệm
 
 <Quiz question="Để biểu diễn phân phối giá trị số theo khoảng, dùng kind nào?" options={["hist","pie","line"]} correctIndex={0} explanation="Histogram gom giá trị số vào các khoảng và biểu diễn tần suất." />

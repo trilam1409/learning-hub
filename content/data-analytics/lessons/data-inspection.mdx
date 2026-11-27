@@ -19,6 +19,10 @@ references:
 
 **Phạm vi nguồn:** Đây là nội dung từ slide Bài 01; các ví dụ được biên soạn để luyện thao tác Pandas. Mốc giảng tương ứng trong VTT Buổi 03 chưa được xác nhận.
 
+## Mục tiêu học
+
+- Dùng head, info và describe để trả lời ba câu hỏi khác nhau về bảng.
+
 ## Khám phá trước khi xử lý
 
 Không nên biến đổi dữ liệu chỉ vì nhìn thấy một ô trống. Trước tiên cần hiểu quy mô, ý nghĩa, kiểu dữ liệu và phân phối của từng cột.
@@ -48,5 +52,15 @@ print(df.isna().sum())
 | `isna().sum()` | Mỗi cột thiếu bao nhiêu giá trị? |
 
 Lưu ý: `describe()` mặc định mô tả các cột phù hợp (thường là cột số). `describe(include="all")` cho phép xem thêm các cột khác.
+
+## Tóm tắt
+
+head cho xem hàng mẫu, info cho cấu trúc và describe cho thống kê mô tả.
+
+## Điểm dễ nhầm
+
+Vài hàng đầu trông đầy đủ vẫn có thể che các giá trị thiếu ở phần còn lại.
+
+## Trắc nghiệm
 
 <Quiz question="Muốn biết số giá trị không thiếu và kiểu dữ liệu của từng cột, nên gọi gì?" options={["df.info()","df.plot()","df.to_csv()"]} correctIndex={0} explanation="info() tóm tắt kiểu dữ liệu và số non-null của mỗi cột." />

@@ -19,6 +19,10 @@ references:
     startSeconds: 1295
 ---
 
+## Mục tiêu học
+
+- Tạo DataFrame, chọn một cột và lưu bảng ra CSV.
+
 ## DataFrame là bảng dữ liệu hai chiều
 
 DataFrame có các dòng, cột và index. Mỗi cột có thể được xem như một Series. Giảng viên giới thiệu việc đọc CSV trong Buổi 03.
@@ -53,5 +57,15 @@ df.to_csv("cars-cleaned.csv", index=False)
 `index=False` giúp không xuất index của Pandas thành cột không cần thiết.
 
 **Bài tập:** Tạo DataFrame ba xe, tăng giá mỗi xe 5%, rồi xuất CSV. Hãy đọc lại file để kiểm tra.
+
+## Tóm tắt
+
+DataFrame có hàng, cột và nhãn. CSV lưu dữ liệu dạng văn bản để đọc lại.
+
+## Điểm dễ nhầm
+
+Nếu không cần lưu chỉ số hàng, dùng index=False khi xuất CSV để tránh cột thừa.
+
+## Trắc nghiệm
 
 <Quiz question="Cách nào đọc dữ liệu CSV thành DataFrame?" options={["pd.read_csv('cars.csv')","pd.to_csv('cars.csv')","pd.csv('cars.csv')"]} correctIndex={0} explanation="read_csv là phương thức nhập tệp CSV của Pandas." />

@@ -19,6 +19,10 @@ references:
     startSeconds: 1521
 ---
 
+## Mục tiêu học
+
+- Nhận diện ký hiệu bị thiếu và chọn xử lý theo ý nghĩa của cột.
+
 ## Dữ liệu khuyết là gì?
 
 Slide Bài 02 liệt kê nhiều cách dữ liệu thô thể hiện giá trị thiếu: `?`, `NA`, `NaN`, `Null`, ô trống, đôi khi cả số 0 tùy ngữ cảnh. **Không được tự động coi mọi số 0 là thiếu**.
@@ -54,6 +58,16 @@ Giảng viên có trao đổi về điền khuyết và loại bỏ giá trị t
 ## Tự thực hành
 
 Tạo cột `price` gồm `[10000, "?", 15000]`. Chuyển thành số và xử lý bằng hai cách để so sánh số dòng còn lại.
+
+## Tóm tắt
+
+Khảo sát số lượng và vị trí giá trị thiếu trước khi quyết định bỏ hoặc điền.
+
+## Điểm dễ nhầm
+
+Thay ô thiếu bằng 0 có thể biến một giá trị chưa biết thành một phép đo bằng không.
+
+## Trắc nghiệm
 
 <Quiz question="Ký hiệu '?' trong CSV nên được xử lý thế nào trước khi tính trung bình?" options={["Cộng trực tiếp vào phép tính","Xác định nó biểu diễn thiếu, chuyển sang NaN và xử lý","Đổi tất cả thành 0"]} correctIndex={1} explanation="Cần chuẩn hóa ký hiệu thiếu trước khi tính toán và lựa chọn chính sách xử lý." />
 

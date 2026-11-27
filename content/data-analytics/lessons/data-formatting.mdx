@@ -17,6 +17,10 @@ references:
     page: 13
 ---
 
+## Mục tiêu học
+
+- Chuẩn hóa tên cột, kiểm tra kiểu và chuyển đơn vị trước khi phân tích.
+
 ## Cùng một ý nghĩa, nhiều cách viết
 
 Dữ liệu thu thập từ nhiều nguồn thường không nhất quán: `Ho Chi Minh`, `Tp. HCM`, `Hồ Chí Minh` có thể nói về cùng một thành phố.
@@ -51,5 +55,15 @@ df["city_l_per_100km"] = 235.2 / df["city_mpg"]
 ```
 
 Chỉ áp dụng công thức khi cột thực sự đo **miles per US gallon**; đơn vị không tương ứng sẽ làm kết quả sai.
+
+## Tóm tắt
+
+Định dạng, kiểu dữ liệu và đơn vị là ba bước kiểm tra riêng.
+
+## Điểm dễ nhầm
+
+Chuyển số trong cột mà quên cập nhật tên hoặc đơn vị có thể làm kết quả bị đọc sai.
+
+## Trắc nghiệm
 
 <Quiz question="Khi đổi từ MPG sang L/100km, MPG tăng thì L/100km có xu hướng gì?" options={["Tăng","Giảm","Không đổi"]} correctIndex={1} explanation="Theo công thức 235.2/MPG, mẫu số tăng làm giá trị giảm." />

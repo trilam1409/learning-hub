@@ -1,7 +1,7 @@
 ---
 id: regression-diagnostics
 title: "Đánh giá trực quan: regression, residual và distribution plot"
-summary: "Đọc trước Bài 06: đánh giá trực quan: regression, residual và distribution plot, kèm mã Python và bài tập."
+summary: "Dùng biểu đồ phần dư và phân phối để nhận ra dấu hiệu mô hình chưa phù hợp."
 order: 26
 topicIds: [model-development]
 sessionIds: []
@@ -24,6 +24,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung Bài 06 lấy từ slide, chưa có transcript VTT tương ứng; ví dụ thêm vào để hỗ trợ luyện tập.
+
+## Mục tiêu học
+
+- Dùng biểu đồ phần dư để kiểm tra một mô hình có bỏ sót dạng cong hay không.
 
 ## Không chỉ nhìn đường hồi quy
 
@@ -59,5 +63,15 @@ plt.show()
 ## Cách diễn giải
 
 Residual plot **không xác nhận mô hình chắc chắn tốt**; nó giúp phát hiện dấu hiệu mô hình sai dạng hoặc sai giả định. Cần kết hợp với đánh giá trên dữ liệu chưa dùng huấn luyện.
+
+## Tóm tắt
+
+Phần dư bằng giá trị quan sát trừ giá trị dự đoán. Mẫu hình trong phần dư là tín hiệu cần xem lại mô hình.
+
+## Điểm dễ nhầm
+
+Đường hồi quy trông hợp lý trên scatter plot vẫn có thể bỏ sót cấu trúc trong phần dư.
+
+## Trắc nghiệm
 
 <Quiz question="Phần dư tạo thành một đường cong rõ rệt có thể gợi ý điều gì?" options={["Quan hệ phi tuyến chưa được mô hình hóa","Dữ liệu chắc chắn hoàn hảo","Mô hình đã đạt độ chính xác tuyệt đối"]} correctIndex={0} explanation="Mẫu hình có cấu trúc ở phần dư cho thấy mô hình có thể bỏ sót thông tin." />

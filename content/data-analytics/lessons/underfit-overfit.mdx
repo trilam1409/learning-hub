@@ -1,7 +1,7 @@
 ---
 id: underfit-overfit
 title: "Underfitting, overfitting và chọn độ phức tạp"
-summary: "Đọc trước Bài 07: underfitting, overfitting và chọn độ phức tạp, có code và quiz."
+summary: "So sánh lỗi train và validation để phân biệt mô hình quá đơn giản và mô hình học quá sát dữ liệu."
 order: 30
 topicIds: [model-evaluation]
 sessionIds: []
@@ -26,6 +26,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung dựa trên slide Bài 07 và phần diễn giải bổ sung để chuẩn bị học. Chưa có VTT của buổi học tương ứng.
+
+## Mục tiêu học
+
+- Dùng chênh lệch lỗi train và validation để nhận diện overfitting.
 
 ## Ba trạng thái cần phân biệt
 
@@ -70,5 +74,15 @@ for degree in [1, 2, 4, 8, 15]:
 
 - Underfit: thêm đặc trưng phù hợp, thay đổi độ phức tạp, chọn mô hình khác.
 - Overfit: đơn giản hóa mô hình, regularization, thêm dữ liệu có chất lượng, dùng cross-validation.
+
+## Tóm tắt
+
+Lỗi cao ở cả hai tập gợi ý underfitting; lỗi train thấp đi cùng lỗi validation cao gợi ý overfitting.
+
+## Điểm dễ nhầm
+
+Chọn mô hình chỉ vì lỗi train thấp có thể làm giảm khả năng khái quát.
+
+## Trắc nghiệm
 
 <Quiz question="Train tốt nhưng test kém thường là dấu hiệu của gì?" options={["Overfitting","Underfitting chắc chắn","Thiếu nhãn index"]} correctIndex={0} explanation="Mô hình có thể học quá sát dữ liệu huấn luyện và không tổng quát hóa tốt." />

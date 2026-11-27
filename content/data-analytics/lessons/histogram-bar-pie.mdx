@@ -1,7 +1,7 @@
 ---
 id: histogram-bar-pie
 title: "Histogram, bar chart và pie chart: chọn đúng tình huống"
-summary: "| Loại | Dữ liệu phù hợp | Câu hỏi |"
+summary: "Phân biệt phân phối số, so sánh nhóm và tỉ lệ thành phần để chọn đúng một trong ba loại biểu đồ."
 order: 17
 topicIds: [visualization-tools]
 sessionIds: []
@@ -18,6 +18,11 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung biên soạn từ slide Bài 04. Chưa có transcript VTT xác nhận thầy đã giảng phần này.
+
+## Mục tiêu học
+
+- Chọn biểu đồ dựa trên câu hỏi cần trả lời và kiểu dữ liệu.
+- Phân biệt khoảng giá trị và nhóm rời rạc trên trục ngang.
 
 ## Ba biểu đồ dễ bị dùng nhầm
 
@@ -64,4 +69,16 @@ plt.show()
 
 Chỉ nên dùng pie khi số nhóm ít, cùng một tổng thể và thông tin tỉ lệ rõ ràng. Với nhiều nhóm nhỏ, bar chart thường dễ so sánh hơn.
 
+## Tóm tắt
+
+Histogram mô tả phân phối của biến số, biểu đồ cột so sánh nhóm và biểu đồ tròn mô tả phần trong một tổng.
+
+## Điểm dễ nhầm
+
+Chiều cao cột trong histogram theo tần số đếm số quan sát trong khoảng, không phải giá trị trung bình của khoảng.
+
+## Trắc nghiệm
+
 <Quiz question="Muốn biết phân phối chiều cao của 300 người, nên bắt đầu bằng gì?" options={["Histogram","Pie chart","Word cloud"]} correctIndex={0} explanation="Chiều cao là biến số liên tục, histogram cho thấy tần suất theo các khoảng." />
+
+<Quiz question="Bạn có tuổi của 200 người và muốn xem phần lớn tập trung trong khoảng tuổi nào. Chọn biểu đồ gì?" options={["Biểu đồ tròn theo từng người", "Histogram với các khoảng tuổi", "Biểu đồ đường theo thứ tự nhập dữ liệu"]} correctIndex={1} explanation="Histogram gom biến số liên tục hoặc rời rạc nhiều giá trị vào các khoảng để quan sát phân phối." />

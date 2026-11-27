@@ -17,6 +17,10 @@ references:
     startSeconds: 1531
 ---
 
+## Mục tiêu học
+
+- Dự đoán kết quả khi cộng hai Series có nhãn không trùng hết.
+
 ## Series là gì?
 
 Pandas **Series** là cấu trúc một chiều với giá trị và **index**. Trong transcript Buổi 03, giảng viên đi từ Series để giải thích cách xây dựng một cấu trúc dạng bảng sau đó.
@@ -47,6 +51,16 @@ Phân biệt:
 
 - `0 in series`: hỏi 0 có phải **nhãn index** hay không.
 - `0 in series.values`: hỏi giá trị 0 có xuất hiện trong **dữ liệu** hay không.
+
+## Tóm tắt
+
+Pandas khớp phép toán theo nhãn index.
+
+## Điểm dễ nhầm
+
+Hai phần tử ở cùng vị trí vẫn có thể không được cộng với nhau nếu nhãn khác nhau.
+
+## Trắc nghiệm
 
 <Quiz question="Hai Series có cùng số phần tử nhưng index khác nhau, phép cộng căn theo gì?" options={["Vị trí trong bộ nhớ","Tên index","Kiểu hiển thị màn hình"]} correctIndex={1} explanation="Pandas gắn kết phép toán của Series với nhãn index." />
 

@@ -1,7 +1,7 @@
 ---
 id: eda-descriptive-statistics
 title: "EDA và thống kê mô tả"
-summary: "Bài học đọc trước: eda và thống kê mô tả, kèm ví dụ và câu hỏi ôn tập."
+summary: "Dùng mean, median và mode để mô tả dữ liệu trước khi xây dựng mô hình."
 order: 20
 topicIds: [exploratory-analysis]
 sessionIds: []
@@ -20,6 +20,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Mục tiêu học
+
+- Chọn mean hoặc median để mô tả trung tâm khi có một điểm rất lớn.
 
 ## EDA (Exploratory Data Analysis) là gì?
 
@@ -56,6 +60,16 @@ Kết quả mean = 28; median = 10; mode = 10. Giá trị 100 kéo mean lên r�
 4. Xem thống kê mô tả và phân phối.
 5. Khám phá tương quan và nhóm.
 6. Ghi lại giả thuyết, hạn chế, bước phân tích tiếp theo.
+
+## Tóm tắt
+
+Thống kê mô tả là bước đầu để nhìn trung tâm, độ phân tán và các dấu hiệu cần kiểm tra.
+
+## Điểm dễ nhầm
+
+Một số trung bình có thể che mất hình dạng phân phối và sự khác nhau giữa các nhóm.
+
+## Trắc nghiệm
 
 <Quiz question="Với một giá trị ngoại lệ rất lớn, thước đo trung tâm nào thường ít bị kéo lệch hơn?" options={["Mean","Median","Tổng giá trị"]} correctIndex={1} explanation="Trung vị phụ thuộc vào thứ tự, nên bền vững hơn trước một vài ngoại lệ cực đoan." />
 

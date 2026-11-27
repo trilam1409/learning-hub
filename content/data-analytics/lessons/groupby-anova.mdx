@@ -1,7 +1,7 @@
 ---
 id: groupby-anova
 title: "Gom nhóm, pivot và kiểm định ANOVA"
-summary: "Bài học đọc trước: gom nhóm, pivot và kiểm định anova, kèm ví dụ và câu hỏi ôn tập."
+summary: "Tóm tắt dữ liệu theo nhóm bằng groupby và pivot, rồi đọc kết quả ANOVA."
 order: 24
 topicIds: [exploratory-analysis]
 sessionIds: []
@@ -24,6 +24,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Mục tiêu học
+
+- Tạo bảng giá trung bình theo nhóm rồi đọc câu hỏi mà ANOVA trả lời.
 
 ## Từ tương quan số đến so sánh các nhóm
 
@@ -61,5 +65,15 @@ print("F:", f_stat, "p:", p_value)
 Nếu `p < 0.05` (ngưỡng lựa chọn trước), bác bỏ giả thuyết tất cả trung bình bằng nhau. **ANOVA không tự nói cặp nhóm nào khác nhau**; muốn biết cần kiểm định hậu nghiệm thích hợp.
 
 Các giả định thường xét gồm độc lập quan sát, phân phối phần dư gần chuẩn trong nhóm và độ phân tán tương đối tương đồng; nếu không phù hợp cần phương án thay thế.
+
+## Tóm tắt
+
+Groupby và pivot tóm tắt nhóm; ANOVA kiểm tra giả thuyết các trung bình nhóm bằng nhau.
+
+## Điểm dễ nhầm
+
+Kết quả ANOVA có ý nghĩa chỉ cho biết ít nhất một trung bình khác; cần phân tích thêm để biết nhóm nào.
+
+## Trắc nghiệm
 
 <Quiz question="ANOVA có ý nghĩa thống kê nói lên điều nào?" options={["Có ít nhất một trung bình nhóm khác","Mọi cặp nhóm đều khác nhau","Tất cả dữ liệu đều chuẩn"]} correctIndex={0} explanation="Kết quả bác bỏ giả thuyết các trung bình nhóm bằng nhau; chưa xác định cặp nào khác." />

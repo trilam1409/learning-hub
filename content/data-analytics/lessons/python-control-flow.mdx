@@ -21,6 +21,10 @@ references:
 
 **Phạm vi nguồn:** Các cấu trúc điều khiển bên dưới có trong slide Python thực hành; transcript Buổi 02 hiện chưa xác nhận thầy đã giảng hết từng mục. Xem đây là tài liệu bổ trợ thuộc phần Python, không phải ghi chép khẳng định nội dung đã giảng.
 
+## Mục tiêu học
+
+- Viết điều kiện, lặp qua danh sách và đóng gói phép tính trong một hàm.
+
 ## Điều kiện và toán tử
 
 Python có toán tử số học `+`, `-`, `*`, `/`; so sánh `>=`, `==`, `!=`; logic `and`, `or`, `not`. Sử dụng dấu ngoặc để thể hiện rõ ý định khi kết hợp điều kiện.
@@ -54,5 +58,15 @@ print(average([4, 6, 8]))  # 6.0
 ```
 
 Slide thực hành Python còn giới thiệu `lambda`, đối số mặc định, `*args`, `**kwargs`. Bạn nên thực hành trên các ví dụ nhỏ trước khi đưa vào Pandas.
+
+## Tóm tắt
+
+Điều kiện chọn nhánh, vòng lặp xử lý nhiều phần tử và hàm cho phép dùng lại phép tính.
+
+## Điểm dễ nhầm
+
+print chỉ hiển thị giá trị. Dùng return để nơi gọi nhận và sử dụng kết quả của hàm.
+
+## Trắc nghiệm
 
 <Quiz question="Cách nào tạo danh sách các giá nhỏ hơn 10000?" options={["[x for x in prices if x < 10000]","prices < 10000","for prices if x"]} correctIndex={0} explanation="List comprehension kết hợp biểu thức x với điều kiện if." />

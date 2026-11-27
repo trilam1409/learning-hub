@@ -21,6 +21,10 @@ references:
     startSeconds: 2502
 ---
 
+## Mục tiêu học
+
+- Chọn list, tuple, dict hoặc set cho một dữ liệu cụ thể.
+
 ## Các kiểu cơ bản
 
 `int` và `float` biểu diễn số; `str` biểu diễn chuỗi; `bool` mang giá trị True/False; `None` biểu diễn chưa có giá trị. Một biến có thể tham chiếu đến các kiểu đối tượng khác nhau.
@@ -49,6 +53,16 @@ print(prices, car, brands)
 **Vì sao dùng dict?** Khi lưu thuộc tính một xe, khóa `price` có ý nghĩa rõ ràng hơn vị trí `item[2]`. Với nhiều bản ghi có cấu trúc giống nhau, có thể chuyển sang DataFrame ở buổi tiếp theo.
 
 **Ghi chú theo transcript:** Giảng viên trao đổi về kiểu list, dictionary và vị trí index khi thao tác dữ liệu; nên luyện cả truy cập theo vị trí và theo khóa.
+
+## Tóm tắt
+
+List và tuple là dãy; dict tra theo khóa; set gom phần tử duy nhất.
+
+## Điểm dễ nhầm
+
+Set loại phần tử trùng, vì vậy chỉ dùng khi số lần xuất hiện không cần giữ.
+
+## Trắc nghiệm
 
 <Quiz question="Cấu trúc nào phù hợp để tra giá theo khóa price?" options={["tuple","dict","set"]} correctIndex={1} explanation="dict lưu các cặp key-value, giúp truy cập car['price']." />
 

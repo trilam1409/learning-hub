@@ -1,7 +1,7 @@
 ---
 id: dispersion-and-boxplot
 title: "Độ phân tán, quartile, IQR và box plot"
-summary: "Bài học đọc trước: độ phân tán, quartile, iqr và box plot, kèm ví dụ và câu hỏi ôn tập."
+summary: "Đọc quartile và khoảng tứ phân vị để giải thích độ phân tán và nhận diện ngoại lệ."
 order: 21
 topicIds: [exploratory-analysis]
 sessionIds: []
@@ -24,6 +24,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Mục tiêu học
+
+- Tính IQR từ hai quartile rồi đọc khoảng giữa của box plot.
 
 ## Trung bình giống nhau, dữ liệu vẫn có thể khác nhau
 
@@ -60,5 +64,15 @@ plt.show()
 ## Bài tập
 
 So sánh hai nhóm A = [4, 5, 6] và B = [0, 5, 10]. Trung bình giống hay khác? Nhóm nào có độ lệch chuẩn lớn hơn?
+
+## Tóm tắt
+
+IQR bằng Q3 trừ Q1 và mô tả độ trải của nửa giữa dữ liệu.
+
+## Điểm dễ nhầm
+
+Độ dài hộp phản ánh khoảng giá trị; mỗi phần tư vẫn đại diện cho khoảng một phần tư số quan sát.
+
+## Trắc nghiệm
 
 <Quiz question="IQR được tính như thế nào?" options={["Q3 − Q1","Max − Min","Mean ÷ Median"]} correctIndex={0} explanation="Khoảng tứ phân vị mô tả độ rộng vùng 50% giá trị trung tâm." />

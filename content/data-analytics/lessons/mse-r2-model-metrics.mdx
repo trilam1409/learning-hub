@@ -1,7 +1,7 @@
 ---
 id: mse-r2-model-metrics
 title: "Đo sai số mô hình bằng MSE và R²"
-summary: "Đọc trước Bài 06: đo sai số mô hình bằng mse và r², kèm mã Python và bài tập."
+summary: "Tính MSE và R² trên cùng dữ liệu để diễn giải sai số và chất lượng dự đoán."
 order: 28
 topicIds: [model-development]
 sessionIds: []
@@ -24,6 +24,11 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung Bài 06 lấy từ slide, chưa có transcript VTT tương ứng; ví dụ thêm vào để hỗ trợ luyện tập.
+
+## Mục tiêu học
+
+- Tính MSE từ các sai số dự đoán.
+- Đọc R² cùng với MSE khi so sánh mô hình trên cùng tập dữ liệu.
 
 ## Đánh giá mô hình bằng con số
 
@@ -56,4 +61,16 @@ print("R2:", r2_score(actual, predicted))
 
 Hai mô hình có MSE khác nhau nhưng dùng **hai bộ dữ liệu/đơn vị đo khác nhau** có so sánh trực tiếp được không? Không, cần cùng dữ liệu mục tiêu và thang đo để so sánh có ý nghĩa.
 
+## Tóm tắt
+
+MSE bình phương sai số trước khi lấy trung bình. R² so sánh lỗi với mốc dự đoán bằng trung bình.
+
+## Điểm dễ nhầm
+
+R² trên tập test có thể âm nếu mô hình tệ hơn mốc trung bình trên tập đó.
+
+## Trắc nghiệm
+
 <Quiz question="R² trên tập test có thể nhận giá trị nào?" options={["Chỉ từ 0 đến 1","Có thể âm","Luôn bằng 1 nếu training thành công"]} correctIndex={1} explanation="Nếu dự đoán kém hơn baseline trung bình, R² có thể nhỏ hơn 0." />
+
+<Quiz question="Hai sai số dự đoán lần lượt là −2 và 4. MSE bằng bao nhiêu?" options={["1", "3", "10"]} correctIndex={2} explanation="Bình phương từng sai số rồi lấy trung bình, (4 + 16) / 2 = 10." />

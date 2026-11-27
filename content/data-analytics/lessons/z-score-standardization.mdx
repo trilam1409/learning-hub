@@ -19,6 +19,10 @@ references:
     startSeconds: 3890
 ---
 
+## Mục tiêu học
+
+- Tính Z-score và giải thích dấu của kết quả.
+
 ## Z-score là gì?
 
 Z-score biểu diễn một giá trị nằm cách trung bình bao nhiêu độ lệch chuẩn. Trong slide Bài 02, công thức là:
@@ -58,5 +62,15 @@ df["length_zscore"] = StandardScaler().fit_transform(df[["length"]])
 ```
 
 **Ghi chú từ bài giảng:** Buổi 04 có phần giảng viên giải thích phép trừ giá trị trung bình khi chuẩn hóa; slide Bài 02 còn trình bày cách dùng `StandardScaler`.
+
+## Tóm tắt
+
+Z-score biểu diễn khoảng cách tới trung bình theo đơn vị độ lệch chuẩn.
+
+## Điểm dễ nhầm
+
+Z-score bằng 0 nghĩa là giá trị bằng trung bình; Z-score âm nghĩa là thấp hơn trung bình.
+
+## Trắc nghiệm
 
 <Quiz question="Sau Z-score, một giá trị thấp hơn trung bình thường có dấu nào?" options={["Dương","Âm","Luôn bằng 0"]} correctIndex={1} explanation="Khi x < trung bình, tử số âm và độ lệch chuẩn dương nên z âm." />

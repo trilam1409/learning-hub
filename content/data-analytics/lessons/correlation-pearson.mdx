@@ -1,7 +1,7 @@
 ---
 id: correlation-pearson
 title: "Tương quan Pearson và heatmap"
-summary: "Bài học đọc trước: tương quan pearson và heatmap, kèm ví dụ và câu hỏi ôn tập."
+summary: "Đọc hệ số Pearson và heatmap để nhận xét chiều và độ mạnh của mối liên hệ tuyến tính."
 order: 23
 topicIds: [exploratory-analysis]
 sessionIds: []
@@ -22,6 +22,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Mục tiêu học
+
+- Đọc dấu và độ lớn của hệ số Pearson từ heatmap.
 
 ## Hỏi điều gì trước khi tính tương quan?
 
@@ -72,5 +76,15 @@ import seaborn as sns
 sns.heatmap(df.corr(numeric_only=True), annot=True, vmin=-1, vmax=1, cmap="coolwarm")
 plt.show()
 ```
+
+## Tóm tắt
+
+Pearson đo mức liên hệ tuyến tính, từ −1 đến 1.
+
+## Điểm dễ nhầm
+
+Tương quan gần 0 vẫn có thể đi cùng một quan hệ phi tuyến mạnh.
+
+## Trắc nghiệm
 
 <Quiz question="Nếu r = 0, ta kết luận điều nào an toàn nhất?" options={["Không có liên hệ tuyến tính rõ rệt","Hai biến hoàn toàn độc lập","X không gây ra Y"]} correctIndex={0} explanation="Pearson đo quan hệ tuyến tính, không phải mọi dạng quan hệ hay nguyên nhân." />

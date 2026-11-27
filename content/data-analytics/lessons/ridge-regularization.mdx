@@ -1,7 +1,7 @@
 ---
 id: ridge-regularization
 title: "Ridge Regression và hệ số alpha"
-summary: "Đọc trước Bài 07: ridge regression và hệ số alpha, có code và quiz."
+summary: "Quan sát cách hệ số alpha thay đổi độ lớn hệ số và độ linh hoạt của hồi quy Ridge."
 order: 31
 topicIds: [model-evaluation]
 sessionIds: []
@@ -20,6 +20,11 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung dựa trên slide Bài 07 và phần diễn giải bổ sung để chuẩn bị học. Chưa có VTT của buổi học tương ứng.
+
+## Mục tiêu học
+
+- Giải thích tác động của alpha tới hệ số hồi quy Ridge.
+- Nhận diện nhu cầu chuẩn hóa khi đặc trưng có đơn vị khác nhau.
 
 ## Ridge giải quyết vấn đề gì?
 
@@ -55,4 +60,16 @@ for alpha in [0.01, 0.1, 1, 10]:
 
 **Vì sao chuẩn hóa?** L2 penalty phụ thuộc độ lớn hệ số, nên nếu các đặc trưng khác thang đo, mức phạt có thể bị lệch không mong muốn.
 
-<Quiz question="Nếu tăng alpha của Ridge quá lớn, nguy cơ nào tăng?" options={["Underfitting","Dữ liệu tự động được bổ sung","Số hàng luôn tăng gấp đôi"]} correctIndex={0} explanation="Ridge phạt hệ số mạnh hơn, quá mức có thể làm mô hình quá đơn giản." />
+## Tóm tắt
+
+Ridge thêm mức phạt theo bình phương độ lớn của các hệ số. Alpha điều chỉnh mức phạt.
+
+## Điểm dễ nhầm
+
+Alpha quá lớn có thể làm mô hình thiếu khớp. Giá trị phù hợp nên được chọn bằng validation.
+
+## Trắc nghiệm
+
+<Quiz question="Nếu tăng alpha của Ridge quá lớn, nguy cơ nào tăng?" options={["Underfitting","Overfitting do hệ số lớn hơn","Rò rỉ dữ liệu do tăng mức phạt"]} correctIndex={0} explanation="Ridge phạt hệ số mạnh hơn, quá mức có thể làm mô hình quá đơn giản." />
+
+<Quiz question="Sau khi tăng alpha, lỗi train và lỗi validation đều tăng rõ rệt. Nên kiểm tra khả năng nào?" options={["Mô hình bị phạt quá mạnh và thiếu khớp", "Mô hình đang khớp quá sát tập train", "Validation chắc chắn bị rò rỉ dữ liệu"]} correctIndex={0} explanation="Lỗi trên cả hai tập tăng sau khi siết mức phạt là dấu hiệu mô hình có thể trở nên quá đơn giản." />

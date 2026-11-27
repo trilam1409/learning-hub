@@ -1,7 +1,7 @@
 ---
 id: grid-search-model-selection
 title: "Grid Search và lựa chọn mô hình"
-summary: "Đọc trước Bài 07: grid search và lựa chọn mô hình, có code và quiz."
+summary: "Dùng GridSearchCV để chọn siêu tham số trên tập train và đánh giá cấu hình đã chọn trên tập test."
 order: 32
 topicIds: [model-evaluation]
 sessionIds: []
@@ -18,6 +18,11 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung dựa trên slide Bài 07 và phần diễn giải bổ sung để chuẩn bị học. Chưa có VTT của buổi học tương ứng.
+
+## Mục tiêu học
+
+- Chọn siêu tham số bằng điểm cross-validation trên tập train.
+- Tính riêng các chỉ số muốn báo cáo trên tập test.
 
 ## Đặt vấn đề
 
@@ -67,4 +72,16 @@ print(-grid.best_score_)
 
 Thử thay lưới `ridge__alpha` thành `np.logspace(-3, 3, 7)`; quan sát tham số được chọn và điểm CV.
 
+## Tóm tắt
+
+GridSearchCV dùng cùng bộ quy tắc chấm đã cấu hình để so sánh ứng viên và tính score khi gọi trực tiếp.
+
+## Điểm dễ nhầm
+
+negative MSE dùng dấu âm để điểm lớn hơn tương ứng lỗi nhỏ hơn. Khi báo cáo MSE, dùng giá trị không âm.
+
+## Trắc nghiệm
+
 <Quiz question="GridSearchCV lựa chọn tham số dựa vào điều gì?" options={["Điểm kiểm chứng chéo theo thang đo đã đặt","Số lượng comment trong Python","Tên file CSV"]} correctIndex={0} explanation="GridSearchCV thử các tham số và so sánh điểm qua các fold trên tập huấn luyện." />
+
+<Quiz question="GridSearchCV dùng neg_mean_squared_error và trả score trên test là −9. Test MSE bằng bao nhiêu?" options={["−9", "9", "3"]} correctIndex={1} explanation="MSE bằng 9. Giá trị 3 là căn bậc hai của MSE, tức RMSE." />

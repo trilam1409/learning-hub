@@ -1,7 +1,7 @@
 ---
 id: skewness-kurtosis-outliers
 title: "Hình dạng phân phối: skewness, kurtosis, ngoại lệ"
-summary: "Bài học đọc trước: hình dạng phân phối: skewness, kurtosis, ngoại lệ, kèm ví dụ và câu hỏi ôn tập."
+summary: "Nhận biết phân phối lệch, hình dạng đuôi và ảnh hưởng của ngoại lệ đến cách diễn giải."
 order: 22
 topicIds: [exploratory-analysis]
 sessionIds: []
@@ -18,6 +18,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Biên soạn từ slide Bài 05, chưa có transcript giảng trên lớp. Các đoạn code và dữ liệu tự tạo chỉ phục vụ minh họa.
+
+## Mục tiêu học
+
+- Nhận ra đuôi dài của phân phối và giải thích ảnh hưởng của ngoại lệ.
 
 ## Hình dạng của dữ liệu
 
@@ -49,5 +53,15 @@ plt.show()
 ## Cách đọc kết quả
 
 Đừng đánh giá chỉ qua một con số skew hoặc kurtosis. Kết hợp **histogram**, **box plot**, quy mô mẫu và ý nghĩa nghiệp vụ để quyết định có xử lý ngoại lệ hay không.
+
+## Tóm tắt
+
+Skewness mô tả độ lệch; kurtosis liên quan đến mức độ nổi bật của đuôi phân phối.
+
+## Điểm dễ nhầm
+
+Tên hướng lệch dựa trên phía có đuôi dài, dù phần lớn quan sát nằm phía ngược lại.
+
+## Trắc nghiệm
 
 <Quiz question="Skewness dương thường gợi ý điều gì?" options={["Đuôi phải dài hơn","Không có ngoại lệ","Dữ liệu chắc chắn phân phối chuẩn"]} correctIndex={0} explanation="Độ lệch dương thường biểu diễn phần đuôi kéo về phía giá trị lớn." />

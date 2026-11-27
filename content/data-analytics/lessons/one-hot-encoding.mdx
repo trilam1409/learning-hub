@@ -17,6 +17,10 @@ references:
     startSeconds: 6276
 ---
 
+## Mục tiêu học
+
+- Tạo cột chỉ thị 0/1 từ một biến phân loại.
+
 ## Tại sao phải mã hóa biến phân loại?
 
 Dữ liệu có thuộc tính dạng chữ như nhiên liệu `gas` hoặc `diesel`. Một số thuật toán cần biến số. Slide Bài 02 giới thiệu **one-hot encoding**: tạo cột cho từng loại, nhận giá trị 1 nếu bản ghi thuộc loại đó và 0 nếu không.
@@ -34,5 +38,15 @@ Kết quả sẽ có các cột như `fuel_type_diesel` và `fuel_type_gas`, m�
 **Lưu ý:** Mã hóa one-hot không hàm ý rằng một nhãn lớn hơn nhãn kia. Với một số mô hình hồi quy, có thể dùng `drop_first=True` để tránh dư thừa tuyến tính khi mô hình có hệ số chặn.
 
 **Theo transcript Buổi 04:** Giảng viên nhắc trực tiếp đến “one hot” và cách dùng `get_dummies`. Đây là phần đã được giới thiệu trên lớp.
+
+## Tóm tắt
+
+One-hot biểu diễn từng nhóm bằng cột riêng để mô hình nhận được thông tin nhóm.
+
+## Điểm dễ nhầm
+
+Mã hóa các nhóm bằng 1, 2, 3 có thể gợi ý thứ tự hoặc khoảng cách không có trong dữ liệu.
+
+## Trắc nghiệm
 
 <Quiz question="Với fuel_type = gas, cột fuel_type_gas nhận giá trị nào?" options={["0","1","2"]} correctIndex={1} explanation="Cột chỉ thị bằng 1 nếu mẫu thuộc nhóm gas." />

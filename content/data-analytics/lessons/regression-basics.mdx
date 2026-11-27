@@ -1,7 +1,7 @@
 ---
 id: regression-basics
 title: "Hồi quy tuyến tính đơn và đa biến"
-summary: "Đọc trước Bài 06: hồi quy tuyến tính đơn và đa biến, kèm mã Python và bài tập."
+summary: "Fit hồi quy tuyến tính đơn và đa biến, rồi giải thích ý nghĩa hệ số và giá trị dự đoán."
 order: 25
 topicIds: [model-development]
 sessionIds: []
@@ -22,6 +22,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung Bài 06 lấy từ slide, chưa có transcript VTT tương ứng; ví dụ thêm vào để hỗ trợ luyện tập.
+
+## Mục tiêu học
+
+- Đọc giá trị dự đoán và giải thích ý nghĩa của một hệ số hồi quy.
 
 ## Từ EDA sang mô hình dự đoán
 
@@ -63,6 +67,16 @@ Dùng **DataFrame 2 chiều** cho `X`, dù chỉ có một đặc trưng.
 <MathFormula latex={String.raw`\hat{y} = b_0 + b_1 x_1 + b_2 x_2 + \cdots + b_n x_n`} />
 
 Có thể dùng đồng thời `horsepower`, `engine-size`, `highway-mpg`. Tuy nhiên, thêm càng nhiều cột không mặc nhiên cải thiện khả năng dự đoán trên dữ liệu mới.
+
+## Tóm tắt
+
+Hồi quy tuyến tính dùng một hoặc nhiều đặc trưng để dự đoán một biến số.
+
+## Điểm dễ nhầm
+
+Một hệ số trong mô hình đa biến được diễn giải khi giữ các đặc trưng còn lại cố định.
+
+## Trắc nghiệm
 
 <Quiz question="Trong mô hình hồi quy dự đoán giá xe, biến price thường đóng vai trò gì?" options={["Target y","Tên index","Tham số regularization"]} correctIndex={0} explanation="price là biến phụ thuộc cần dự đoán." />
 

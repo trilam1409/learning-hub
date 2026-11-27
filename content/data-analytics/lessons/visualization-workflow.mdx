@@ -1,7 +1,7 @@
 ---
 id: visualization-workflow
 title: "Quy trình trực quan và biểu đồ đường, vùng"
-summary: "Slide Bài 04 mở đầu bằng quy trình: **làm rõ câu hỏi → hiểu dữ liệu → chọn loại biểu đồ → trực quan và diễn giải**. Không chọn biểu đồ chỉ v"
+summary: "Chọn biểu đồ đường hoặc biểu đồ vùng dựa trên câu hỏi và ý nghĩa của dữ liệu theo thời gian."
 order: 16
 topicIds: [visualization-tools]
 sessionIds: []
@@ -18,6 +18,10 @@ references:
 ---
 
 > **ĐỌC TRƯỚC:** Nội dung biên soạn từ slide Bài 04. Chưa có transcript VTT xác nhận thầy đã giảng phần này.
+
+## Mục tiêu học
+
+- Chọn biểu đồ đường hay biểu đồ vùng cho dữ liệu theo thời gian.
 
 ## Đọc trước: nội dung chưa học trên lớp
 
@@ -59,6 +63,16 @@ plt.show()
 **Hãy suy nghĩ:** Nếu bạn muốn so sánh đúng mức biến động của từng nhóm, stacked area có thể khó đọc hơn line plot riêng từng đường. Nếu muốn thấy tổng đóng góp theo thời gian, area phù hợp hơn.
 
 <ChartTypeExplorer />
+
+## Tóm tắt
+
+Làm rõ câu hỏi và dữ liệu trước, rồi chọn biểu đồ và diễn giải.
+
+## Điểm dễ nhầm
+
+Biểu đồ vùng chồng làm nổi bật tổng; các lớp phía trên khó so sánh hơn vì đường đáy thay đổi.
+
+## Trắc nghiệm
 
 <Quiz question="Khi cần thể hiện biến động số người qua các năm, loại biểu đồ khởi đầu phù hợp?" options={["Line plot","Pie chart","Word cloud"]} correctIndex={0} explanation="Line plot biểu diễn tốt chuỗi thời gian và xu hướng tăng giảm." />
 
