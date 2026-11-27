@@ -1,1 +1,30 @@
-[{"id": "p01", "title": "P01 · Bài 1 - Tổng quan (Buổi 1).pdf · Mở đủ trang, trích lớp chữ", "kind": "pdf"}, {"id": "t01", "title": "T01 · Buoi1.vtt · Đọc được VTT, đối chiếu các đoạn dẫn", "kind": "vtt"}, {"id": "p02", "title": "P02 · Bài 2A - Các giải thuật mã hoá (Buổi 2).pdf · Mở đủ trang PDF lý thuyết, trích lớp chữ", "kind": "pdf"}, {"id": "t02", "title": "T02 · Buoi2.vtt · Đọc được VTT, đối chiếu các đoạn dẫn", "kind": "vtt"}, {"id": "p03", "title": "P03 · Bài 2A - Mã hoá cổ điển (Buổi 3).pdf · Đọc đủ phần chữ của đề TH2A", "kind": "pdf"}, {"id": "t03", "title": "T03 · Buoi3.vtt · Bản ngắn, nói cả bài kiểm tra bảo mật cơ bản và TH2A", "kind": "vtt"}, {"id": "p04", "title": "P04 · Bài 2B - Chứng thực dữ liệu(Buổi 4).pdf · Mở đủ trang, trích lớp chữ", "kind": "pdf"}, {"id": "t04", "title": "T04 · Buoi4.vtt · Khớp chủ đề Buổi 4, đối chiếu các đoạn dẫn", "kind": "vtt"}, {"id": "p05", "title": "P05 · Bài 2B - Mã hoá hiện đại, chứng thực, chữ ký số (Buổi 5).pdf · Đọc đủ phần chữ của đề TH2B", "kind": "pdf"}, {"id": "t05", "title": "T05 · Buoi5(1).vtt · Bản đính kèm mới, khớp hướng dẫn TH2B; đọc toàn bộ nội dung có trong tệp", "kind": "vtt"}, {"id": "t05a", "title": "T05a · Buoi5vtt.vtt · Bản trong ZIP trùng từng byte với T04", "kind": "vtt"}, {"id": "t05b", "title": "T05b · Buoi5.vtt · Bản đính kèm trước cũng trùng T04", "kind": "vtt"}]
+- id: p01
+  title: "P01 · Bài 1 · Tổng quan"
+  kind: pdf
+- id: t01
+  title: "T01 · Buoi1.vtt"
+  kind: vtt
+- id: p02
+  title: "P02 · Bài 2A · Các giải thuật mã hóa"
+  kind: pdf
+- id: t02
+  title: "T02 · Buoi2.vtt"
+  kind: vtt
+- id: p03
+  title: "P03 · TH2A · Mã hóa cổ điển"
+  kind: pdf
+- id: t03
+  title: "T03 · Buoi3.vtt"
+  kind: vtt
+- id: p04
+  title: "P04 · Bài 2B · Chứng thực dữ liệu"
+  kind: pdf
+- id: t04
+  title: "T04 · Buoi4.vtt"
+  kind: vtt
+- id: p05
+  title: "P05 · TH2B · Mã hóa hiện đại, chứng thực, chữ ký số"
+  kind: pdf
+- id: t05
+  title: "T05 · Buoi5(1).vtt · Khớp bản Buoi5.vtt đúng buổi"
+  kind: vtt

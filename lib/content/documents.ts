@@ -5,5 +5,6 @@ export const courseDocuments: Record<string, { id: string; title: string }[]> = 
     { id: "contents", title: "Mục lục đầy đủ" },
     { id: "sources", title: "Danh mục nguồn" },
     { id: "source-coverage", title: "Mức đối chiếu nguồn" },
+    { id: "practice", title: "Bài tập và lời giải" },
   ],
 };

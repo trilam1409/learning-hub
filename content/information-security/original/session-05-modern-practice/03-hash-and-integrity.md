@@ -2,13 +2,62 @@
 
 Buổi 5 · TH2B bước 3 và 6
 
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
+
 ## Mục tiêu học
 
 Đo độ dài digest, quan sát avalanche và kiểm lại giá trị tham chiếu ở phía nhận.
 
 ## Kiến thức qua tình huống
 
-MD5 có 128 bit, SHA-1 có 160 bit và SHA-256 có 256 bit, tương ứng 32, 40 và 64 chữ số hex. Sửa một ký tự có thể làm nhiều bit digest đổi. Phép kiểm tin cậy cần giá trị tham chiếu được bảo vệ hoặc đến từ nguồn đã xác minh.
+### 1. Tách hai bước thực hành
+
+**Theo nguồn:** P05 tr. 2–3, bước 3 và 6; T05 00:03:20.907–00:03:54.857 và 00:04:46.607–00:05:11.017. Bước 3 quan sát hash đổi khi sửa chữ; bước 6 gửi tệp và digest rồi so tại bên nhận. Cả hai dùng cùng nguyên lý nhưng mục tiêu quan sát khác nhau.
+
+### 2. Tạo mẫu nhỏ để phát hiện sai cấu hình
+
+Ví dụ bổ sung: tệp thứ nhất có đúng ba byte ASCII/UTF-8 `abc`, không BOM, không xuống dòng. Tệp thứ hai là `abd`. Đổi c thành d thay một ký tự, đồng thời đổi 3 bit trong byte đó; vì vậy đừng ghi là “chỉ đổi đúng một bit đầu vào”.
+
+| Mẫu abc | Digest |
+| --- | --- |
+| MD5 | 900150983cd24fb0d6963f7d28e17f72 |
+| SHA-1 | a9993e364706816aba3e25717850c26c9cd0d89d |
+| SHA-256 | ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad |
+
+Ba digest được tính lại trong QA. MD5/SHA-1 xuất hiện vì đề yêu cầu so sánh; không dùng kết quả thí nghiệm đó để kết luận chúng phù hợp chống giả mạo hiện đại.
+
+### 3. Đo avalanche đúng đại lượng
+
+Với SHA-256(abc) và SHA-256(abd), XOR hai digest để bit bằng 1 đánh dấu vị trí khác. Đếm được **122 bit khác trên 256**, khoảng **47,66%**. So chuỗi hex bằng mắt không đếm đúng số bit; một ký tự hex khác có thể khác 1,2,3 hoặc4 bit.
+
+Điều quan sát là nhiều bit thay đổi dù đầu vào chỉ đổi nhỏ. Một cặp không chứng minh mọi cặp đều đổi 122 bit, mọi bit đều đổi, hay hàm đã qua kiểm định an toàn. Mục tiêu là thấy hiệu ứng và ghi số liệu trung thực.
+
+### 4. Bước 6: vai trò của digest tham chiếu
+
+```text
+Người gửi:       M ── H ──> h       gửi M và h
+Người nhận:  M nhận ── H ──> h′      so h′ với h tham chiếu
+```
+
+Khi h′ khác h, dữ liệu hoặc thiết lập không khớp: kiểm thuật toán, tệp, encoding/BOM, cuối dòng rồi mới đánh giá nguyên nhân. Khi h′ bằng h, mức tin cậy phụ thuộc nguồn tham chiếu và cơ chế hash.
+
+**Đính chính tên bước trong đề:** hash công khai gửi cạnh văn bản không tự xác thực người gửi. Người sửa cả hai có thể tạo một cặp mới tự nhất quán. Muốn chống giả mạo cần tham chiếu được xác thực hoặc MAC/chữ ký. Hash cũng không giấu M.
+
+### 5. Thực hành ba lượt có chủ đích
+
+1. Gửi bản abc và digest SHA-256(abc); bên nhận băm đúng abc → khớp.
+2. Gửi/nhận abd nhưng giữ digest abc → lệch; biết hai bộ byte không khớp tham chiếu.
+3. Thay cả tệp thành abd và digest thành SHA-256(abd) → lại khớp; cho thấy giới hạn của hash trần khi tham chiếu cũng bị thay.
+
+Giữ tệp gốc, bản sửa và digest riêng. Trong báo cáo đừng viết “hash đúng nên chắc chắn không virus”; hash chỉ so với tham chiếu được sử dụng. Cùng một phần mềm có lỗ hổng vẫn có thể tải đúng toàn vẹn.
+
+### Bài tập tự luyện có lời giải
+
+**Đề:** máy A băm abc, máy B băm abc rồi nhấn Enter trong trình soạn thảo trước khi lưu. Có bắt buộc digest bằng nhau không? Không. Nếu Enter tạo byte LF/CRLF, đầu vào khác. So kích thước tệp và byte trước khi nghi ngờ thuật toán.
+
+**Đề:** hash hex in hoa so với in thường có phải khác digest không? Không nếu chúng biểu diễn cùng giá trị hex; chữ A–F khác kiểu hiển thị. Trái lại, chữ hoa/thường bên trong tệp đầu vào là byte khác.
+
+**Đề:** cùng tệp, cùng SHA-256 nhưng hai lần tính khác nhau, có thể giải thích bằng avalanche không? Không. Hash có tính xác định; cần kiểm bạn có thật sự đưa cùng byte và cùng thuật toán vào không.
 
 ## Công thức và cách áp dụng
 
@@ -41,10 +90,6 @@ So đủ toàn bộ digest. Lặp bằng cùng thuật toán với đúng byte, 
 
 Nếu gửi abc cùng digest đầu và bên nhận nhận đúng abc, kết quả khớp. Nếu bản nhận là abd và digest vẫn như cũ, kết quả lệch.
 
-## Tóm tắt
-
-Một thay đổi nhỏ ở đầu vào thường làm nhiều bit digest thay đổi. Cùng byte đầu vào với cùng thuật toán phải cho cùng digest.
-
 ## Điểm dễ nhầm
 
 Digest công khai gửi cùng dữ liệu có thể bị thay đồng thời với dữ liệu. Trường hợp đó cần cơ chế xác thực như MAC hoặc chữ ký.
@@ -53,37 +98,60 @@ Digest công khai gửi cùng dữ liệu có thể bị thay đồng thời v�
 
 ### Câu 1
 
-MD5 dài bao nhiêu bit?
+Digest MD5 dài bao nhiêu bit?
 
-- A. 512
+- A. 128
 - B. 160
 - C. 256
-- D. 128
+- D. 512
 
-**Đáp án D.** MD5 có digest 128 bit. **Nhiễu dễ nhầm B.** SHA-1 mới là 160 bit.
+**Đáp án A.**
+
+- **A:** Đúng:128 bit, tức16 byte.
+- **B:** 160 là SHA-1.
+- **C:** 256 là SHA-256.
+- **D:** 512 là SHA-512 trong các tên nêu.
 
 ### Câu 2
 
-Digest trùng tham chiếu đáng tin giúp kiểm gì?
+Hash khớp tham chiếu đáng tin hỗ trợ kết luận nào?
 
-- A. Bảo mật nội dung
-- B. Danh tính độc lập của người gửi
-- C. Độ ổn định máy tính
-- D. Toàn vẹn so với tham chiếu
+- A. Mọi mã độc đều không tồn tại
+- B. Người gửi chắc là Alice chỉ từ hash trần
+- C. Nội dung không ai đọc được
+- D. Toàn vẹn so với tham chiếu theo giả định hash
 
-**Đáp án D.** Digest dùng đối chiếu cùng bộ byte. **Nhiễu dễ nhầm B.** Hash công khai một mình không xác minh người gửi.
+**Đáp án D.**
+
+- **A:** Phần mềm gốc vẫn có thể có mã độc/lỗ hổng.
+- **B:** Hash công khai không tự xác thực danh tính.
+- **C:** Hash không mã hóa nội dung.
+- **D:** Đúng: kết luận gắn với bộ byte và nguồn tham chiếu.
 
 ### Câu 3
 
-Thêm dòng mới vào cuối tệp có thể làm gì?
+Thêm một ký tự xuống dòng vào tệp sẽ như thế nào?
 
-- A. Đổi chiều dài chuẩn digest
-- B. Sinh khóa công khai
-- C. Thêm byte làm digest đổi
-- D. Chỉ đổi phông chữ
+- A. Đổi độ dài chuẩn SHA-256
+- B. Có thể đổi digest vì byte đầu vào đổi
+- C. Tự tạo private key
+- D. Không bao giờ ảnh hưởng vì không nhìn thấy
 
-**Đáp án C.** Ký tự xuống dòng là dữ liệu đầu vào. **Nhiễu dễ nhầm D.** Cùng thuật toán vẫn giữ độ dài đầu ra.
+**Đáp án B.**
 
-## Nguồn
+- **A:** SHA-256 vẫn xuất256 bit.
+- **B:** Đúng: xuống dòng cũng là dữ liệu.
+- **C:** Không có thao tác sinh khóa.
+- **D:** Ký tự không hiển thị vẫn có byte.
 
-[P05](../SOURCES.md) tr. 2–3, câu 2–3 tr. 4. [P04](../SOURCES.md) tr. 33–49. T05 00:03:20.907–00:03:54.857 và 00:04:46.607–00:05:11.017 nhắc đặt tên theo bước, phía nhận tự tính digest để so. Kết quả là phép tính hoặc dự kiến, chưa chạy CrypTool.
+## Nguồn và mức xác minh
+
+- [P05](../SOURCES.md), trang dẫn đầu 2; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](../SOURCE_COVERAGE.md). Trang tính từ 1, kể cả bìa.
+- [T05](../SOURCES.md) 00:03:20.907–00:03:54.857. Dùng cho nội dung lời giảng tương ứng; transcript có lỗi nhận dạng, không thay thế âm thanh gốc.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Một thay đổi nhỏ ở đầu vào thường làm nhiều bit digest thay đổi. Cùng byte đầu vào với cùng thuật toán phải cho cùng digest.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

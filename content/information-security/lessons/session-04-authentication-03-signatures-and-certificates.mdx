@@ -6,8 +6,10 @@ order: 16
 topicIds: ["authentication"]
 sessionIds: ["session-04"]
 relatedLessons: []
-references: [{"sourceId": "p04", "page": 40}, {"sourceId": "t04", "startSeconds": 4660.384, "endSeconds": 4733.014}, {"sourceId": "t04", "startSeconds": 4848.296, "endSeconds": 4856.539}, {"sourceId": "t04", "startSeconds": 4952.574, "endSeconds": 5009.574}, {"sourceId": "t04", "startSeconds": 5061.944, "endSeconds": 5167.264}]
+references: [{"sourceId": "p04", "page": 40}, {"sourceId": "t04", "startSeconds": 4594.674, "endSeconds": 4733.014}]
 ---
+
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
 
 ## Mục tiêu học
 
@@ -15,18 +17,70 @@ Chọn đúng khóa cho từng thao tác, đọc thuật toán ký chứng chỉ
 
 ## Kiến thức qua tình huống
 
-Alice ký với khóa riêng của mình. Bob dùng khóa công khai đã xác minh của Alice để kiểm chữ ký. Nếu cần bí mật cho Bob, phía gửi chọn khóa công khai của Bob hoặc cơ chế đối xứng đã thiết lập. Chứng chỉ hỗ trợ gắn khóa công khai với danh tính theo chuỗi tin cậy. Nội dung ký và tham số xác minh phải trùng.
+### 1. Chữ ký gắn khóa với thông điệp cụ thể
 
-| Ý tưởng trong slide tr. 42–43 | Dữ liệu gửi ở mức khái niệm |
+**Theo nguồn:** P04 tr. 40–44,50–55; T04 01:03:02 đến 01:18:53.014. Alice dùng khóa riêng để ký nội dung, Bob dùng khóa công khai **của Alice đã được xác minh** để kiểm. Cùng một người có thể ký nhiều thông điệp khác nhau và cho chữ ký khác nhau.
+
+```text
+Alice: M ── Sign với sk_A ──> S        gửi (M,S)
+Bob:   (M nhận,S,pk_A) ── Verify ──> hợp lệ / không hợp lệ
+```
+
+**Đính chính:** cách mô tả “mã hóa hash bằng khóa riêng rồi giải bằng khóa công khai” trong slide là mô hình RSA giản lược. Chữ ký có định dạng và thuật toán xác minh riêng; không phải mọi chữ ký là phép mã hóa đảo chiều. Dùng tên Sign/Verify giúp tránh chọn nhầm thao tác thư viện. Chữ ký số không phải ảnh chữ ký tay chèn vào PDF.
+
+Chữ ký không tự che nội dung. Với chữ ký có ngẫu nhiên như RSA-PSS, cùng khóa ký cùng thông điệp ở hai lần có thể cho hai chữ ký khác nhau; do đó không dùng câu “chữ ký không bao giờ giống nhau” như định luật chung. Ngược lại, việc nội dung khác thường làm chữ ký gắn nội dung không thể dùng thay cho nhau, dưới các giả định an toàn tương ứng.
+
+### 2. Bốn khóa, bốn vai trò
+
+| Tác vụ | Khóa cần dùng |
 | --- | --- |
-| a | Mã hóa cả M và H(M) bằng khóa chung |
-| b | Gửi M và digest được bảo vệ bằng khóa chung |
-| c | Gửi M và chữ ký dựa trên digest |
-| d | Mã hóa gói của (c) bằng khóa chung |
-| e | Gửi M và giá trị băm phối hợp bí mật chung |
-| f | Mã hóa gói của (e) |
+| Alice ký | sk_A, riêng của Alice |
+| Bob kiểm chữ ký Alice | pk_A, công khai của Alice |
+| Alice mã hóa cho Bob | pk_B, công khai của Bob |
+| Bob giải gói gửi cho mình | sk_B, riêng của Bob |
 
-Đây là sơ đồ trong bài. Phần diễn đạt ‘mã hóa digest bằng khóa riêng’ là cách mô tả RSA giản lược. Dùng thao tác Sign/Verify cho chữ ký và thuật toán chuẩn riêng cho MAC hoặc mã hóa xác thực khi triển khai.
+Không gửi sk_A cho Bob để kiểm chữ ký. Bất kỳ ai có thể xác minh với pk_A, nhưng chỉ người kiểm soát sk_A mới có khả năng ký theo mô hình. Nếu khóa riêng bị lộ, phải xử lý theo quy trình và đánh giá chứng cứ liên quan; một dấu “VALID” không tự giải quyết mọi câu hỏi về danh tính ngoài đời.
+
+### 3. Sáu công dụng hash trong slide: đọc từ trong ra ngoài
+
+K là khóa chia sẻ, Ssecret là trị bí mật trong sơ đồ e/f để tránh nhầm với ký hiệu S của chữ ký. Các biểu thức dưới đây **tái hiện mô hình khái niệm của P04 tr. 42–43**, không phải sáu công thức tự triển khai cho sản phẩm.
+
+| Hình | Biểu thức trong mô hình | Phía nhận kiểm gì? | Bí mật M? |
+| --- | --- | --- | --- |
+| a | E(K, M \|\| H(M)) | Giải, băm lại M và so digest | Có theo giả định mã hóa |
+| b | M \|\| E(K,H(M)) | Giải phần digest, so H(M nhận) | Không |
+| c | M \|\| E(PR_A,H(M)) | Kiểm chữ ký của A trên M | Không |
+| d | E(K, M \|\| E(PR_A,H(M))) | Giải gói, kiểm chữ ký như c | Có |
+| e | M \|\| H(M \|\| Ssecret) | Cùng trị bí mật tính lại | Không |
+| f | E(K, M \|\| H(M \|\| Ssecret)) | Giải, rồi tính lại như e | Có |
+
+Với d: đọc H(M) → thao tác ký của A → ghép với M → mã hóa K. Nhận thì đảo thứ tự lớp ngoài trước: giải K → tách M/chữ ký → kiểm chữ ký. **Đính chính:** hình a/b cần cấu trúc bảo vệ đã được phân tích; mã hóa thường không tự bảo đảm toàn vẹn. Hình e/f không mặc nhiên là HMAC và không được tự chọn phép nối bí mật thay HMAC chuẩn. P04 tr. 44 là hình salt mật khẩu, không đồng nhất salt công khai với khóa bí mật của MAC.
+
+### 4. Chứng chỉ là sự gắn danh tính với khóa công khai
+
+P04 tr. 11 vẽ tên chủ thể, số sê-ri, thời hạn, thông tin thu hồi, public key và chữ ký của bên cấp. **Bổ sung:** khi kiểm chứng chỉ cần đúng tên miền/ngữ cảnh, chuỗi tin cậy, thời hạn và quy tắc trạng thái phù hợp. Chứng chỉ được cấp cho website không chứa private key để người xem lấy ra.
+
+Ba trường thường dễ nhầm:
+
+- **Subject Public Key Info:** thuật toán và khóa công khai của chủ thể.
+- **Signature Algorithm:** cách bên cấp ký chứng chỉ; nếu tên như sha256WithRSAEncryption thì có thành phần SHA-256 và RSA.
+- **Fingerprint:** digest do công cụ tính trên chứng chỉ để nhận diện; không phải thuật toán ký của bên cấp.
+
+Các trường khóa và chữ ký là thành phần riêng trong [RFC 5280](https://www.rfc-editor.org/info/rfc5280/). Không suy cipher của phiên TLS chỉ từ tên thuật toán ký chứng chỉ.
+
+### 5. Lời giải mô hình bảo mật + chứng thực + chữ ký
+
+**Bài P04 tr. 55, mô hình tự soạn:** Alice chuẩn bị M gồm nội dung, danh tính dự kiến, mã giao dịch và ngữ cảnh. Ký M bằng sk_A. Dùng cơ chế mã hóa có xác thực với khóa dữ liệu để bảo vệ (M,S); khóa dữ liệu được thiết lập/bảo vệ cho Bob bằng cơ chế thích hợp. Bob giải/xác thực lớp bảo vệ, kiểm pk_A thuộc Alice, kiểm chữ ký và mã giao dịch chưa dùng rồi mới xử lý.
+
+Ưu: dữ liệu lớn được bảo vệ bằng đối xứng; chữ ký cho người có khóa công khai kiểm tra nguồn gốc/toàn vẹn; thêm mã giao dịch để kiểm replay. Nhược/điều kiện: cần quản lý khóa, kiểm chứng chỉ, lưu trạng thái chống lặp và lưu chứng cứ; thêm dữ liệu/phép tính. Đây là lời giải kiến trúc mức học tập, không tuyên bố đã kiểm chứng một giao thức mới.
+
+### Bài tập tự luyện có lời giải
+
+**Đề:** Bob nhận LICH=THU3 cùng chữ ký vốn tạo cho LICH=THU2. Dùng pk_A đúng có giúp hợp lệ không? Không theo kỳ vọng của sơ đồ tốt; chữ ký gắn với byte thông điệp, đúng khóa chưa đủ khi nội dung đã đổi.
+
+**Đề chứng chỉ:** fingerprint hiển thị SHA-256 và Signature Algorithm hiển thị sha384WithRSAEncryption. Hàm băm trong phép ký chứng chỉ là SHA-384; SHA-256 trong fingerprint chỉ dùng nhận diện chứng chỉ theo cách hiển thị đó. Đây là mẫu giả định có lời giải, không phải kết quả đọc một chứng chỉ live.
+
+Bài chính thức cần ba chứng chỉ thực tế. Gói không bịa số sê-ri, thời hạn hay thuật toán hiện tại của ba ngân hàng; dùng bảng thu thập ở [bài tập tổng hợp](/courses/information-security/documents/practice) và ghi ngày kiểm thật.
 
 ## Công thức và cách áp dụng
 
@@ -40,22 +94,26 @@ Tìm ba chứng chỉ trên website có yêu cầu bảo mật cao; đọc thu�
 
 **Ví dụ tự soạn.** Alice ký LICH=THU2, mã hóa gói cho Bob. Bob giải mã, kiểm chứng khóa Alice và xác minh. Chuỗi gốc dự kiến hợp lệ. Nếu sửa thành LICH=THU3 và giữ chữ ký cũ thì phép kiểm dự kiến thất bại.
 
-## Tóm tắt
-
-Khóa xác minh thuộc người ký. Khóa công khai dùng cho bí mật thuộc người nhận. Ký và mã hóa có mục tiêu khác nhau.
-
 ## Điểm dễ nhầm
 
 Trường thuật toán chữ ký của chứng chỉ khác với digest dấu vân tay (fingerprint) mà giao diện hiển thị.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Bob xác minh chữ ký Alice bằng gì?"} options={["A. Khóa công khai của Bob", "B. Khóa công khai của Alice", "C. Khóa riêng của Bob", "D. Khóa riêng của Alice"]} correctIndex={1} explanation={"Đáp án B. Khóa xác minh thuộc về cặp của người ký. Nhiễu dễ nhầm A. Khóa công khai Bob phục vụ mã hóa cho Bob."} />
+<Quiz question={"Câu 1. Bob xác minh chữ ký của Alice bằng khóa nào?"} options={["A. Public key Bob", "B. Private key Bob", "C. Public key Alice đã xác minh", "D. Private key Alice được gửi kèm"]} correctIndex={2} explanation={"A: Khóa Bob không thuộc cặp người ký. B: Khóa riêng Bob dùng giải cho Bob theo mô hình. C: Đúng: khóa xác minh gắn người ký. D: Không chia sẻ private key Alice để kiểm."} />
 
-<Quiz question={"Câu 2. Đọc trường nào để biết phép ký chứng chỉ?"} options={["A. Thuật toán chữ ký", "B. Kích thước trang", "C. Tên tab", "D. Dấu vân tay"]} correctIndex={0} explanation={"Đáp án A. Thuật toán chữ ký cho biết phép ký. Nhiễu dễ nhầm D. Fingerprint là digest của chứng chỉ."} />
+<Quiz question={"Câu 2. Trường nào cho biết cách CA ký chứng chỉ?"} options={["A. Fingerprint", "B. Signature Algorithm", "C. Tên tệp chứng chỉ", "D. Địa chỉ IP máy đang xem"]} correctIndex={1} explanation={"A: Fingerprint là digest nhận diện theo công cụ. B: Đúng: trường thuật toán chữ ký của chứng chỉ. C: Tên tệp không quyết định thuật toán. D: IP máy người xem không cho biết phép ký CA."} />
 
-<Quiz question={"Câu 3. Chữ ký số phục vụ gì trước hết?"} options={["A. Ẩn toàn bộ nội dung", "B. Tăng tốc đường truyền", "C. Nén dữ liệu", "D. Xác minh nguồn gốc và toàn vẹn"]} correctIndex={3} explanation={"Đáp án D. Chữ ký gắn dữ liệu với khóa của người ký. Nhiễu dễ nhầm A. Mã hóa phục vụ bảo vệ bí mật."} />
+<Quiz question={"Câu 3. Chữ ký số trực tiếp phục vụ mục tiêu nào?"} options={["A. Nén tệp", "B. Giấu mọi byte thông điệp", "C. Tăng băng thông", "D. Kiểm nguồn gốc gắn khóa và toàn vẹn"]} correctIndex={3} explanation={"A: Ký không có mục tiêu nén. B: Thông điệp đã ký có thể vẫn công khai. C: Ký không tự tăng băng thông. D: Đúng: kết quả còn cần khóa công khai đúng danh tính."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P04](/courses/information-security/documents/sources) tr. 40–44, 50–55. T04 01:17:40.384–01:18:53.014, 01:20:48.296–01:20:56.539, 01:22:32.574–01:23:29.574 và 01:24:21.944–01:26:07.264.
+- [P04](/courses/information-security/documents/sources), trang dẫn đầu 40; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T04](/courses/information-security/documents/sources) 01:16:34.674–01:18:53.014. Dùng cho nội dung lời giảng tương ứng; transcript có lỗi nhận dạng, không thay thế âm thanh gốc.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Khóa xác minh thuộc người ký. Khóa công khai dùng cho bí mật thuộc người nhận. Ký và mã hóa có mục tiêu khác nhau.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

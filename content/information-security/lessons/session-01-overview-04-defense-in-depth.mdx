@@ -1,13 +1,15 @@
 ---
 id: "session-01-overview-04-defense-in-depth"
-title: "Bốn lớp bảo vệ cơ bản"
+title: "Bốn thành phần và bảy lớp phòng thủ"
 summary: "Buổi 1 · Chủ đề phòng thủ theo chiều sâu và bài tập tổng hợp"
 order: 4
 topicIds: ["overview"]
 sessionIds: ["session-01"]
 relatedLessons: [{"courseId": "information-security", "lessonId": "session-01-overview-02-threats-and-controls"}]
-references: [{"sourceId": "p01", "page": 82}, {"sourceId": "t01", "startSeconds": 4731.286, "endSeconds": 4869.356}, {"sourceId": "t01", "startSeconds": 5614.786, "endSeconds": 5645.106}]
+references: [{"sourceId": "p01", "page": 82}, {"sourceId": "t01", "startSeconds": 4731.286, "endSeconds": 4869.356}]
 ---
+
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
 
 ## Mục tiêu học
 
@@ -16,16 +18,69 @@ references: [{"sourceId": "p01", "page": 82}, {"sourceId": "t01", "startSeconds"
 
 ## Kiến thức qua tình huống
 
-| Lớp theo slide | Việc làm trong cổng nộp bài |
-| --- | --- |
-| Hệ thống mã hóa (cryptosystem) | Bảo vệ dữ liệu trao đổi thông qua giao thức, xác thực và quản lý khóa |
-| Tường lửa (firewall) | Kiểm tra lưu lượng đến và đi theo chính sách |
-| Phần mềm chống mã độc (AMS theo slide) | Kiểm tra tệp, phát hiện và cách ly nội dung nguy hiểm |
-| Hệ thống phát hiện xâm nhập (IDS) | Theo dõi dấu hiệu, phân tích sự kiện và phát cảnh báo |
+### 1. Bốn thành phần và bảy lớp là hai cách nhìn
 
-Phòng thủ theo chiều sâu đặt nhiều lớp quanh cùng một tài sản, từ điểm truy cập mạng đến nơi tệp được xử lý. Sau khi cho phép một kết nối đi qua, hệ thống vẫn cần kiểm tra nội dung và theo dõi dấu hiệu bất thường.
+**Theo nguồn:** P01 tr. 82–89; T01 01:18:51.286–01:28:57.854. Bốn thành phần trong slide là nhóm cơ chế: hệ mật mã, tường lửa, phần mềm chống mã độc và IDS. Bảy lớp là cách bố trí phạm vi phòng thủ quanh dữ liệu. Một thành phần có thể phục vụ nhiều lớp; không ép ghép thành bốn lớp tương ứng một-một.
 
-Hình P01 tr. 84–86 đặt tường lửa ở hai phía mạng, và minh họa thêm các lớp từ ngoài vào trong: chính sách/quy trình/nhận thức, an ninh vật lý, vành đai, mạng nội bộ, máy chủ, ứng dụng, dữ liệu. Có thể dùng thứ tự này để vẽ bài tập tr. 89. Tr. 87–88 cho danh mục hạng mục đánh giá; khi tự ôn, lấy ba ví dụ như kiểm tra quyền truy cập vật lý, xác minh tính toàn vẹn tệp và kiểm tra việc theo dõi nhật ký, rồi đặt chúng vào các lớp tương ứng.
+| Thành phần | Công việc chính | Giới hạn cần hiểu |
+| --- | --- | --- |
+| Hệ mật mã | Mã hóa, xác thực, quản lý khóa | Không sửa được quyền ứng dụng bị cấp sai |
+| Firewall | Thực thi quy tắc lưu lượng | Kết nối được cho phép vẫn có thể chứa hoạt động có hại |
+| Chống mã độc | Phát hiện, cách ly, hỗ trợ xử lý mã độc | Không bảo đảm phát hiện mọi mẫu mới |
+| IDS | Giám sát và cảnh báo dấu hiệu xâm nhập | Cảnh báo phải được xác minh; IDS không mặc nhiên chặn |
+
+**Bổ sung:** IPS có khả năng can thiệp/chặn khi triển khai phù hợp; cần phân biệt với IDS. Mã hóa bảo vệ dữ liệu khi chưa được phép đọc, còn một ứng dụng hợp lệ đã giải mã vẫn phải được kiểm soát.
+
+### 2. Đi từ ngoài vào trong
+
+Sơ đồ diễn giải từ P01 tr. 86:
+
+```text
+Chính sách, quy trình, nhận thức
+  └─ An ninh vật lý
+      └─ Vành đai mạng
+          └─ Mạng nội bộ
+              └─ Máy chủ / thiết bị đầu cuối
+                  └─ Ứng dụng
+                      └─ Dữ liệu
+```
+
+Đừng học thuộc tên rồi dừng ở đó. Với mỗi lớp hãy nêu: tài sản, biện pháp, điều quan sát được khi kiểm tra và rủi ro còn lại.
+
+| Lớp | Ví dụ cho cổng nộp bài | Cách chứng minh có hoạt động |
+| --- | --- | --- |
+| Chính sách/quy trình/nhận thức | Quy định quyền giảng viên, quy trình nghỉ việc, xử lý sự cố | Kiểm hồ sơ cấp/thu hồi quyền và người chịu trách nhiệm |
+| Vật lý | Kiểm soát phòng máy, tủ thiết bị, nguồn điện | Kiểm quyền vào phòng, phương án khi mất điện |
+| Vành đai | Chỉ công bố dịch vụ cần thiết, bảo vệ kênh từ Internet | Kiểm danh sách dịch vụ và quy tắc cho phép |
+| Mạng nội bộ | Tách mạng người dùng với máy chủ dữ liệu | Kiểm luồng nào được phép đi giữa các vùng |
+| Máy chủ | Vá lỗi, tài khoản ít quyền, chống mã độc, log | Kiểm phiên bản, quyền, cảnh báo và lưu log |
+| Ứng dụng | Sinh viên chỉ xem/sửa bài của mình | Thử bằng hai tài khoản thử nghiệm đã được cấp |
+| Dữ liệu | Phân quyền, mã hóa khi cần, sao lưu | Thử quyền đọc và phục hồi một bản sao thử |
+
+### 3. Một sự cố đi xuyên các lớp
+
+**Ví dụ tự soạn:** người dùng bị dụ nhập mật khẩu vào trang giả. Có mật khẩu chưa chắc lấy được bảng điểm: hệ thống có thể còn yêu cầu yếu tố xác thực khác, ứng dụng chỉ cấp quyền xem phạm vi hẹp, mạng nội bộ hạn chế truy cập trực tiếp cơ sở dữ liệu, IDS phát hiện đăng nhập bất thường. Nếu một biện pháp thất bại, những biện pháp độc lập còn lại giảm khả năng và hậu quả sự cố.
+
+Ngược lại, mua nhiều thiết bị nhưng tất cả dùng chung một tài khoản quản trị yếu có thể tạo điểm thất bại chung. “Nhiều lớp” có ý nghĩa khi mỗi lớp thực hiện chức năng rõ ràng và được vận hành, không chỉ xuất hiện trên sơ đồ.
+
+### 4. Kiểm tra hệ thống để trả lời câu hỏi gì?
+
+P01 tr. 87–88 liệt kê thu thập thông tin, phân tích lỗ hổng, kiểm thử từ ngoài/trong, router/switch, firewall, IDS, không dây, DoS, mật khẩu, social engineering, thiết bị bị mất, ứng dụng, vật lý, cơ sở dữ liệu, VoIP, VPN, phát hiện virus/Trojan, quản lý log, kiểm toàn vẹn tệp, email, bản vá và rò rỉ dữ liệu. Danh mục rộng hơn một lần “quét virus”.
+
+**Diễn giải bổ sung:** với mỗi hạng mục cần phạm vi được phép, cách đánh giá, bằng chứng, mức tác động và đề xuất khắc phục. Phân tích lỗ hổng tìm điểm yếu; kiểm thử xâm nhập kiểm chứng khả năng khai thác trong phạm vi được thống nhất. Một bản báo cáo nên có cả điều kiện, ảnh hoặc log, tác động và cách kiểm lại sau sửa.
+
+### Bài tập tự luyện có lời giải
+
+**Câu 1 của P01 tr. 89:** phân tích bảy lớp cho một hệ thống cụ thể. Bảng trên là lời giải mẫu cho cổng nộp bài. Cách triển khai bài viết:
+
+1. Nêu dữ liệu quan trọng: bài nộp, điểm và tài khoản.
+2. Vẽ bảy lớp, mỗi lớp ít nhất một biện pháp có mục tiêu.
+3. Chọn một đường sự cố, chỉ ra lớp nào ngăn, lớp nào phát hiện, lớp nào giúp phục hồi.
+4. Nêu giới hạn: ví dụ sao lưu không ngăn lộ dữ liệu; IDS không tự khôi phục bài đã xóa.
+
+**Câu 2:** bảng tổng hợp cần đủ bảy nhóm, bao gồm mã độc. Điền tên, cơ chế, công cụ/chức năng, kết quả và phòng chống. Với thám mã, ví dụ dùng phân tích tần suất; với nghe trộm, công cụ phân tích gói; với xâm nhập, công cụ kiểm kê dịch vụ; với mã độc, công cụ quét/phân tích. Các ví dụ là giải thích chức năng, không là yêu cầu tấn công một đích thật. Bảng hoàn chỉnh được cung cấp ở [bài tập tổng hợp](/courses/information-security/documents/practice).
+
+**Câu phản biện:** chỉ mã hóa tệp có đủ không? Không. Người được cấp khóa vẫn có thể đọc, máy đang mở có thể bị chiếm, khóa có thể mất và dịch vụ vẫn có thể ngừng. Cần phối hợp quyền, bảo vệ thiết bị, quản lý khóa và phục hồi.
 
 ## Công thức và cách áp dụng
 
@@ -39,22 +94,26 @@ Không có công thức số học trong phần mô tả bốn lớp. Với từ
 
 Trang 89 yêu cầu phân tích hoạt động của mô hình bảo mật theo chiều sâu, rồi lập bảng các kỹ thuật tấn công cơ bản với tên, cơ chế, công cụ, kết quả và cách phòng chống. Tệp yêu cầu mang tên **Bài tập 1 - Họ tên_mssv.doc**. Dựa vào bảng lớp bảo vệ ở trên và [bảng mối đe dọa](/courses/information-security/lessons/session-01-overview-02-threats-and-controls) để điền khung báo cáo. Ở cột công cụ, có thể mô tả chức năng của công cụ quan sát hoặc phòng thủ theo tình huống. Chạy thử với hồ sơ giả lập bằng văn bản nếu cần minh họa cách phân loại.
 
-## Tóm tắt
-
-Cùng một tài sản có thể được bảo vệ khi truyền, kiểm soát khi đi qua ranh giới mạng, kiểm tra trước khi dùng và theo dõi trong quá trình vận hành.
-
 ## Điểm dễ nhầm
 
 Trong mô hình ở slide, IDS đưa ra cảnh báo. Việc chặn lưu lượng theo chính sách là vai trò của tường lửa. Mã hóa đường truyền vẫn cần phối hợp với kiểm tra tệp ở điểm nhận.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Lớp nào chủ yếu phát cảnh báo khi phát hiện xâm nhập?"} options={["A. Tường lửa", "B. IDS", "C. Bộ sao lưu", "D. Bộ mã hóa"]} correctIndex={1} explanation={"Đáp án B. IDS theo dõi và cảnh báo. Nhiễu dễ nhầm A. Tường lửa kiểm tra và thực thi quy tắc lưu lượng."} />
+<Quiz question={"Câu 1. Thành phần nào chủ yếu giám sát và phát cảnh báo xâm nhập trong mô hình slide?"} options={["A. Hệ mã hóa", "B. IDS", "C. Sao lưu", "D. Khóa phiên"]} correctIndex={1} explanation={"A: Mã hóa không tự phân tích dấu hiệu xâm nhập. B: Đúng: giám sát và cảnh báo là vai trò IDS. C: Sao lưu phục vụ phục hồi. D: Khóa phiên là dữ liệu khóa, không phải hệ thống cảnh báo."} />
 
-<Quiz question={"Câu 2. Lớp nào thường cách ly tệp khả nghi?"} options={["A. Bộ cân bằng tải", "B. Bộ nén", "C. Phần mềm chống mã độc", "D. Hệ mã hóa"]} correctIndex={2} explanation={"Đáp án C. Trình chống mã độc có thể kiểm và cách ly. Nhiễu dễ nhầm D. Mã hóa làm đổi biểu diễn chứ không phân loại mã độc."} />
+<Quiz question={"Câu 2. Bảy lớp phòng thủ và bốn thành phần cơ bản có quan hệ nào?"} options={["A. Là hai danh sách bắt buộc giống nhau", "B. Mỗi lớp bắt buộc đúng một thiết bị", "C. Là hai cách nhìn; cơ chế có thể phục vụ nhiều lớp", "D. Chỉ cần lớp dữ liệu vì là tài sản cuối"]} correctIndex={2} explanation={"A: Số lượng và tiêu chí phân loại khác nhau. B: Một lớp có thể cần nhiều cơ chế. C: Đúng: lớp là phạm vi, thành phần là nhóm chức năng. D: Điểm yếu ở ngoài vẫn có thể làm lộ hoặc gián đoạn dữ liệu."} />
 
-<Quiz question={"Câu 3. Điều nào minh họa phòng thủ theo chiều sâu?"} options={["A. Chỉ dùng một tường lửa", "B. Mã hóa đường truyền, quét nội dung, giám sát nhật ký", "C. Chỉ đổi tên máy", "D. Chỉ lưu bản rõ"]} correctIndex={1} explanation={"Đáp án B. Nhiều lớp xử lý các điểm khác nhau. Nhiễu dễ nhầm A. Một tường lửa chỉ là một lớp."} />
+<Quiz question={"Câu 3. Ví dụ nào thể hiện phòng thủ theo chiều sâu?"} options={["A. Chỉ một firewall mạnh", "B. Chỉ ẩn tên tệp", "C. Chỉ mã hóa ổ đĩa", "D. Kênh bảo mật, phân quyền ứng dụng, quét tệp và giám sát log"]} correctIndex={3} explanation={"A: Một cơ chế không đủ thể hiện nhiều lớp. B: Ẩn tên không tạo chuỗi kiểm soát. C: Có ích nhưng chỉ nêu một cơ chế. D: Đúng: nhiều kiểm soát xử lý các điểm và mục tiêu khác nhau."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P01](/courses/information-security/documents/sources) tr. 82–89, đã kiểm tra các hình tr. 84–88. T01 01:18:51.286–01:21:09.356 và 01:33:34.786–01:34:05.106. Ví dụ từ giảng viên là công ty chứng khoán có tường lửa, phát hiện xâm nhập rồi đến máy chủ bên trong. Cụm “7 hoa thị” ở cuối buổi chưa rõ.
+- [P01](/courses/information-security/documents/sources), trang dẫn đầu 82; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T01](/courses/information-security/documents/sources) 01:18:51.286–01:21:09.356. Dùng cho nội dung lời giảng tương ứng; transcript có lỗi nhận dạng, không thay thế âm thanh gốc.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Cùng một tài sản có thể được bảo vệ khi truyền, kiểm soát khi đi qua ranh giới mạng, kiểm tra trước khi dùng và theo dõi trong quá trình vận hành.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

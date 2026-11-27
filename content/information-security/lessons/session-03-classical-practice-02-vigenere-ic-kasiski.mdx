@@ -9,6 +9,8 @@ relatedLessons: []
 references: [{"sourceId": "p03", "page": 2}, {"sourceId": "t03", "startSeconds": 243.26, "endSeconds": 320.62}]
 ---
 
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
+
 ## Mục tiêu học
 
 - Mã hóa và giải mã một văn bản bằng khóa lặp.
@@ -16,13 +18,61 @@ references: [{"sourceId": "p03", "page": 2}, {"sourceId": "t03", "startSeconds":
 
 ## Kiến thức qua tình huống
 
-Khi áp cùng một dịch chuyển cho mọi vị trí, chữ giống nhau luôn cho bản mã giống nhau. Với Vigenère, dịch chuyển thay đổi theo từng chữ của khóa. Nếu tách đúng các vị trí dùng chung một chữ khóa, mỗi nhóm trở thành bài toán kiểu Caesar.
+### 1. Từ mã hóa tới phân tích khóa
 
-| Dấu hiệu theo đề | IC tham khảo |
-| --- | --- |
-| Tiếng Anh tự nhiên, hoặc bản mã Caesar từ tiếng Anh | Khoảng 0,066 |
-| Vigenère khóa dài | Khoảng 0,04 |
-| Chuỗi 26 chữ ngẫu nhiên phân bố đều | Khoảng 0,0385 |
+**Theo đề:** P03 tr. 2–3 yêu cầu đoạn 3–4 dòng, khóa LEMON, giải lại, quan sát IC và độ dài khóa, rồi thử APPLE/SECRET và trao đổi bản mã. T03 chỉ giới thiệu đề. Các công thức và cách phân tích từng bước ở đây là phần giải thích bổ sung.
+
+Vigenère lặp một chuỗi độ dịch. Ví dụ ATTACKATDAWN và LEMON:
+
+```text
+Bản rõ:  A T T A C K A T D A W N
+Khóa:    L E M O N L E M O N L E
+Bản mã:  L X F O P V E F R N H R
+```
+
+L = 11: A+11 = L; E = 4: T+4 = X; M = 12: T+12 = 31 mod 26 = F. Giải chữ thứ ba F(5)−M(12) = −7 ≡19 = T. Khóa chạy liên tục qua các dòng trong ví dụ này; không bắt đầu lại ở mỗi từ hay mỗi dòng.
+
+### 2. IC đếm điều gì?
+
+Lấy ngẫu nhiên hai vị trí **khác nhau**, xác suất hai chữ giống nhau phụ thuộc phân bố tần suất. Với AABC: có 4×3 = 12 cặp vị trí có thứ tự; hai cặp A–A hợp lệ nên IC = 2/12 = 1/6. Không dùng N² vì như vậy đã tính cả việc chọn một vị trí hai lần.
+
+```text
+IC = tổng của f(a)×(f(a)−1), chia cho N×(N−1)
+```
+
+Nếu các chữ đều độc lập và phân bố đều, xác suất gần 1/26 ≈0,0385. Tiếng Anh có tần suất không đều nên giá trị tham khảo khoảng 0,066. Đó là số gần đúng theo ngôn ngữ và dữ liệu, không phải ngưỡng tuyệt đối. Văn bản tiếng Việt đã bỏ dấu có phân bố khác; văn bản chỉ 4 chữ như AABC rất dễ có IC cao tình cờ.
+
+Caesar chỉ đổi tên chữ nên IC giữ nguyên. Chuyển vị không đổi số lần xuất hiện từng chữ nên IC toàn văn cũng giữ nguyên nếu không đệm. IC không thể tự phân biệt hai hệ đó.
+
+### 3. Tại sao chia đúng chu kỳ lại hữu ích?
+
+Giả sử khóa dài 5. Các vị trí 1,6,11,… đều được mã bằng cùng chữ khóa đầu, các vị trí 2,7,12,… dùng chữ thứ hai. Mỗi nhóm là một Caesar riêng. Khi thử m = 5, tính IC của từng nhóm rồi xem trung bình; khi thử m sai, thường trộn nhiều dịch chuyển, làm phân bố phẳng hơn. Với nhóm dưới 2 ký tự IC không xác định, không điền 0 thay thế rồi tính trung bình tùy ý.
+
+### 4. Kasiski tạo giả thuyết, không kết luận
+
+Tìm các cụm 3 chữ trở lên lặp trong bản mã, ghi **vị trí bắt đầu theo phần chữ đã chuẩn hóa**, rồi tính khoảng cách. Nếu cùng đoạn bản rõ được mã dưới cùng vị trí chu kỳ khóa, khoảng cách thường chia hết cho độ dài khóa. Nhưng cụm lặp cũng có thể tình cờ, và ước chung có nhiều giá trị.
+
+Văn bản 136 chữ ở mục ví dụ bên dưới có WUB tại 22 và 52, FVR tại 43 và 73. Hai khoảng cách đều 30, gợi ý các ước 1,2,3,5,6,10,15,30. IC nhóm tại 5 và 10 đều khoảng 0,0703 trong mẫu này. Vì 10 là bội của 5, IC cao ở 10 không bắt buộc khóa dài 10.
+
+### 5. Từ độ dài tới chữ khóa
+
+Với mỗi m ứng viên:
+
+1. Chia thành m nhóm theo vị trí.
+2. Trong từng nhóm, thử 26 độ dịch Caesar.
+3. Chấm mức phù hợp ngôn ngữ; ví dụ so phân bố sau giải với tần suất tiếng Anh. Có thể dùng chi bình phương: cộng `(số quan sát − số kỳ vọng)² / số kỳ vọng` trên 26 chữ.
+4. Ghép chữ khóa ứng viên, giải toàn văn và đọc tính hợp lý của câu.
+5. Thử khóa ngắn hơn nếu khóa dự đoán chỉ lặp chính nó; ví dụ LEMONLEMON rút còn LEMON.
+
+Giá trị chi bình phương nhỏ chỉ là gợi ý phù hợp với mô hình tiếng Anh, không là chứng cứ mật mã tuyệt đối. Nhóm quá ngắn có thể cho chữ khóa sai; khi thực hành với bạn học, sau phân tích hãy đối chiếu khóa/bản rõ đã giữ riêng.
+
+### Bài tập tự luyện có lời giải
+
+**Đề:** có khoảng cách lặp 30 và 45. Ước chung lớn nhất là 15, nên khóa có chắc dài 15 không? Không. Các độ dài 1,3,5,15 đều chia hết cả hai; phải thử IC nhóm và giải ngược. Nếu khóa thử 15 gồm LEMON lặp ba lần, chu kỳ cơ bản là 5.
+
+**Đề:** đổi khóa từ LEMON sang APPLE có làm công thức khác không? Không. Thay chuỗi độ dịch, giữ quy tắc cộng/trừ modulo. Độ dài hai khóa đều 5 nhưng không vì vậy cho cùng bản mã.
+
+**Kết quả cần nộp:** bản rõ đã chuẩn hóa, khóa, bản mã, bản giải; bảng IC toàn văn và theo vài độ dài; ít nhất hai khoảng cách nếu có; ứng viên đã thử và căn cứ chọn. Nếu văn bản không đủ lặp, ghi “chưa có bằng chứng Kasiski”, không dựng vị trí lặp không tồn tại.
 
 ## Công thức và cách áp dụng
 
@@ -66,22 +116,26 @@ Tính theo vị trí từ 1, WUB lặp tại 22 và 52, FVR lặp tại 43 và 7
 
 So đầu ra WIMFA trước. Nếu lệch sau khoảng trắng hoặc xuống dòng, kiểm tra cách công cụ tiến vị trí khóa. Giải mã và so đủ 136 chữ. Với phần phân tích, lưu cả khoảng cách Kasiski và ít nhất hai IC ứng viên để giải thích lựa chọn.
 
-## Tóm tắt
-
-Kasiski gợi ý độ dài qua khoảng cách lặp. IC kiểm tra xem các nhóm theo độ dài đề xuất có giống chuỗi dùng cùng một dịch chuyển hay không. Giải mã thử giúp xác nhận.
-
 ## Điểm dễ nhầm
 
 IC cao có thể xảy ra ở bội của độ dài khóa. Một văn bản ngắn hoặc ít đoạn lặp có thể không cho bằng chứng đủ mạnh.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Tách bản mã theo chu kỳ khóa để làm gì?"} options={["A. Xóa các chữ giống", "B. Gom vị trí dùng cùng một chữ khóa", "C. Đếm khoảng trắng", "D. Tăng độ dài tệp"]} correctIndex={1} explanation={"Đáp án B. Khi chu kỳ đúng, mỗi nhóm tương ứng một dịch. Nhiễu dễ nhầm A. Xóa chữ phá thông tin cần tính IC."} />
+<Quiz question={"Câu 1. Vì sao tách bản mã Vigenère theo chu kỳ ứng viên?"} options={["A. Để xóa các chữ lặp", "B. Để tìm trực tiếp private key", "C. Để gom vị trí có thể dùng cùng chữ khóa", "D. Để loại bỏ nhu cầu biết ngôn ngữ"]} correctIndex={2} explanation={"A: Xóa chữ sẽ làm sai vị trí và thống kê. B: Vigenère không dùng cặp private/public. C: Đúng: đúng chu kỳ thì mỗi nhóm là một Caesar. D: Đánh giá ứng viên vẫn phụ thuộc ngôn ngữ và dữ liệu."} />
 
-<Quiz question={"Câu 2. Kasiski xem đại lượng nào?"} options={["A. Kiểu phông", "B. Kích thước PDF", "C. Số chữ cái của bảng", "D. Khoảng cách giữa các cụm lặp"]} correctIndex={3} explanation={"Đáp án D. Khoảng cách có thể chứa bội của chu kỳ khóa. Nhiễu dễ nhầm C. Bảng chữ cái không cho độ dài khóa."} />
+<Quiz question={"Câu 2. Kasiski chủ yếu xem đại lượng nào?"} options={["A. Độ dài tệp PDF", "B. Khoảng cách giữa các cụm lặp", "C. Độ dài hex của digest", "D. Số hàng của bảng Playfair"]} correctIndex={1} explanation={"A: Kích thước tài liệu không phải khoảng cách trong bản mã. B: Đúng: khoảng cách gợi ý bội chu kỳ. C: Đây là đại lượng của hash. D: Playfair là hệ khác với cách phân tích chu kỳ này."} />
 
-<Quiz question={"Câu 3. IC cao ở cả 5 và 10 thì làm gì?"} options={["A. Chắc chắn chọn 10", "B. Kiểm cả hai ứng viên bằng bản giải", "C. Chắc chắn chọn 5", "D. Lấy IC làm khóa"]} correctIndex={1} explanation={"Đáp án B. Bội của chu kỳ cũng có thể cho IC cao. Nhiễu dễ nhầm A. Đỉnh 10 không tự chứng minh khóa dài 10."} />
+<Quiz question={"Câu 3. IC nhóm cao ở cả m=5 và m=10 thì kết luận hợp lý?"} options={["A. Chắc chắn khóa dài10", "B. Chắc chắn khóa dài5", "C. IC chính là khóa", "D. Thử cả hai, xét bội chu kỳ và bản giải"]} correctIndex={3} explanation={"A: Bội của chu kỳ cũng có thể cho IC cao. B: 5 là ứng viên tốt nhưng vẫn phải kiểm. C: IC là số thống kê, không phải chuỗi khóa. D: Đúng: kết hợp bằng chứng và thử giải."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P03](/courses/information-security/documents/sources) tr. 2–3 và câu báo cáo 2, 5 ở tr. 4. Công thức IC và cách đếm cụm được diễn giải bổ sung. T03 00:04:03.260–00:05:20.620 giới thiệu TH2A; không có thêm chỉ dẫn cụ thể cho thuật toán của bài này.
+- [P03](/courses/information-security/documents/sources), trang dẫn đầu 2; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T03](/courses/information-security/documents/sources) 00:04:03.260–00:05:20.620. Đoạn này chỉ giới thiệu TH2A; không là nguồn cho từng thao tác thuật toán.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Kasiski gợi ý độ dài qua khoảng cách lặp. IC kiểm tra xem các nhóm theo độ dài đề xuất có giống chuỗi dùng cùng một dịch chuyển hay không. Giải mã thử giúp xác nhận.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

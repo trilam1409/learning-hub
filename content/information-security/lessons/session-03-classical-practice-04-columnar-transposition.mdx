@@ -9,6 +9,8 @@ relatedLessons: []
 references: [{"sourceId": "p03", "page": 3}, {"sourceId": "t03", "startSeconds": 243.26, "endSeconds": 320.62}]
 ---
 
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
+
 ## Mục tiêu học
 
 - Mã hóa theo thứ tự cột của khóa số và giải ngược.
@@ -16,7 +18,52 @@ references: [{"sourceId": "p03", "page": 3}, {"sourceId": "t03", "startSeconds":
 
 ## Kiến thức qua tình huống
 
-Khi điền văn bản theo hàng rồi đọc theo một thứ tự cột khác, chữ nào có trong bản rõ vẫn có trong bản mã nếu không thêm ký tự đệm. Điều thay đổi là thứ tự. Do đó chỉ kiểm tra số lần xuất hiện của mỗi chữ chưa đủ để khôi phục câu gốc.
+### 1. Đổi đường đọc chứ không đổi chữ
+
+**Theo nguồn:** P03 tr. 3–4 giao Columnar Transposition, khóa 4312567, giải lại, dùng mục Analysis và thêm hai ví dụ. Đề không ấn định bản rõ ở bước này. Vì vậy ATTACKATDAWN trong bài là dữ liệu minh họa tự chọn.
+
+**Quy ước bổ sung:** các chữ số là nhãn gắn lên cột vật lý; điền chữ theo hàng từ trái sang phải; không đệm ô cuối; đọc từng cột từ trên xuống theo nhãn 1→7. Phải ghi đủ quy ước này vì công cụ có thể cho tùy chọn nhập cột/đọc hàng hoặc đệm khác.
+
+### 2. Mã hóa ATTACKATDAWN
+
+```text
+Vị trí:  1 2 3 4 5 6 7
+Nhãn:    4 3 1 2 5 6 7
+         A T T A C K A
+         T D A W N
+```
+
+Tìm cột nhãn 1 ở vị trí vật lý 3: đọc T,A → TA. Nhãn 2 ở vị trí 4 → AW. Nhãn 3 ở vị trí 2 → TD. Nhãn 4 ở vị trí 1 → AT. Còn lại CN, K, A. Ghép TA | AW | TD | AT | CN | K | A thành **TAAWTDATCNKA**.
+
+### 3. Giải ngược: tính độ dài trước khi chia
+
+N = 12, số cột k = 7. Chia 12 = 1×7+5. Có một hàng đầy và năm chữ ở hàng tiếp, nên năm cột **vật lý** đầu có hai chữ; cột 6–7 chỉ có một chữ.
+
+| Nhãn đọc | Vị trí vật lý | Độ dài | Phần bản mã |
+| --- | --- | --- | --- |
+| 1 | 3 | 2 | TA |
+| 2 | 4 | 2 | AW |
+| 3 | 2 | 2 | TD |
+| 4 | 1 | 2 | AT |
+| 5 | 5 | 2 | CN |
+| 6 | 6 | 1 | K |
+| 7 | 7 | 1 | A |
+
+Đặt các phần này về cột đúng vị trí, rồi đọc hàng từ trái sang phải để thu ATTACKATDAWN. Không cắt tất cả cột dài bằng nhau, cũng không tự cho năm nhãn nhỏ nhất dài hơn trong trường hợp tổng quát: cột dài hơn do vị trí điền hàng, không do giá trị nhãn.
+
+### 4. Vì sao còn dấu vết?
+
+Nếu không đệm, mỗi chữ giữ nguyên số lần xuất hiện. IC toàn văn giữ nguyên vì chỉ phụ thuộc tần suất; nhưng thứ tự từ và cụm chữ thay đổi. Phân tích có thể thử độ rộng, thứ tự cột và chấm mức phù hợp ngôn ngữ. Mẫu ngắn có thể cho nhiều cách sắp hợp lý. Có k! thứ tự khi k nhãn đều phân biệt; có nhiều khóa không tự chứng minh an toàn.
+
+Nếu có padding, tần suất có thể thay đổi vì thêm chữ đệm. So sánh tần suất phải đối chiếu phần đã chuẩn bị chứ không bỏ qua phần chữ thêm vào. Khóa số 4312567 ở đây có bảy nhãn phân biệt; cách xử lý khóa là một từ chứa chữ lặp cần quy tắc xếp hạng riêng, không được suy ra từ ví dụ này.
+
+### Bài tập tự luyện có lời giải
+
+**Mẫu 1:** MEETATNOON, khóa 312, không đệm. Bảng có các hàng MEE / TAT / NOO / N. Cột vật lý 1 là MTNN, cột 2 EAO, cột 3 ETO. Theo nhãn 1,2,3 đọc cột 2,3,1 → **EAOETOMTNN**.
+
+**Mẫu 2:** STUDYATNIGHT, khóa 2413. Các hàng STUD / YATN / IGHT. Đọc cột vật lý 3,1,4,2 → UTH | SYI | DNT | TAG → **UTHSYIDNTTAG**. Hai mẫu này đáp ứng nhu cầu hai ví dụ bổ sung để tập; sinh viên có thể tự tạo dữ liệu riêng theo đề.
+
+**Tự kiểm ba tầng:** đếm N → so tần suất từng chữ → giải ngược đúng thứ tự. Hai bước đầu phát hiện mất/thêm chữ nhưng chưa chứng minh thứ tự đúng. Nếu bản mã chỉ bị đảo hai chữ, N và tần suất vẫn khớp.
 
 ## Công thức và cách áp dụng
 
@@ -53,22 +100,26 @@ Nhãn  4 3 1 2 5 6 7
 
 Đếm tổng số chữ và tần suất từng chữ của hai phía. Giải ngược để kiểm tra thứ tự. Hai bản mã cùng tần suất vẫn có thể giải ra hai chuỗi khác nhau.
 
-## Tóm tắt
-
-Khóa cho thứ tự đọc cột. Hàng cuối thiếu ô quyết định cột nào dài hơn. Khi giải, đặt từng khối vào đúng cột rồi đọc lại theo hàng.
-
 ## Điểm dễ nhầm
 
 Cột bên trái trong bảng và cột có nhãn nhỏ là hai khái niệm khác nhau. Tính độ dài theo vị trí vật lý trước khi sắp theo nhãn.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Hoán vị cột không đệm giữ gì?"} options={["A. Tần suất từng chữ", "B. Vị trí từng chữ", "C. Thứ tự đọc", "D. Từng từ nguyên dạng"]} correctIndex={0} explanation={"Đáp án A. Chỉ các vị trí thay đổi. Nhiễu dễ nhầm B. Chữ có thể chuyển sang vị trí mới."} />
+<Quiz question={"Câu 1. Chuyển vị không đệm giữ điều gì?"} options={["A. Vị trí từng chữ", "B. Từng từ nguyên dạng", "C. Thứ tự đọc cũ", "D. Số lần xuất hiện từng chữ"]} correctIndex={3} explanation={"A: Vị trí là thứ bị thay đổi. B: Từ có thể bị phân tán. C: Đường đọc được thay theo khóa. D: Đúng: không thêm/bớt/thay chữ."} />
 
-<Quiz question={"Câu 2. Điền 12 chữ vào 7 cột. Có mấy cột dài 2?"} options={["A. 2", "B. 7", "C. 12", "D. 5"]} correctIndex={3} explanation={"Đáp án D. 12 = 1×7 + 5 tạo thêm chữ cho năm cột. Nhiễu dễ nhầm B. 7 là tổng số cột."} />
+<Quiz question={"Câu 2. 12 chữ điền theo hàng vào 7 cột, không đệm: có mấy cột dài2?"} options={["A. 2", "B. 5", "C. 7", "D. 12"]} correctIndex={1} explanation={"A: Không bằng phần thương hay số hàng. B: Đúng:12=1×7+5, năm cột đầu thêm một chữ. C: Bảy là tổng cột, không phải cột dài. D: Mười hai là tổng chữ."} />
 
-<Quiz question={"Câu 3. Khi giải, tính độ dài cột theo thứ tự nào?"} options={["A. Thứ tự nhãn tăng dần", "B. Độ dài từ", "C. Chữ phổ biến nhất", "D. Thứ tự vật lý"]} correctIndex={3} explanation={"Đáp án D. Hàng cuối điền từ trái sang phải. Nhiễu dễ nhầm A. Thứ tự nhãn dùng để lấy các khối bản mã sau khi biết độ dài."} />
+<Quiz question={"Câu 3. Khi giải bảng cột thiếu hàng cuối, độ dài cột xác định từ đâu trước?"} options={["A. Vị trí vật lý khi điền hàng", "B. Tần suất chữ E", "C. Chỉ nhãn nhỏ nhất", "D. Tên tệp"]} correctIndex={0} explanation={"A: Đúng: các cột bên trái nhận phần dư trước. B: Tần suất không cho biết chiều dài cột. C: Nhãn chỉ thứ tự đọc, không quyết định cột dài trong mọi khóa. D: Tên tệp không tham gia thuật toán."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P03](/courses/information-security/documents/sources) tr. 3–4 và câu báo cáo 4, 5 ở tr. 4. T03 00:04:03.260–00:05:20.620 giới thiệu TH2A; không có thêm chỉ dẫn cụ thể cho thuật toán của bài này.
+- [P03](/courses/information-security/documents/sources), trang dẫn đầu 3; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T03](/courses/information-security/documents/sources) 00:04:03.260–00:05:20.620. Đoạn này chỉ giới thiệu TH2A; không là nguồn cho từng thao tác thuật toán.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Khóa cho thứ tự đọc cột. Hàng cuối thiếu ô quyết định cột nào dài hơn. Khi giải, đặt từng khối vào đúng cột rồi đọc lại theo hàng.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.
