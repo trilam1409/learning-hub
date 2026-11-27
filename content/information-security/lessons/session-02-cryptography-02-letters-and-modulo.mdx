@@ -6,8 +6,10 @@ order: 6
 topicIds: ["classical-cryptography"]
 sessionIds: ["session-02"]
 relatedLessons: [{"courseId": "information-security", "lessonId": "session-02-cryptography-03-playfair-and-hill"}]
-references: [{"sourceId": "p02", "page": 22}, {"sourceId": "t02", "startSeconds": 6534.161, "endSeconds": 6578.881}, {"sourceId": "t02", "startSeconds": 6538.707, "endSeconds": 6541.321}]
+references: [{"sourceId": "p02", "page": 23}, {"sourceId": "t02", "startSeconds": 1804.951, "endSeconds": 2142.591}]
 ---
+
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
 
 ## Mục tiêu học
 
@@ -15,7 +17,54 @@ Nhận ra khi nào thay chữ và khi nào đổi vị trí. Tính được vài
 
 ## Kiến thức qua tình huống
 
-Trong mã thay thế đơn giản, khóa là hoán vị bảng chữ cái: một chữ luôn được thay bằng cùng một chữ. Có 26! hoán vị, nhưng vẫn có thể giữ dấu vết tần suất. Hoán vị bậc d giữ các chữ của một khối d vị trí và chỉ sắp lại. Caesar dùng một độ dịch cho mọi chữ. Vigenère thay độ dịch theo chuỗi khóa lặp. Affine nhân với a và cộng b. Khi làm Vigenère cần quy định trước cách xử lý khoảng trắng; ở đây giữ khoảng trắng nếu cần trình bày nhưng chỉ tiến khóa qua chữ.
+### 1. Modulo là quay lại vòng chữ cái
+
+**Theo nguồn:** P02 tr. 23–30, 39–40. **Quy ước của bài:** A = 0, B = 1, …, Z = 25. `x mod 26` là số dư trong 0–25. Ví dụ 28 = 1×26 + 2 nên 28 mod 26 = 2; −4 = −1×26 + 22 nên −4 mod 26 = 22. Khi tính tay, có thể cộng/trừ 26 cho tới khi kết quả nằm trong khoảng.
+
+### 2. Thay thế và hoán vị
+
+Mã thay thế đơn dùng một bảng ánh xạ chữ. Nếu A luôn đổi thành U thì các lần A xuất hiện vẫn để lại cùng tần suất ở U. Dù có 26! bảng ánh xạ, dấu vết ngôn ngữ khiến việc thám mã không chỉ là thử hết 26! khóa.
+
+Hoán vị bậc d đổi thứ tự các vị trí trong từng khối. Với d = 5 và thứ tự đọc 4,1,3,2,5: ABCDE → DACBE. Giải ngược: bản mã vị trí 1 đặt về ô 4, vị trí 2 về ô 1, vị trí 3 về ô 3, vị trí 4 về ô 2, vị trí 5 về ô 5. Nếu khoảng trắng tham gia khối thì nó cũng là một ký tự; P02 tr. 25–26 dùng cách trình bày có khoảng trắng. Đừng tự bỏ trắng rồi so với một đáp án tính cả trắng.
+
+### 3. Caesar: cùng một độ dịch
+
+Với k = 5: C = 2 → 7 = H; R = 17 → 22 = W; Y = 24 → 29 mod 26 = 3 = D. Theo P02 tr. 28, CRYPTOGRAPHY → **HWDUYTLWFUMD**. Giải H: (7−5) mod 26 = 2 = C. Với bảng A–Z có 26 độ dịch tính cả 0, nên dễ vét cạn.
+
+### 4. Vigenère: lặp chuỗi độ dịch
+
+P02 tr. 29 dùng M = VIGENERE, K = CHIFFRE. Chỉ cho khóa tiến khi gặp chữ; khoảng trắng nếu giữ để trình bày không tiêu thụ khóa trong quy ước này.
+
+| Vị trí từ 1 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Chữ rõ | V | I | G | E | N | E | R | E |
+| Giá trị p | 21 | 8 | 6 | 4 | 13 | 4 | 17 | 4 |
+| Chữ khóa | C | H | I | F | F | R | E | C |
+| Độ dịch | 2 | 7 | 8 | 5 | 5 | 17 | 4 | 2 |
+| Tổng mod 26 | 23 | 15 | 14 | 9 | 18 | 21 | 21 | 6 |
+| Chữ mã | X | P | O | J | S | V | V | G |
+
+Chữ thứ tám dùng lại C vì khóa có 7 chữ. Giải ngược là lấy số bản mã trừ số khóa, không trừ số thứ tự trong bảng bắt đầu từ 1. Nếu muốn dùng A = 1, phải điều chỉnh công thức; giữ một quy ước xuyên suốt sẽ dễ tránh sai hơn.
+
+### 5. Affine: nhân rồi cộng
+
+Với a = 5, b = 3, mã B = 1 cho 5×1+3 = 8 = I. Giải phải “chia cho 5” theo modulo, tức nhân nghịch đảo 21 vì 5×21 = 105 ≡ 1 (mod 26). Do đó I = 8 → 21(8−3) = 105 ≡ 1 = B.
+
+Điều kiện `gcd(a,26)=1` nghĩa là a không có ước chung với 26 ngoài 1. Chẳng hạn a = 2 không hợp lệ: A = 0 và N = 13 đều cho cùng giá trị khi nhân 2 rồi lấy mod 26. Hai chữ nhập bị nhập nhằng nên không thể giải duy nhất. Có 12 lựa chọn a trong 0–25 và 26 lựa chọn b, thành 312 cặp khóa Affine hợp lệ, vẫn là một hệ mã học tập.
+
+### 6. Phần hình tr. 74: ghép thay thế và chuyển vị
+
+Đây là bài mô tả cơ chế từ bảng tọa độ, khác với Caesar hay Playfair. Bảng nhãn hàng/cột được giữ ở mục bài tập chính thức bên dưới. Viết tọa độ của từng chữ thành (hàng,cột). Với toàn chuỗi dài N, nối N số hàng rồi N số cột, sau đó lấy từng cặp tra ngược.
+
+**Từng bước cho COMBI:** tọa độ 43,13,32,41,21 → hàng 41342; cột 33211 → nối 4134233211 → tách 41,34,23,32,11 → BNLMW. Các nhãn hàng/cột phải lấy theo số in ở mép, không dùng chỉ số vị trí 1–5 của bảng.
+
+### Bài tập tự luyện có lời giải
+
+**Phiên bản PDF tr. 73**, khóa minh họa tự chọn TRILAM: M = TRUONG DAI HOC QUOC GIA. Chuẩn hóa thành TRUONGDAIHOCQUOCGIA; lặp TRILAM; sáu phép đầu là T+T → M, R+R → I, U+I → C, O+L → Z, N+A → N, G+M → S. Kết quả đầy đủ **MICZNSWRQSOOJLWNGUT**. Đây là lời giải mẫu với tên giả định, không phải khóa chung của lớp.
+
+**Phiên bản lời giảng:** T02 01:48:54.161–01:49:38.881 dùng TRUONG DAI HOC CONG NGHE THONG TIN. Với cùng khóa minh họa kết quả **MICZNSWRQSOOVFVRNSAVBSOZZKQY**. Không dùng đáp án của phiên bản này để chấm bản rõ trong PDF.
+
+**Tự luyện Affine:** a = 5, b = 3 mã A, C, Z được D, N, Y. Giải Y = 24: 21(24−3) = 441 ≡ 25 = Z. Nếu a = 13, không dùng công thức giải vì nghịch đảo không tồn tại modulo 26.
 
 ## Công thức và cách áp dụng
 
@@ -48,22 +97,26 @@ P02 tr. 74 yêu cầu mô tả phép mã hóa trong hình, cho một ví dụ n�
 
 **Ví dụ tự soạn.** Với bản rõ chỉ gồm **COMBI**, hàng là 41342, cột là 33211. Nối và tách được 41, 34, 23, 32, 11, cho **BNLMW**. Khi giải, chuyển bản mã ngược thành năm cặp, nối thành dãy 10 chữ số, tách hai nửa để phục hồi hàng và cột ban đầu.
 
-## Tóm tắt
-
-Modulo đưa kết quả trở lại vòng 26 chữ. Affine cần hệ số nhân đảo được. Hoán vị chỉ tác động lên vị trí.
-
 ## Điểm dễ nhầm
 
 Vigenère với khóa một chữ trở thành Caesar. Có nhiều khóa hoán vị bảng chữ cái không loại bỏ dấu vết phân bố chữ.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Vigenère với khóa một chữ tương ứng cách nào?"} options={["A. Playfair", "B. Hill", "C. Caesar", "D. RSA"]} correctIndex={2} explanation={"Đáp án C. Một chữ khóa lặp một độ dịch duy nhất. Nhiễu dễ nhầm B. Hill cần khóa ma trận."} />
+<Quiz question={"Câu 1. Vigenère có khóa một chữ lặp tương ứng hệ nào?"} options={["A. Caesar", "B. Hill", "C. Playfair", "D. Chuyển vị cột"]} correctIndex={0} explanation={"A: Đúng: một độ dịch dùng ở mọi vị trí. B: Hill dùng ma trận trên nhóm chữ. C: Playfair dùng bảng tra cặp. D: Chuyển vị đổi vị trí, không cộng độ dịch."} />
 
-<Quiz question={"Câu 2. Affine a = 5, b = 3, A = 0 mã B thành gì?"} options={["A. B", "B. H", "C. I", "D. F"]} correctIndex={2} explanation={"Đáp án C. 5·1 + 3 = 8, tức I. Nhiễu dễ nhầm B. H ở vị trí 7."} />
+<Quiz question={"Câu 2. Affine a=5,b=3 với A=0 mã B thành chữ nào?"} options={["A. H", "B. I", "C. D", "D. B"]} correctIndex={1} explanation={"A: H là 7, không phải 5×1+3. B: Đúng: 5×1+3=8, tức I. C: D là kết quả của A trong cấu hình này. D: B chỉ là đầu vào; phép biến đổi có thay chữ."} />
 
-<Quiz question={"Câu 3. Điều kiện để Affine giải ngược được là gì?"} options={["A. gcd(a, 26) = 1", "B. a = 0", "C. b chẵn", "D. b khác 0"]} correctIndex={0} explanation={"Đáp án A. a phải có nghịch đảo modulo 26. Nhiễu dễ nhầm C. Chẵn lẻ của b không quyết định nghịch đảo."} />
+<Quiz question={"Câu 3. Điều kiện cho hệ số a của Affine đảo được modulo 26?"} options={["A. a khác 0 là đủ", "B. a phải chẵn", "C. gcd(a,26)=1", "D. b phải khác 0"]} correctIndex={2} explanation={"A: Ví dụ a=2 khác 0 nhưng không có nghịch đảo. B: Số chẵn có ước chung 2 với 26 nên không phù hợp. C: Đúng: a phải có nghịch đảo nhân modulo 26. D: b không quyết định khả nghịch của hệ số nhân."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P02](/courses/information-security/documents/sources) tr. 22–30, 39–40, 73–74. Hình tr. 74 đã đối chiếu trực tiếp. T02 01:48:54.161–01:49:38.881. Tên Vigenère nhận dạng chưa rõ tại 01:48:58.707–01:49:01.321 nhưng khóa lặp và lời mô tả khớp bài tập.
+- [P02](/courses/information-security/documents/sources), trang dẫn đầu 23; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T02](/courses/information-security/documents/sources) 00:30:04.951–00:35:42.591. Dùng cho nội dung lời giảng tương ứng; transcript có lỗi nhận dạng, không thay thế âm thanh gốc.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Modulo đưa kết quả trở lại vòng 26 chữ. Affine cần hệ số nhân đảo được. Hoán vị chỉ tác động lên vị trí.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

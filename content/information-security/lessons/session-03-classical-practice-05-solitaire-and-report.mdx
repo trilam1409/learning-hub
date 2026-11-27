@@ -6,8 +6,10 @@ order: 13
 topicIds: ["classical-cryptography", "practice-reports"]
 sessionIds: ["session-03"]
 relatedLessons: [{"courseId": "information-security", "lessonId": "session-03-classical-practice-01-cryptool-and-caesar"}]
-references: [{"sourceId": "p03", "page": 1}, {"sourceId": "t03", "startSeconds": 243.26, "endSeconds": 320.62}]
+references: [{"sourceId": "p03", "page": 4}, {"sourceId": "t03", "startSeconds": 243.26, "endSeconds": 320.62}]
 ---
+
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
 
 ## Mục tiêu học
 
@@ -16,7 +18,57 @@ references: [{"sourceId": "p03", "page": 1}, {"sourceId": "t03", "startSeconds":
 
 ## Kiến thức qua tình huống
 
-Solitaire dùng bộ bài để tạo một dãy số thay đổi theo vị trí. Bên gửi và bên nhận cần cùng cách đánh số, cùng thứ tự bộ bài lúc bắt đầu và cùng quy trình tạo dãy. Chỉ cần lệch một lượt, phần bản rõ phục hồi sau đó có thể sai.
+### 1. Phần mở rộng yêu cầu gì?
+
+**Theo P03 tr. 4:** tìm hiểu cách mã hóa/giải mã Solitaire và cho ví dụ với họ tên sinh viên. PDF không cung cấp quy tắc thuật toán. Phần thao tác bộ bài trong bài này là kiến thức bổ sung; được kiểm lại với [mô tả Solitaire của Bruce Schneier](https://www.schneier.com/academic/solitaire/). T03 không giảng chi tiết thuật toán.
+
+Solitaire biến **trạng thái bộ bài** thành dòng số khóa. Bản rõ không quyết định trạng thái khởi đầu. Cả hai phía cần cùng thứ tự bộ bài, cách đánh số và cách cập nhật. Tên sinh viên trong đề là bản rõ cần mã, không mặc nhiên là khóa xáo bài.
+
+### 2. Phân biệt khóa và dòng khóa
+
+```text
+Trạng thái ban đầu ──cập nhật──> số k1 ──cập nhật──> số k2 ...
+                                  ↓                    ↓
+Chữ rõ p1 ────────────────────> cộng mod 26       chữ p2 + k2
+```
+
+Trạng thái khởi đầu là bí mật gốc trong mô hình, còn k1,k2,… là dòng khóa được sinh ra. Với A = 1,…,Z = 26, cộng p+k rồi trừ 26 nếu vượt 26. Ví dụ N = 14 và k = 4 cho R = 18; G = 7 và k = 23 cho 30−26 = 4 = D. Giải là trừ k, nếu ≤0 thì cộng 26. Khác với bảng Vigenère A = 0, A của dòng khóa Solitaire mang giá trị 1 chứ không phải dịch 0.
+
+### 3. Bài toán tay với bộ sắp sẵn
+
+Các bước đầy đủ ở mục thực hiện bên dưới. Dùng bộ sắp 1…52, joker A, joker B chỉ để tái lập bài tập. Cả hai joker có giá trị đếm 53 nhưng là hai lá khác nhau để di chuyển. Không bỏ joker khỏi bộ khi tính.
+
+**Lượt đầu để tự theo dõi:**
+
+```text
+Ban đầu:          1 2 3 ... 52 A B
+Dời A:            1 2 3 ... 52 B A
+Dời B hai chỗ:    1 B 2 3 ... 52 A
+Cắt ba đoạn:      B 2 3 ... 52 A 1
+Cắt theo đáy 1:   2 3 4 ... 52 A B 1
+```
+
+Lá đầu là 2; đếm hai lá từ đầu rồi đọc lá kế tiếp là 4, nên số khóa đầu là 4. Động tác đọc không lấy lá ra. Ở lượt sau, bắt đầu bằng trạng thái vừa cập nhật, không quay lại bộ sắp ban đầu. Nếu lá đọc là joker, không sinh số cho lượt đó nhưng vẫn giữ trạng thái mới để tiếp tục.
+
+### 4. Ví dụ họ tên và giới hạn
+
+Tên mẫu Nguyễn Văn An chuẩn hóa thành NGUYENVANAN; dòng số là 4,23,10,24,8,25,18,6,4,7,20; bản mã **RDEWMMNGRHH**. Khi giải, tái tạo đúng dòng số từ trạng thái đầu. Đừng bắt đầu bằng bộ bài cuối của bên gửi: nó sẽ sinh đoạn tiếp theo của dòng khóa.
+
+Bộ sắp 1…54 là công khai và mọi người đều tính được, nên ví dụ này không cung cấp bí mật thực tế. Không dùng họ tên, khóa lặp hoặc bộ bài mẫu để bảo vệ dữ liệu thật. Ở đây mục tiêu là kiểm sự đồng bộ và phép cộng/trừ.
+
+### 5. Hoàn thiện báo cáo năm câu
+
+Mỗi câu trả lời nên có **nhận định → cơ chế → dữ liệu minh họa → giới hạn**. Ví dụ câu “Caesar dễ bị phá” cần nêu 26 dịch, thử hết rồi nhận dạng câu hợp lý; không chỉ viết “vì khóa ngắn”. Câu IC cần số liệu nhóm và độ dài đang thử; câu Playfair cần vết chia cặp; câu chuyển vị cần bảng cột và phép giải.
+
+Không xếp bốn mã cổ điển thành một thứ tự an toàn tuyệt đối nếu chưa xác định bản rõ, khóa và kiểu tấn công. Vigenère khóa một chữ trở thành Caesar; Playfair bỏ dấu vết đơn ký tự theo cách khác nhưng vẫn còn thống kê; chuyển vị giữ tần suất. Cả bốn là công cụ học nguyên lý, không lựa chọn bảo vệ dữ liệu hiện đại.
+
+### Bài tập tự luyện có lời giải
+
+**Đề:** dòng khóa cho ba vị trí là 4,23,10; mã ABC theo A = 1. A(1)+4 = 5 = E; B(2)+23 = 25 = Y; C(3)+10 = 13 = M. Kết quả **EYM**. Giải E−4 = A, Y−23 = B, M−10 = C. Dòng số đã cho chỉ minh họa phép ghép, không phải kết quả tự phát sinh từ mọi bộ bài.
+
+**Đề:** nếu nhận thiếu một chữ bản mã, tiếp tục giải theo dòng khóa hiện tại có đúng không? Thường sẽ lệch vị trí từ điểm mất chữ, vì chữ kế tiếp bị trừ với sai số khóa. Cần xác định và khôi phục vị trí theo giao thức; không đoán rồi báo đã giải chính xác.
+
+**Danh sách hồ sơ:** báo cáo TH2A dạng soạn thảo; ảnh có khóa/thiết lập; bản rõ, bản mã, bản giải; bảng Caesar 4 khóa; Vigenère với các khóa được giao; Playfair và mẫu chữ đôi; chuyển vị cùng hai ví dụ; Solitaire họ tên; đủ năm câu trả lời. Thời hạn lấy từ thông báo lớp hiện hành, không tính một ngày mới từ từ “tuần sau” trong transcript cũ.
 
 ## Công thức và cách áp dụng
 
@@ -56,22 +108,26 @@ Bộ 54 lá gồm hai joker dễ phân biệt, hoặc bảng mô phỏng bằng 
 | 4. Vì sao Transposition giữ chữ nhưng đổi vị trí? | Chỉ thay thứ tự đọc cột. So tần suất chữ và giải ngược theo bảng. Khi dùng đệm, tính đến phần chữ được thêm. |
 | 5. So sánh độ an toàn của bốn hệ mã | Caesar có rất ít khóa. Vigenère khóa lặp có dấu hiệu chu kỳ. Playfair dùng cặp, vẫn còn cấu trúc thống kê. Hoán vị cột giữ tần suất chữ, độ khó phụ thuộc khóa và độ dài. So theo tiêu chí và giả định cụ thể. |
 
-## Tóm tắt
-
-Solitaire tạo dãy số từ trạng thái bộ bài và cập nhật trạng thái giữa các lượt. Bài báo cáo cần bằng chứng thực hiện, kết quả và nhận xét theo từng yêu cầu. Bốn hệ mã so sánh trong câu 5 là Caesar, Vigenère, Playfair và chuyển vị cột.
-
 ## Điểm dễ nhầm
 
 Bộ bài cuối của quá trình mã hóa và bộ bài cần để bắt đầu giải là hai trạng thái khác nhau. Khi giải, tái lập đúng trạng thái khởi đầu của bên mã hóa.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Bên giải bắt đầu với trạng thái bộ bài nào?"} options={["A. Trạng thái ngẫu nhiên khác", "B. Trạng thái đầu giống bên mã hóa", "C. Chỉ hai joker", "D. Trạng thái cuối bên mã hóa"]} correctIndex={1} explanation={"Đáp án B. Khởi đầu giống nhau tái tạo cùng dòng khóa. Nhiễu dễ nhầm D. Trạng thái cuối sẽ phát chuỗi tiếp từ vị trí khác."} />
+<Quiz question={"Câu 1. Bên giải Solitaire phải bắt đầu bằng gì?"} options={["A. Bộ bài cuối bên mã hóa", "B. Bất kỳ thứ tự nào đủ54 lá", "C. Đúng trạng thái khởi đầu bên mã hóa", "D. Chỉ cần giữ vị trí hai joker"]} correctIndex={2} explanation={"A: Trạng thái cuối sinh phần tiếp, không dòng khóa ban đầu. B: Thứ tự khác cho dòng khóa khác. C: Đúng: cùng trạng thái và quy tắc để tái sinh dòng khóa. D: Thứ tự các lá còn lại cũng quyết định dòng khóa."} />
 
-<Quiz question={"Câu 2. Nếu đọc ra joker, nên làm gì?"} options={["A. Dùng joker cho cả bảng", "B. Bỏ đầu ra, giữ trạng thái và sang lượt mới", "C. Gán thành A", "D. Quay về đầu"]} correctIndex={1} explanation={"Đáp án B. Joker không thành chữ khóa, trạng thái vẫn tiến. Nhiễu dễ nhầm C. Gán A làm thay đổi thuật toán."} />
+<Quiz question={"Câu 2. Khi lá đọc đầu ra là joker thì làm gì?"} options={["A. Đổi joker thành A", "B. Bỏ đầu ra đó, giữ trạng thái và cập nhật lượt mới", "C. Bắt đầu lại bộ bài ban đầu", "D. Xóa joker khỏi bộ"]} correctIndex={1} explanation={"A: Tự gán làm sai dòng số. B: Đúng: lượt đó chưa tạo số khóa. C: Quay đầu có thể lặp mãi và sai thuật toán. D: Bộ bài phải giữ hai joker."} />
 
-<Quiz question={"Câu 3. Bốn hệ mã chính của báo cáo có tính chất nào sau đây?"} options={["A. Caesar đổi độ dài khóa theo ký tự", "B. Playfair mã từng chữ riêng", "C. Hoán vị cột giữ tần suất chữ nếu không đệm", "D. Vigenère chuẩn dùng một phép đổi cố định mọi vị trí"]} correctIndex={2} explanation={"Đáp án C. Hoán vị đổi vị trí nhưng giữ tập chữ. Nhiễu dễ nhầm A. Caesar dùng một độ dịch cố định."} />
+<Quiz question={"Câu 3. Hệ nào chắc giữ IC toàn văn nếu chỉ đổi vị trí, không đệm?"} options={["A. Chuyển vị cột", "B. Vigenère với mọi khóa", "C. Mọi Playfair", "D. Mọi phép thêm đệm"]} correctIndex={0} explanation={"A: Đúng: tần suất từng chữ giữ nguyên. B: Vigenère nhiều dịch có thể đổi phân bố toàn văn. C: Playfair thay chữ theo cặp. D: Đệm làm thay số lần xuất hiện và độ dài."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P03](/courses/information-security/documents/sources) tr. 1 và 4. PDF giao phần tìm hiểu Solitaire; quy tắc, ví dụ và phép tính là phần bổ sung để tự kiểm tra. T03 00:04:03.260–00:05:20.620 giới thiệu TH2A; không có thêm chỉ dẫn cụ thể cho thuật toán của bài này.
+- [P03](/courses/information-security/documents/sources), trang dẫn đầu 4; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T03](/courses/information-security/documents/sources) 00:04:03.260–00:05:20.620. Đoạn này chỉ giới thiệu TH2A; không là nguồn cho từng thao tác thuật toán.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Solitaire tạo dãy số từ trạng thái bộ bài và cập nhật trạng thái giữa các lượt. Bài báo cáo cần bằng chứng thực hiện, kết quả và nhận xét theo từng yêu cầu. Bốn hệ mã so sánh trong câu 5 là Caesar, Vigenère, Playfair và chuyển vị cột.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

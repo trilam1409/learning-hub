@@ -2,21 +2,75 @@
 
 Buổi 4 · Digest, tiền ảnh và va chạm
 
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
+
 ## Mục tiêu học
 
 Đọc độ dài digest theo bit và hex, phân biệt ba tính chất an toàn và kiểm được tệp theo tham chiếu.
 
 ## Kiến thức qua tình huống
 
-Hàm băm nhận chuỗi byte dài thay đổi và phát ra digest có độ dài cố định. Một số họ hàm xử lý lần lượt các khối, cập nhật trạng thái rồi tạo kết quả. MD5 là 128 bit, SHA-1 là 160 bit, SHA-256 là 256 bit trong họ SHA-2. SHA-3 là họ khác. Ba bài toán thường gặp:
+### 1. Hash xử lý byte, không hiểu nghĩa câu
 
-| Bài toán | Cho trước | Tìm |
+**Theo nguồn:** P04 tr. 33–49; T04 00:48:22 trở đi và 01:16:34.674–01:17:16.014. Hàm băm nhận dữ liệu dài thay đổi và tạo digest theo độ dài của thuật toán. Cùng byte và cùng thuật toán phải cho cùng digest; đổi chữ hoa/thường, thêm dòng mới hoặc BOM đều có thể thay digest vì đầu vào byte khác.
+
+Ví dụ SHA-256 của `abc` không xuống dòng:
+
+```text
+ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+```
+
+256 bit = 32 byte = 64 chữ số hex. Một chữ số hex biểu diễn 4 bit; hai chữ số hex biểu diễn 1 byte. Độ dài bản mã/chữ ký không suy ra trực tiếp từ độ dài digest.
+
+| Thuật toán/họ | Digest thường dùng trong bài | Hex tương ứng |
 | --- | --- | --- |
-| Tiền ảnh | Digest h | M có H(M) = h |
-| Tiền ảnh thứ hai | Một M | M' khác M có H(M') = H(M) |
-| Va chạm | Không ấn định bản rõ | Hai bản rõ khác nhau có cùng digest |
+| MD5 | 128 bit | 32 |
+| SHA-1 | 160 bit | 40 |
+| SHA-224 | 224 bit | 56 |
+| SHA-256 | 256 bit | 64 |
+| SHA-384 | 384 bit | 96 |
+| SHA-512 | 512 bit | 128 |
+| SHA3-256 | 256 bit | 64 |
 
-Hình tr. 44 minh họa lưu kết quả của hàm một chiều sau khi kết hợp mật khẩu với salt. **Kiến thức bổ sung.** Salt có thể lưu cạnh giá trị kiểm; hệ thống quản lý mật khẩu cần hàm dẫn xuất dành cho mật khẩu và bản ghi tham số tương ứng, thay vì lặp lại nguyên mẫu sơ đồ trên.
+SHA-256 và SHA3-256 cùng độ dài nhưng là hai thuật toán khác nhau. P04 tr. 48 liệt kê bốn biến thể SHA-2 phổ biến trong bài, không nên đọc thành họ SHA-2 chỉ có đúng bốn tên đó trong mọi đặc tả.
+
+### 2. “Duy nhất” phải hiểu thế nào?
+
+**Đính chính P04 tr. 35–36:** đầu ra n bit chỉ có 2^n giá trị, trong khi không gian đầu vào lớn hơn; theo nguyên lý ngăn kéo chắc chắn có hai đầu vào cùng digest. Mục tiêu mật mã là **khó tìm** va chạm, không phải không tồn tại va chạm.
+
+| Tính chất | Bài toán của người tấn công | Mức công việc lý tưởng dạng bậc |
+| --- | --- | --- |
+| Kháng tiền ảnh | Cho h, tìm M có H(M)=h | 2^n |
+| Kháng tiền ảnh thứ hai | Cho M, tìm M′≠M có cùng hash | Khoảng 2^n trong mô hình đơn giản |
+| Kháng va chạm | Tự chọn cả M và M′ khác nhau, hash bằng nhau | 2^(n/2) theo hiệu ứng sinh nhật |
+
+Các ước lượng là mô hình lý tưởng, không phải thời gian chạy cụ thể hay bảo đảm cho mọi độ dài thông điệp. “Không đảo được duy nhất để phục hồi bản gốc” và “khó tìm bất kỳ tiền ảnh nào” là hai phát biểu khác nhau: hàm hằng cũng không khôi phục được bản gốc, nhưng tìm tiền ảnh của nó lại dễ.
+
+### 3. Vì sao XOR đơn giản không đủ?
+
+P04 tr. 33–34 cho hàm XOR các khối 16 bit, khối cuối thiếu thì thêm bit 1. XOR giao hoán nên đổi thứ tự khối giữ nguyên kết quả. Nguồn có hai câu `He likes you but I hate you` và `He hates you but I like you`; bỏ trắng, mã ASCII 8 bit, ghép khối 16 bit và đệm đúng quy tắc cho cùng giá trị **55cd** (hex), đã tính lại. Đây là ví dụ va chạm của hàm đồ chơi, không phải va chạm SHA-256.
+
+P04 tr. 38–39 vẽ chuỗi trạng thái: khối thông điệp và trạng thái cũ đi qua hàm nén để tạo trạng thái mới. **Giải thích bổ sung:** chữ “nén” ở đây nói về ánh xạ đầu vào của hàm nén mật mã, không phải nén ZIP có thể giải nén. Không áp sơ đồ đó thành cấu trúc của mọi hash; SHA-3 dùng cấu trúc khác với nhóm SHA-2 đang được minh họa.
+
+### 4. Avalanche không có nghĩa mọi bit đổi
+
+Một thay đổi nhỏ thường làm nhiều bit digest thay đổi; với mô hình tốt, tỷ lệ kỳ vọng gần một nửa qua nhiều phép thử, không bắt buộc đúng 50% ở mỗi cặp. SHA-256 của abc/abd trong Buổi 5 khác **122/256 bit**. Một phép thử quan sát avalanche không chứng minh toàn bộ an toàn của hàm.
+
+### 5. Đọc đúng tình trạng MD5 và SHA-1
+
+P04 tr. 37,45–49 trình bày quá trình thay thế các họ hash. **Đính chính hiện hành:** MD5 không phù hợp khi cần kháng va chạm ([RFC 6151](https://www.rfc-editor.org/rfc/rfc6151.html)); việc yếu không chỉ là “128 bit ngắn”. SHA-1 cũng không dùng như lựa chọn kháng va chạm mới; NIST có [kế hoạch chuyển khỏi SHA-1](https://csrc.nist.gov/news/2022/nist-transitioning-away-from-sha-1-for-all-apps). Bài thực hành vẫn tính MD5/SHA-1 để so sánh và hiểu lịch sử, không coi chúng là lựa chọn mặc định cho chữ ký mới.
+
+### 6. Hash một mình chứng minh được đến đâu?
+
+Nếu có digest tham chiếu đáng tin cho **đúng tệp/phiên bản**, digest tính lại khớp là bằng chứng tệp tương ứng tham chiếu theo giả định hash phù hợp. Nếu người tấn công đổi cả tệp lẫn digest trên cùng nơi không được bảo vệ, phép so vẫn có thể khớp. Và phần mềm do nhà phát hành tạo ra vẫn có thể chứa lỗ hổng dù tệp tải không bị thay đổi.
+
+### Bài tập tự luyện có lời giải
+
+**Đề:** một trang gửi tệp M cùng SHA-256(M) trên kênh không xác thực. Có ngăn giả mạo không? Không. Người thay M thành M′ cũng tính công khai SHA-256(M′). Cần xác thực tham chiếu qua kênh tin cậy, chữ ký hoặc MAC phù hợp.
+
+**Đề:** digest có 40 chữ số hex thì chắc là SHA-1 không? Chưa chắc; 40 hex là 160 bit, phù hợp độ dài SHA-1 nhưng không chứng minh thuật toán. Phải biết nhãn thuật toán và quy trình tạo.
+
+**Bài chính thức ba phần mềm:** dùng bảng trong [bài tập tổng hợp](../BAI_TAP.md), ghi đúng tên tệp/phiên bản, nguồn digest, kết quả tính và nhận xét. Gói có ví dụ tính thật trên dữ liệu mẫu; chưa tải và kiểm ba bộ cài hiện hành để thay cho quan sát của sinh viên.
 
 ## Công thức và cách áp dụng
 
@@ -30,10 +84,6 @@ Tìm ba phần mềm có cung cấp mã băm, lấy đúng tệp phát hành và
 
 **Ví dụ tự soạn.** 0110 XOR 1011 = 1101. Tính 1011 XOR 0110 vẫn cho 1101. Hai thứ tự khác nhau mà có cùng digest. Với một tệp thật, dùng mã băm tham chiếu do bên tin cậy cung cấp và so toàn bộ hex.
 
-## Tóm tắt
-
-Hash hỗ trợ kiểm tra toàn vẹn với tham chiếu. Tính một chiều và chống va chạm là các mục tiêu khác nhau.
-
 ## Điểm dễ nhầm
 
 Tệp khác phiên bản hoặc có byte xuống dòng khác có thể cho digest khác. Digest khớp chưa chứng minh phần mềm an toàn trước mọi loại rủi ro.
@@ -42,37 +92,60 @@ Tệp khác phiên bản hoặc có byte xuống dòng khác có thể cho diges
 
 ### Câu 1
 
-Cho sẵn digest và tìm đầu vào tương ứng là bài toán gì?
+Cho sẵn digest h, tìm M có H(M)=h là bài toán gì?
 
-- A. Giải nén
+- A. Va chạm bất kỳ
 - B. Tiền ảnh
-- C. Va chạm
-- D. Giải RSA
+- C. Giải nén
+- D. Giải mã bằng private key
 
-**Đáp án B.** Digest được ấn định trước. **Nhiễu dễ nhầm C.** Va chạm không ấn định bản rõ hay digest đích trước.
+**Đáp án B.**
+
+- **A:** Va chạm không ấn định digest đích như thế.
+- **B:** Đúng: đây là định nghĩa tiền ảnh.
+- **C:** Hash không phải định dạng nén có thể giải ngược.
+- **D:** Hash không có khóa giải mã đó.
 
 ### Câu 2
 
-SHA-256 có mấy chữ số hex?
+SHA-256 hiển thị đủ hex có mấy chữ số?
 
 - A. 32
 - B. 256
-- C. 64
-- D. 128
+- C. 128
+- D. 64
 
-**Đáp án C.** Mỗi chữ số hex biểu diễn 4 bit. **Nhiễu dễ nhầm B.** 256 là bit, không phải số chữ số hex.
+**Đáp án D.**
+
+- **A:** 32 là số byte.
+- **B:** 256 là số bit.
+- **C:** 128 hex tương ứng512 bit.
+- **D:** Đúng:256/4=64.
 
 ### Câu 3
 
-Đảo thứ tự hai khối trong phép băm XOR đồ chơi thì sao?
+Đảo thứ tự hai khối của hàm XOR đồ chơi cho kết quả nào?
 
-- A. Digest dài gấp đôi
-- B. Digest đổi dấu
-- C. Digest giữ nguyên
-- D. Khóa thay đổi
+- A. Cùng digest
+- B. Digest dài gấp đôi
+- C. Không thể tính
+- D. Tự tạo MAC
 
-**Đáp án C.** XOR giao hoán. **Nhiễu dễ nhầm B.** Không có phép lấy đối dấu.
+**Đáp án A.**
 
-## Nguồn
+- **A:** Đúng: XOR giao hoán.
+- **B:** Độ dài đầu ra không đổi.
+- **C:** Phép XOR vẫn thực hiện được.
+- **D:** Không có khóa bí mật hay cấu trúc MAC.
 
-[P04](../SOURCES.md) tr. 33–49, 55. Đã xem trực tiếp hình tr. 44. T04 01:16:34.674–01:17:16.014 và 01:21:36.354–01:22:31.334.
+## Nguồn và mức xác minh
+
+- [P04](../SOURCES.md), trang dẫn đầu 33; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](../SOURCE_COVERAGE.md). Trang tính từ 1, kể cả bìa.
+- [T04](../SOURCES.md) 00:51:35.974–00:56:23.434. Dùng cho nội dung lời giảng tương ứng; transcript có lỗi nhận dạng, không thay thế âm thanh gốc.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Hash hỗ trợ kiểm tra toàn vẹn với tham chiếu. Tính một chiều và chống va chạm là các mục tiêu khác nhau.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

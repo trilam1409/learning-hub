@@ -6,8 +6,10 @@ order: 9
 topicIds: ["classical-cryptography", "practice-reports"]
 sessionIds: ["session-03"]
 relatedLessons: []
-references: [{"sourceId": "p03", "page": 1}, {"sourceId": "t03", "startSeconds": 5.62, "endSeconds": 63.3}, {"sourceId": "t03", "startSeconds": 243.26, "endSeconds": 320.62}]
+references: [{"sourceId": "p03", "page": 1}, {"sourceId": "t03", "startSeconds": 243.26, "endSeconds": 320.62}]
 ---
+
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
 
 ## Mục tiêu học
 
@@ -16,7 +18,60 @@ references: [{"sourceId": "p03", "page": 1}, {"sourceId": "t03", "startSeconds":
 
 ## Kiến thức qua tình huống
 
-Caesar dời tất cả chữ cùng số bước trên bảng chữ cái. Khi đi hết Z, tiếp tục từ A. Mã này giúp thấy rõ vai trò của khóa: cùng bản rõ và hai khóa khác nhau thì cho hai bản mã để đối chiếu.
+### 1. Mục tiêu của buổi thực hành
+
+**Theo đề TH2A:** P03 tr. 1–4. Bạn cần tự tạo dữ liệu, mã hóa, giải ngược, phân tích kết quả và nộp báo cáo có bằng chứng. Câu trả lời đúng không chỉ là một chuỗi bản mã: phải nói được quy ước, khóa, các bước và cách biết kết quả đúng.
+
+T03 00:04:03.260–00:05:20.620 giới thiệu TH2A và yêu cầu tệp soạn thảo; transcript ngắn không có hướng dẫn riêng từng thuật toán. Đoạn T03 00:01:30.140–00:04:02.450 nói winver, cổng mạng, chia sẻ tệp và chống virus thuộc một đề thực hành khác, không phải các bước trong TH2A.
+
+### 2. Chuẩn bị một hồ sơ có thể lặp lại
+
+Đề dùng Windows 10/11 và CrypTool 1. Ghi tên phiên bản, ngôn ngữ giao diện và thiết lập bảng chữ cái trong báo cáo. Theo [trang chính thức CrypTool 1](https://www.cryptool.org/en/ct1/), CT1 đã ngừng hỗ trợ từ giữa năm 2026; bản cuối là 1.4.42. Vì bài học được giao theo CT1, gói này giữ yêu cầu và nêu tình trạng đó. Nếu dùng công cụ khác theo điều kiện lớp, phải ghi rõ công cụ và đối chiếu thuật toán; không coi ảnh của CT2 là ảnh CT1.
+
+Tạo một thư mục cho các tệp thử, báo cáo và ảnh. Mỗi lần thử ghi ít nhất:
+
+| Trường | Ví dụ |
+| --- | --- |
+| Bản rõ ban đầu | ATTACK AT DAWN |
+| Bản rõ dùng tính | ATTACKATDAWN |
+| Thuật toán, khóa | Caesar, k = 3 |
+| Bảng chữ, khoảng trắng | A–Z; bỏ khoảng trắng khi so |
+| Bản mã | DWWDFNDWGDZQ |
+| Bản giải ngược | ATTACKATDAWN |
+| Nhận xét | 12 chữ; khôi phục đủ từng chữ |
+
+### 3. Bốn thao tác cần phân biệt
+
+- **Mã hóa:** có bản rõ và khóa, tạo bản mã.
+- **Giải mã:** có bản mã và khóa đúng, dùng phép ngược.
+- **Thám mã:** tìm thông tin/khóa khi chưa biết khóa, dựa trên đặc điểm hệ mã và dữ liệu.
+- **Tự kiểm:** đối chiếu bản giải với đầu vào đã chuẩn hóa, kiểm cả cấu hình và kết quả.
+
+Khi chọn menu phân tích trên bản mã do mình tạo, bạn đã biết đáp án để đánh giá công cụ. Điều đó khác với thử khóa mù trên một mẫu chưa biết.
+
+### 4. Làm Caesar từng ký tự
+
+Với A = 0 và khóa 3: A(0)+3 = D(3); T(19)+3 = W(22); K(10)+3 = N(13). Cuối câu, W(22)+3 = Z(25), N(13)+3 = Q(16). Vì vậy ATTACK AT DAWN cho **DWWDFN DW GDZQ** khi giữ cách nhóm từ, hoặc DWWDFNDWGDZQ khi bỏ trắng.
+
+Giải lại D: 3−3 = 0 → A. Giải C nếu khóa là 7: 2−7 = −5 ≡21 → V. Nếu quên vòng 26 ở số âm, có thể lấy chữ nằm ngoài bảng. Dùng một chữ gần cuối bảng như Z để kiểm riêng bước quay vòng.
+
+### 5. Vì sao thử hết khóa được?
+
+Chỉ có 26 độ dịch, trong đó khóa 0 không đổi chữ. Vét cạn tạo các bản giải với k = 0…25 rồi đánh giá ngôn ngữ. Nếu bản rõ chỉ là hai chữ hoặc một mã định danh, nhiều ứng viên có thể đều hợp lý; không có phép thống kê nào tự bảo đảm biết ý định người viết từ dữ liệu quá ít.
+
+ROT13 có tính chất đặc biệt: cộng 13 hai lần là cộng 26, trở lại chữ gốc. Đây không phải tính chất của mọi khóa Caesar: cộng 3 hai lần sẽ dịch 6, không giải được khóa 3.
+
+### 6. Cách ghi và xử lý kết quả khác nhau
+
+Tên menu trong đề là chỉ dẫn nguồn, chưa phải xác nhận giao diện mọi phiên bản. Nếu không thấy đúng đường dẫn, tìm mục Caesar trong nhóm mật mã cổ điển hoặc Help, ghi đường dẫn thực tế. Nếu kết quả khác, kiểm theo thứ tự: bản rõ chuẩn hóa → bảng chữ → cách biểu diễn khóa → chiều Encrypt/Decrypt → khoảng trắng → bản mã.
+
+### Bài tập tự luyện có lời giải
+
+**Đề:** HELLO mã với k = 2. H(7)+2 = J; E(4)+2 = G; L(11)+2 = N; L → N; O(14)+2 = Q. Kết quả **JGNNQ**. Giải bằng k = 2 thu HELLO.
+
+**Thử hai mẫu nữa:** SCHOOL, k = 4 → WGLSSP; LIBRARY, k = 9 → URKAJAH. Khi trao đổi, chỉ gửi bản mã cùng quy ước chữ, giữ bản rõ/khóa làm đáp án riêng. Sau khi bạn giải, so đủ chữ và trình bày vì sao chọn khóa đó; đừng coi việc được công cụ hiển thị đầu tiên là chứng minh.
+
+**Khung nhận xét:** “Với 26 độ dịch, phần mềm đưa ra … ứng viên; tôi chọn … vì …; giải lại được …; trường hợp còn mơ hồ là …”. Điền kết quả thực tế, không chép số liệu giả vào báo cáo.
 
 ## Công thức và cách áp dụng
 
@@ -56,22 +111,26 @@ CrypTool 1 và bảng chữ cái A–Z. Dữ liệu chính thức là ATTACK AT 
 
 Giải ngược mỗi dòng và so với ATTACKATDAWN. Giữ ảnh ghi rõ khóa và chiều thực hiện. Nếu ký tự A không đi thành D với khóa 3, kiểm tra xem phần mềm đang dùng bảng chữ cái nào và hộp khóa yêu cầu nhập số hay chữ đại diện.
 
-## Tóm tắt
-
-Với bảng 26 chữ, có 26 dịch chuyển tính cả khóa 0. Số khóa ít khiến Caesar dễ thử hết trên bài tập. Cùng khóa, chế độ mã hóa và giải mã đi theo hai chiều ngược nhau.
-
 ## Điểm dễ nhầm
 
 Khóa 13 có tính chất hai lần dịch sẽ về ban đầu do 13 + 13 = 26. Với các khóa khác, vẫn phải dùng phép trừ khi giải theo công thức.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Caesar dịch Z với khóa 3 thành gì?"} options={["A. W", "B. C", "C. D", "D. Z"]} correctIndex={1} explanation={"Đáp án B. (25 + 3) mod 26 = 2. Nhiễu dễ nhầm C. D là kết quả của A khi dịch 3."} />
+<Quiz question={"Câu 1. Caesar mã Z với k=3, A=0, cho gì?"} options={["A. W", "B. C", "C. D", "D. A"]} correctIndex={1} explanation={"A: W là kết quả dịch trái 3. B: Đúng: (25+3) mod26=2. C: D là A mã với k=3. D: A là Z dịch phải 1."} />
 
-<Quiz question={"Câu 2. Giải một dịch chuyển Caesar bất kỳ theo phép nào?"} options={["A. Đảo toàn văn", "B. Trừ độ dịch", "C. Cộng cùng độ dịch", "D. Xóa chữ lặp"]} correctIndex={1} explanation={"Đáp án B. Trừ k đảo phép cộng k. Nhiễu dễ nhầm C. Cộng tiếp thường không quay về bản rõ."} />
+<Quiz question={"Câu 2. Giải Caesar bất kỳ dùng công thức nào?"} options={["A. p=(c+k) mod26", "B. p=(k−c) mod26", "C. p=c/k", "D. p=(c−k) mod26"]} correctIndex={3} explanation={"A: Cộng tiếp không đảo được mọi khóa; ROT13 là trường hợp đặc biệt. B: Đảo thứ tự phép trừ làm sai. C: Đây là phép cộng modulo, không phải nhân để chia. D: Đúng: trừ độ dịch rồi lấy dư chuẩn."} />
 
-<Quiz question={"Câu 3. Số khóa Caesar khác 0 trên A–Z là bao nhiêu?"} options={["A. 25", "B. 52", "C. 26", "D. 13"]} correctIndex={0} explanation={"Đáp án A. Trong 26 dịch có một dịch giữ nguyên. Nhiễu dễ nhầm C. 26 bao gồm khóa 0."} />
+<Quiz question={"Câu 3. Có bao nhiêu khóa dịch Caesar khác 0 trên A–Z?"} options={["A. 25", "B. 26", "C. 13", "D. 52"]} correctIndex={0} explanation={"A: Đúng: từ 1 đến25. B: 26 có tính cả khóa0. C: 13 chỉ là một độ dịch đặc biệt. D: Không phân biệt hoa/thường thành bảng52 trong quy ước này."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P03](/courses/information-security/documents/sources) tr. 1–2 và câu báo cáo 1, 5 ở tr. 4. T03 00:00:05.620–00:01:03.300 và 00:04:03.260–00:05:20.620. VTT nhắc báo cáo Word, có thể kèm PDF. Phần bìa, mục lục và chú thích ảnh được giới thiệu khi nói về bài kiểm tra bảo mật cơ bản khác; có thể dùng làm khuôn. Hướng dẫn thuật toán và tên tệp lấy theo P03. Kết quả là phép tính đối chiếu; thao tác giao diện được diễn giải từ đề.
+- [P03](/courses/information-security/documents/sources), trang dẫn đầu 1; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T03](/courses/information-security/documents/sources) 00:04:03.260–00:05:20.620. Đoạn này chỉ giới thiệu TH2A; không là nguồn cho từng thao tác thuật toán.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Với bảng 26 chữ, có 26 dịch chuyển tính cả khóa 0. Số khóa ít khiến Caesar dễ thử hết trên bài tập. Cùng khóa, chế độ mã hóa và giải mã đi theo hai chiều ngược nhau.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

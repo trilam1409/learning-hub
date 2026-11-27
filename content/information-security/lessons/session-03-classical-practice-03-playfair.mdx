@@ -9,6 +9,8 @@ relatedLessons: []
 references: [{"sourceId": "p03", "page": 3}, {"sourceId": "t03", "startSeconds": 243.26, "endSeconds": 320.62}]
 ---
 
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
+
 ## Mục tiêu học
 
 - Lập bảng theo khóa, chuẩn bị cặp chữ và áp dụng ba quy tắc thay thế.
@@ -16,7 +18,57 @@ references: [{"sourceId": "p03", "page": 3}, {"sourceId": "t03", "startSeconds":
 
 ## Kiến thức qua tình huống
 
-Playfair mã hóa từng cặp chữ. Vì cùng một chữ có thể đi với các chữ thứ hai khác nhau, hãy tách cặp trước khi tra bảng. Bài chính thức có chuỗi MEET, nhưng nếu bắt đầu tách từ đầu từ, hai chữ E nằm ở hai cặp ME và ET.
+### 1. Bắt đầu từ yêu cầu chính thức
+
+**Theo P03 tr. 3:** dùng SECRETKEY, ghi ma trận 5×5; mã MEET ME AT THE BRIDGE; quan sát chèn X; giải lại; thử khóa khác và văn bản dài hơn. VTT Buổi 3 không hướng dẫn thêm chi tiết Playfair. Các bước và đáp án minh họa được tính bổ sung, không phải ảnh kết quả CT1 đã chạy.
+
+### 2. Tự dựng bảng SECRETKEY
+
+Đọc khóa từ trái sang phải: S,E,C,R,E,T,K,E,Y. Giữ lần đầu từng chữ: S,E,C,R,T,K,Y. Tiếp tục thêm A,B,D,F,G,H,I,L,M,N,O,P,Q,U,V,W,X,Z (bỏ J vì gộp I/J).
+
+```text
+S E C R T
+K Y A B D
+F G H I L
+M N O P Q
+U V W X Z
+```
+
+Kiểm có đúng 25 chữ, không trùng và không thiếu chữ sau khi gộp I/J. Nếu công cụ cho bảng khác, đừng thay đáp án trước: so quy tắc gộp chữ, thứ tự khóa, bảng chữ còn lại và ký tự đệm.
+
+### 3. “Chữ đôi” là đôi trong cặp đang xét
+
+MEET tách ME | ET, vì khi lấy ME xong, chữ E thứ hai trở thành đầu cặp ET. Không chèn X chỉ vì mắt thấy EE đứng cạnh nhau. Với BALLOON: BA | LX | LO | ON. Sau BA, hai L đang sắp cùng cặp nên chèn X sau L đầu, giữ L thứ hai để ghép với O.
+
+Đối với bản rõ chính thức, chuỗi sau bỏ trắng là MEETMEATTHEBRIDGE. Các cặp **ME ET ME AT TH EB RI DG EX**; X cuối là đệm vì còn một E lẻ. Không có cặp hai chữ trùng trong vết này. Vì vậy cần thêm BALLOON hoặc một mẫu tương tự để quan sát riêng việc tách chữ đôi; đó là bài bổ sung, không sửa bản rõ của đề.
+
+### 4. Tính đủ chín cặp
+
+| Cặp | Vị trí/quy tắc | Bản mã |
+| --- | --- | --- |
+| ME | Hai hàng/cột khác nhau; giữ hàng, đổi cột | NS |
+| ET | Cùng hàng; E → C, T vòng về S | CS |
+| ME | Như cặp đầu | NS |
+| AT | Hình chữ nhật | DC |
+| TH | Hình chữ nhật | CL |
+| EB | Hình chữ nhật | RY |
+| RI | Cùng cột; R → B, I → P | BP |
+| DG | Hình chữ nhật | YL |
+| EX | Hình chữ nhật | RV |
+
+Ghép lại **NSCSNSDCCLRYBPYLRV**. Giải cùng hàng đi trái, cùng cột đi lên; hình chữ nhật vẫn đổi cột. Thu **MEETMEATTHEBRIDGEX**, sau đó dựa trên vết chuẩn bị bỏ X đệm cuối.
+
+### 5. Khôi phục có giới hạn
+
+Bảng 5×5 gộp I và J, bỏ trắng/dấu và thêm đệm. Phép giải chỉ khôi phục chuỗi đã chuẩn bị, không tự biết nơi nào vốn là khoảng trắng, chữ J hay X thật. Muốn khôi phục văn bản tự nhiên cần quy ước hoặc dữ liệu bên ngoài. Đây là khác biệt giữa “đảo được các cặp” và “phục hồi nguyên văn tệp ban đầu”.
+
+### Bài tập tự luyện có lời giải
+
+**Đề:** trên bảng SECRETKEY, mã ba cặp để thử đủ quy tắc: ET, RI, ME. Kết quả CS, BP, NS. Giải lại CS → ET bằng đi trái; BP → RI bằng đi lên; NS → ME bằng đổi cột.
+
+**Đề mở rộng:** khóa MONARCHY với BALLOON CROSSES THE BRIDGE. Lập lại bảng rồi chuẩn bị cặp; đáp án theo quy ước của gói là **IBSUPMNADMAPLITLCFDAKBIF**. Không so chuỗi này với bảng SECRETKEY: đổi khóa nghĩa là đổi bảng. Có thể dùng bộ kiểm đi kèm để tái tính, nhưng báo cáo vẫn phải giải thích ít nhất một cặp mỗi loại bằng tay.
+
+**Khung chẩn đoán:** lệch ngay cặp đầu → kiểm bảng/khóa; lệch từ chữ lặp → kiểm cách tiêu thụ chữ khi chèn đệm; chỉ lệch cuối → kiểm padding; có I/J khác nhau → kiểm gộp chữ. Lưu bản giải thô trước khi tự chỉnh về câu có khoảng trắng.
 
 ## Công thức và cách áp dụng
 
@@ -57,22 +109,26 @@ Bản rõ cho các cặp **ME ET ME AT TH EB RI DG EX**. Ví dụ M và E tạo 
 
 So số ký tự bản mã với số cặp nhân hai. Kiểm tra bằng tay một cặp cùng hàng, như ET → CS, và một cặp hình chữ nhật, như ME → NS. Nếu công cụ ra chuỗi khác, so ma trận và bản rõ chuẩn hóa trước khi kiểm tra phép tra cặp. Giữ X trong bản giải thô và quyết định chữ nào là đệm bằng đối chiếu bản gốc.
 
-## Tóm tắt
-
-Chia cặp trước khi tra ma trận. Chữ đôi cần đệm khi nằm ngay trong cùng một cặp. Hàng, cột và hình chữ nhật có quy tắc riêng.
-
 ## Điểm dễ nhầm
 
 MEET theo quy ước ở đây cho ME ET. Quan sát đó và một mẫu như BALLOON giúp trả lời đầy đủ vì sao chữ đôi đôi khi có X và đôi khi không.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Theo quy ước bài, MEET chia thành cặp nào?"} options={["A. MX EE TX", "B. M E E T", "C. EE MT", "D. ME ET"]} correctIndex={3} explanation={"Đáp án D. Hai chữ E nằm ở hai cặp. Nhiễu dễ nhầm A. Chèn X chỉ khi trùng trong cùng cặp đang xét."} />
+<Quiz question={"Câu 1. MEET bắt đầu chia cặp từ chữ M theo quy ước bài cho gì?"} options={["A. ME ET", "B. MX EE TX", "C. EE MT", "D. ME EX TX"]} correctIndex={0} explanation={"A: Đúng: hai E nằm ở hai cặp khác nhau. B: Không chèn đệm chỉ vì có EE trong từ. C: Đã đổi thứ tự chữ. D: Đã chèn đệm không theo vết chia cặp."} />
 
-<Quiz question={"Câu 2. Cặp cùng hàng khi mã hóa thì dịch hướng nào?"} options={["A. Lên", "B. Trái", "C. Phải", "D. Xuống"]} correctIndex={2} explanation={"Đáp án C. Mã hóa cùng hàng dùng ô bên phải. Nhiễu dễ nhầm B. Giải mã cùng hàng đi trái."} />
+<Quiz question={"Câu 2. Playfair cùng hàng khi mã hóa dịch hướng nào?"} options={["A. Trái", "B. Phải", "C. Lên", "D. Xuống"]} correctIndex={1} explanation={"A: Trái là chiều giải mã cùng hàng. B: Đúng: sang phải và vòng đầu hàng. C: Lên thuộc giải mã cùng cột. D: Xuống thuộc mã hóa cùng cột."} />
 
-<Quiz question={"Câu 3. Điều gì trực tiếp quyết định chỗ chèn đệm?"} options={["A. Tên tệp", "B. Độ dài từ khóa", "C. Số hàng của ma trận", "D. Vết chia cặp"]} correctIndex={3} explanation={"Đáp án D. Xem hai chữ trùng cùng cặp và chữ lẻ cuối. Nhiễu dễ nhầm B. Khóa dùng cho bảng tra, không quyết định vị trí đệm."} />
+<Quiz question={"Câu 3. Điều nào quyết định có chèn đệm tách chữ đôi?"} options={["A. Độ dài khóa", "B. Tên thuật toán chữ ký", "C. Vết chia cặp bản rõ", "D. Số lần xuất hiện chữ E trong cả bài"]} correctIndex={2} explanation={"A: Khóa tạo bảng, không quyết định vị trí chia cặp. B: Không liên quan chữ ký. C: Đúng: xét hai chữ trong cặp hiện tại. D: Tần suất toàn văn không quyết định một cặp trùng."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P03](/courses/information-security/documents/sources) tr. 3 và câu báo cáo 3, 5 ở tr. 4. Quy tắc chi tiết và các bản mã là phần diễn giải và tính toán. T03 00:04:03.260–00:05:20.620 giới thiệu TH2A; không có thêm chỉ dẫn cụ thể cho thuật toán của bài này.
+- [P03](/courses/information-security/documents/sources), trang dẫn đầu 3; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T03](/courses/information-security/documents/sources) 00:04:03.260–00:05:20.620. Đoạn này chỉ giới thiệu TH2A; không là nguồn cho từng thao tác thuật toán.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+Chia cặp trước khi tra ma trận. Chữ đôi cần đệm khi nằm ngay trong cùng một cặp. Hàng, cột và hình chữ nhật có quy tắc riêng.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

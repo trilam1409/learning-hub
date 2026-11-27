@@ -1,0 +1,17 @@
+{
+  "scope": "16 bit prefix collision only; not a full SHA-256 collision; not CrypTool execution",
+  "prefix_bits": 16,
+  "prefix": "e9b8",
+  "A": {
+    "text": "DONG Y VOI DE XUAT. [mau 25]",
+    "bytes": 28,
+    "sha256": "e9b88864adb02c841debab506ccd13a765a7209e0ab6ea7d94b4e1bdfcc46679"
+  },
+  "B": {
+    "text": "KHONG DONG Y VOI DE XUAT. [mau 131]",
+    "bytes": 35,
+    "sha256": "e9b8734c4e56587932a2bd8411b931576c07d3bc9f380b0abd00d0de82efbed4"
+  },
+  "A_variants": 512,
+  "B_variants_tried": 132
+}

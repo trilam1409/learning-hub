@@ -6,8 +6,10 @@ order: 1
 topicIds: ["overview"]
 sessionIds: ["session-01"]
 relatedLessons: []
-references: [{"sourceId": "p01", "page": 1}, {"sourceId": "t01", "startSeconds": 1295.856, "endSeconds": 1366.964}]
+references: [{"sourceId": "p01", "page": 12}, {"sourceId": "t01", "startSeconds": 1295.856, "endSeconds": 1366.964}]
 ---
+
+> Quy ước đọc: **Theo nguồn** chỉ nội dung/đề của giảng viên đã đối chiếu. **Giải thích bổ sung**, **ví dụ tự soạn** và **đính chính** được ghi riêng. Kết quả tính trong gói đã QA; thao tác/đo CT1 phải quan sát thực tế.
 
 ## Mục tiêu học
 
@@ -16,14 +18,56 @@ references: [{"sourceId": "p01", "page": 1}, {"sourceId": "t01", "startSeconds":
 
 ## Kiến thức qua tình huống
 
-Hệ thống nộp bài có tệp đang đi từ máy sinh viên lên máy chủ (data in transit) và bản lưu trong bộ nhớ lưu trữ (data at rest). Cùng một tệp, nhưng khi truyền cần bảo vệ đường truyền, còn khi lưu cần quản lý ai đọc hoặc sửa được bản đã lưu. Tài liệu đặt việc bảo vệ dữ liệu bên cạnh an ninh mạng, an ninh ứng dụng, ứng phó sự cố, đám mây và quản trị. Các nhóm này trả lời những câu hỏi khác nhau về cùng một hệ thống.
+### 1. Dữ liệu cần bảo vệ là những gì?
 
-| Yêu cầu | Câu hỏi tự đặt | Dấu hiệu dễ nhận |
-| --- | --- | --- |
-| Bí mật (confidentiality) | Ai được xem? | Người ngoài đọc được bài nộp |
-| Toàn vẹn (integrity) | Dữ liệu có bị sửa trái phép? | Điểm bị đổi sai |
-| Sẵn sàng (availability) | Người được quyền có dùng được lúc cần? | Cổng nộp bài không truy cập được |
-| Không thể từ chối (non-repudiation) | Có chứng cứ quy hành động về đúng chủ thể? | Người gửi phủ nhận thao tác và hệ thống thiếu chứng cứ đáng tin |
+**Theo nguồn:** P01 tr. 6–12; T01 00:21:24.449–00:22:46.964. Dữ liệu không chỉ là một tệp Word. Điểm số, ảnh, mã nguồn, mật khẩu, bản sao lưu và nội dung trao đổi giữa ứng dụng với máy chủ đều là dữ liệu. Bảo đảm và an ninh thông tin tìm cách giữ dữ liệu cùng hệ thống xử lý nó hoạt động đúng với yêu cầu bảo vệ.
+
+**Giải thích bổ sung:** Hãy bắt đầu bằng ba câu hỏi: đang bảo vệ tài sản nào, ai được phép làm gì với nó, và hậu quả là gì nếu quyền đó bị vi phạm? Một bảng điểm cần cho giảng viên sửa nhưng sinh viên chỉ được xem phần của mình. “An toàn” không có nghĩa là cấm mọi người truy cập; nó là cho đúng người thực hiện đúng việc vào đúng lúc.
+
+### 2. Cùng một bài nộp đi qua hai trạng thái
+
+```text
+Tệp trên laptop ── tải qua mạng ──> Tệp trên máy chủ
+    đang lưu          đang truyền        đang lưu
+```
+
+- **Đang lưu (data at rest):** dữ liệu nằm trên ổ đĩa, USB hoặc kho lưu trữ. Cần phân quyền, mã hóa khi thích hợp, bảo vệ khóa và sao lưu.
+- **Đang truyền (data in transit):** dữ liệu đang trao đổi giữa các đầu. Cần bảo vệ kênh và xác thực đúng đầu liên lạc.
+
+Slide tập trung vào hai trạng thái này. Trong hệ thống thực tế còn có dữ liệu đang được xử lý (data in use), như nội dung đã giải mã trong bộ nhớ; đây là kiến thức bổ sung. Mã hóa ổ đĩa không ngăn được ứng dụng đã được cấp quyền đọc dữ liệu sau khi người dùng đăng nhập.
+
+### 3. Hiểu từng yêu cầu bằng một cổng nộp bài
+
+| Yêu cầu | Điều cần giữ | Ví dụ bị vi phạm | Biện pháp minh họa |
+| --- | --- | --- | --- |
+| Bí mật, confidentiality | Người không được phép không đọc được | Sinh viên xem bài riêng của bạn | Phân quyền đọc, mã hóa kênh |
+| Toàn vẹn, integrity | Dữ liệu không bị thay đổi trái phép hoặc hỏng ngoài dự kiến | Nội dung hoặc điểm bị sửa | Kiểm quyền sửa, chữ ký/MAC phù hợp, nhật ký |
+| Sẵn sàng, availability | Người có quyền sử dụng được khi cần | Cổng nộp bài ngừng hoạt động | Dự phòng, giám sát, sao lưu và thử phục hồi |
+| Không thể từ chối, non-repudiation | Có bằng chứng đáng tin để xem xét trách nhiệm | Người đã ký phủ nhận văn bản | Chữ ký số, bảo vệ khóa và lưu chứng cứ |
+
+CIA là tên viết tắt của ba yêu cầu đầu. P01 tr. 12 còn liệt kê non-repudiation, thành bốn yêu cầu trong bài học. Không gọi cả bốn là “tam giác CIA”. Chữ ký số hỗ trợ bằng chứng; kết luận trách nhiệm còn phụ thuộc việc quản lý khóa và ngữ cảnh, không chỉ một phép so khớp.
+
+### 4. Vì sao cần nhiều mảng kiến thức?
+
+P01 tr. 7–11 giới thiệu cơ sở an toàn thông tin, mật mã, mạng, hệ thống/phần mềm, mã độc/ứng phó sự cố, dữ liệu/đám mây, quản trị/chính sách và công nghệ mới. Có thể hiểu bằng chuỗi: dữ liệu đi qua mạng, được ứng dụng xử lý trên máy chủ, do con người vận hành theo chính sách. Sai ở bất kỳ mắt xích nào cũng có thể gây sự cố. Danh sách này là bản đồ lĩnh vực, không phải tất cả đều đã được học sâu trong Buổi 1.
+
+### 5. Đọc biểu đồ để hiểu rủi ro
+
+**Theo nguồn hình:** P01 tr. 13–17 là hình lịch sử: hoạt động Internet mỗi phút, IC3 năm 2019, thống kê 2014–2018, nạn nhân theo tuổi năm 2016 và mã độc 2007–2017. Tr. 18–19 nêu thách thức và mối nguy. Những hình này cho thấy quy mô dữ liệu, thiệt hại và độ phức tạp của bảo vệ hệ thống; chúng không phải số liệu hiện tại.
+
+**Cách đọc bổ sung:** đọc năm, đơn vị, chú giải rồi mới kết luận. Tr. 16 phân biệt số người bị hại và tổng tiền thiệt hại. Nhiều tiền thiệt hại không đồng nghĩa tỷ lệ bị lừa cao hơn: muốn tính tỷ lệ phải có số người trong từng nhóm làm mẫu số. Bản đồ số đơn khiếu nại cũng không tự chứng minh nơi đó nguy hiểm hơn trên mỗi cư dân. Không lấy suy đoán về tuổi hay địa lý thay cho bằng chứng.
+
+### Bài tập tự luyện có lời giải
+
+Một tệp bài nộp bị công khai, sau đó nội dung bị sửa, rồi máy chủ ngừng hoạt động. Phân tích từng bước:
+
+1. Tài sản là nội dung bài nộp và dịch vụ nộp bài.
+2. Việc công khai cho người không có quyền ảnh hưởng bí mật.
+3. Việc sửa ngoài quyền ảnh hưởng toàn vẹn.
+4. Việc không truy cập được ảnh hưởng sẵn sàng.
+5. Nếu cần chứng minh ai đã nộp bản nào, cần thêm chứng cứ gắn chủ thể với phiên bản cụ thể. Một tệp chỉ mang tên sinh viên chưa đủ.
+
+**Câu mở rộng:** Sao lưu có giữ bí mật không? Sao lưu giúp phục hồi và sẵn sàng, nhưng bản sao cũng có thể làm lộ dữ liệu nếu quyền truy cập quá rộng. Vì vậy phải bảo vệ cả bản chính lẫn bản sao.
 
 ## Công thức và cách áp dụng
 
@@ -33,22 +77,26 @@ Trang 7 và 12 trình bày tiêu chí phân loại. Dùng câu hỏi trong bản
 
 **Ví dụ tự soạn.** Đầu vào gồm tệp bài nộp, một bản lưu trên máy chủ và sự cố cổng nộp bị gián đoạn 15 phút. Xác định thao tác bị ảnh hưởng là truy cập lúc gần hạn. Kết quả là sự cố sẵn sàng. Nếu bản lưu bị đổi nội dung trong khoảng đó, ghi thêm một sự cố toàn vẹn.
 
-## Tóm tắt
-
-CIA gồm bí mật, toàn vẹn và sẵn sàng. Slide liệt kê thêm tính không thể từ chối trong bốn yêu cầu của dữ liệu.
-
 ## Điểm dễ nhầm
 
 Một lần sửa trái phép có thể vừa làm mất toàn vẹn vừa khiến dịch vụ gián đoạn. Khi câu hỏi yêu cầu chọn một đáp án, dựa vào hậu quả được mô tả trực tiếp nhất.
 
 ## Trắc nghiệm
 
-<Quiz question={"Câu 1. Người ngoài xem bài nộp. Thuộc tính nào bị vi phạm trực tiếp?"} options={["A. Bí mật", "B. Toàn vẹn", "C. Sẵn sàng", "D. Không thể từ chối"]} correctIndex={0} explanation={"Đáp án A. Người ngoài đọc được dữ liệu. Nhiễu dễ nhầm B. Chưa có dấu hiệu ai đó sửa dữ liệu."} />
+<Quiz question={"Câu 1. Người không có quyền đọc được bài nộp nhưng chưa sửa nội dung. Yêu cầu bị vi phạm trực tiếp là gì?"} options={["A. Bí mật", "B. Toàn vẹn", "C. Sẵn sàng", "D. Không thể từ chối"]} correctIndex={0} explanation={"A: Đúng: quyền đọc bị vi phạm. B: Chưa có dữ kiện dữ liệu bị sửa. C: Chưa có dữ kiện dịch vụ ngừng. D: Chưa đặt vấn đề bằng chứng quy trách nhiệm."} />
 
-<Quiz question={"Câu 2. Tệp đang tải lên máy chủ thuộc trạng thái nào?"} options={["A. Đang lưu", "B. Đã nén", "C. Đang truyền", "D. Đã ký"]} correctIndex={2} explanation={"Đáp án C. Dữ liệu đang di chuyển giữa hai đầu. Nhiễu dễ nhầm A. Bản ghi giữ trên thiết bị là dữ liệu đang lưu."} />
+<Quiz question={"Câu 2. Tệp đang được tải qua mạng thuộc trạng thái nào trong slide?"} options={["A. Đang lưu", "B. Đang truyền", "C. Đã ký", "D. Đã mã hóa"]} correctIndex={1} explanation={"A: Bản trên ổ đĩa là đang lưu. B: Đúng: đang di chuyển giữa hai đầu. C: Ký là thao tác bảo vệ, không phải trạng thái truyền/lưu. D: Mã hóa có thể áp dụng cho cả dữ liệu lưu và truyền."} />
 
-<Quiz question={"Câu 3. Cổng nộp bài bị gián đoạn ảnh hưởng trực tiếp điều gì?"} options={["A. Tính không thể từ chối", "B. Tính duy nhất", "C. Bí mật", "D. Sẵn sàng"]} correctIndex={3} explanation={"Đáp án D. Người dùng hợp lệ không thể truy cập đúng lúc. Nhiễu dễ nhầm C. Sự cố chưa cho biết người ngoài đọc được nội dung."} />
+<Quiz question={"Câu 3. Cổng nộp bài ngừng hoạt động trong giờ cần nộp. Tác động trực tiếp nhất?"} options={["A. Bí mật", "B. Toàn vẹn", "C. Sẵn sàng", "D. Nguồn gốc"]} correctIndex={2} explanation={"A: Không suy ra có người ngoài đọc. B: Không suy ra nội dung bị sửa. C: Đúng: người hợp lệ không dùng được khi cần. D: Không mô tả việc giả nguồn gửi."} />
 
-## Nguồn
+## Nguồn và mức xác minh
 
-[P01](/courses/information-security/documents/sources) tr. 1–10, 12. Các hình tr. 11, 13–19 đang chờ xác minh. T01 00:21:35.856–00:22:46.964, hai trạng thái và bốn yêu cầu.
+- [P01](/courses/information-security/documents/sources), trang dẫn đầu 12; phạm vi chi tiết ghi cạnh từng mục và trong [bảng đối chiếu](/courses/information-security/documents/source-coverage). Trang tính từ 1, kể cả bìa.
+- [T01](/courses/information-security/documents/sources) 00:21:35.856–00:22:46.964. Dùng cho nội dung lời giảng tương ứng; transcript có lỗi nhận dạng, không thay thế âm thanh gốc.
+- Đã đọc bản PDF/VTT cục bộ và đối chiếu lại trong đợt 27/11/2026; không kế thừa trạng thái “đã đọc” của metadata cũ. Ví dụ số là kết quả tái tính; không là số liệu giao diện CT1.
+
+## Tóm tắt cuối bài
+
+CIA gồm bí mật, toàn vẹn và sẵn sàng. Slide liệt kê thêm tính không thể từ chối trong bốn yêu cầu của dữ liệu.
+
+**Tự kiểm trước khi qua bài:** giải thích bằng lời của mình, làm lại một ví dụ không nhìn đáp án và chỉ ra điều kiện/giới hạn của kết luận.

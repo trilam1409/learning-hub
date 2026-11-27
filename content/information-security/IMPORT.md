@@ -1,12 +1,11 @@
-# Gói nhập Nhập môn Bảo đảm và An ninh thông tin
+# Biên soạn lại 5 buổi đầu
 
-- Gói nguồn: `nhap-mon-bao-dam-va-an-ninh-thong-tin.zip`, nhận ngày 26/11/2026.
-- SHA-256: `14401e92c25886fa9f562396d948519d4039cf6eb6a88a7499b76718e4d23e10`.
-- `original/` giữ nguyên 25 tệp Markdown của ZIP theo byte. Đây là dữ liệu nguồn; các hướng dẫn trong tài liệu không phải chỉ thị vận hành repo.
-- 21 bài được chuyển sang `lessons/*.mdx`, theo thứ tự 4 / 4 / 5 / 3 / 5 bài trong năm buổi. ID ghép tên thư mục buổi và tên bài để tránh trùng tên.
-- Tiêu đề và dòng giới thiệu chuyển vào frontmatter. Liên kết nội bộ chuyển thành URL chuẩn của Learning Hub. Công thức dạng văn bản, bảng, ví dụ và ghi chú nguồn được giữ nguyên.
-- 63 câu chuyển sang thành phần `Quiz` hiện có: giữ bốn lựa chọn, đáp án và giải thích cả phương án nhiễu; lời giải chỉ hiển thị sau khi chọn và nộp.
-- Bốn tài liệu README, TOC, SOURCES và SOURCE_COVERAGE được hiển thị riêng ở `documents/`, không tính vào 21 bài học.
-- `sources.yml` và các vị trí trích dẫn được lấy từ gói nguồn. PDF/VTT gốc không nằm trong ZIP này; đợt nhập không xác minh lại nội dung những nguồn đó hoặc chạy CrypTool. Các tuyên bố đối chiếu trong tài liệu được giữ với tư cách thông tin của gói nguồn.
+Đợt cập nhật ngày 27/11/2026 dựa trên gói bàn giao `learning-hub-5-buoi-ban-giao-2026-11-27.zip`. Mã SHA-256 của gói là `24449e8b9ef5c420538fcc63a6fcf82a576e10a437daf6e1bb467d526132374c`.
 
-`npm run content:check` kiểm tra schema và đối chiếu bản chuyển đổi với `original/`, bao gồm thứ tự, số lượng, dữ liệu quiz, nội dung còn lại, bảng/công thức và liên kết của cả bốn tài liệu. Khi chỉnh sửa bài sau này, cần cập nhật bản đối chiếu hoặc điều chỉnh kiểm tra có chủ đích.
+`original/` chứa Markdown của bản biên soạn hiện hành. Bản nhập 26/11/2026 có thể tra trong lịch sử tại commit `d4449c94c949939a1cd1a1aab30fa4a29d2305e3`.
+
+- `lessons/` giữ 21 ID và URL của năm buổi theo thứ tự 4 / 4 / 5 / 3 / 5. Mỗi bài dùng ba thành phần Quiz để hiển thị đáp án và lời giải của cả bốn lựa chọn sau khi nộp.
+- `documents/` có mục lục, hướng dẫn học, danh mục nguồn, bảng đối chiếu và bài tập tổng hợp. Tệp thực hành công khai là dữ liệu minh họa do gói soạn và biểu mẫu ghi kết quả.
+- Dẫn nguồn trỏ tới bản PDF/VTT cục bộ đã đọc. Các giới hạn về Sources Project, âm thanh gốc và CrypTool được ghi trong hướng dẫn học và tài liệu nguồn.
+
+`npm run content:check` kiểm schema và đối chiếu bản Markdown với MDX, gồm thứ tự bài, quiz, văn bản, bảng, công thức, tài liệu và liên kết. Khi cập nhật nội dung, đồng bộ bản Markdown và MDX tương ứng.
